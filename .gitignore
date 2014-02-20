@@ -30,3 +30,11 @@
 *.vrb
 *.xdy
 *.tdo
+
+
+# Ignore generated files
+*.o
+*.a
+*.bin
+*.hex
+*.elf
