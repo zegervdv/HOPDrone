@@ -31,6 +31,8 @@
 *.xdy
 *.tdo
 
+*.pdf
+
 
 # Ignore generated files
 *.o
