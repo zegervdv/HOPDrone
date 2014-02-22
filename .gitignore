@@ -33,6 +33,7 @@
 
 *.pdf
 
+*.s#*
 
 # Ignore generated files
 *.o
