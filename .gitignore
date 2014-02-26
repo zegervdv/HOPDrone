@@ -35,6 +35,7 @@
 
 *.s#*
 *.b#*
+*.l#*
 
 # Ignore generated files
 *.o

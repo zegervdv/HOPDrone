@@ -293,6 +293,72 @@
 <rectangle x1="-5.65" y1="7.1501" x2="-5.35" y2="8.1999" layer="51"/>
 <rectangle x1="-6.1501" y1="7.1501" x2="-5.8499" y2="8.1999" layer="51"/>
 </package>
+<package name="LGA-14">
+<description>&lt;b&gt;LGA 3x5x1 14L&lt;/b&gt; Land Grid Array Package&lt;p&gt;
+Source: DM00027543-118326.pdf</description>
+<smd name="1" x="-2" y="-1.1" dx="0.4" dy="0.4" layer="1" stop="no" cream="no"/>
+<smd name="2" x="-1.2" y="-1.1" dx="0.6" dy="1" layer="1" stop="no" cream="no"/>
+<smd name="3" x="-0.4" y="-1.1" dx="0.6" dy="1" layer="1" stop="no" cream="no"/>
+<smd name="4" x="0.4" y="-1.1" dx="0.6" dy="1" layer="1" stop="no" cream="no"/>
+<smd name="5" x="1.2" y="-1.1" dx="0.6" dy="1" layer="1" stop="no" cream="no"/>
+<smd name="6" x="2" y="-1.1" dx="0.6" dy="1" layer="1" stop="no" cream="no"/>
+<smd name="7" x="2" y="0" dx="0.6" dy="1" layer="1" rot="R90" stop="no" cream="no"/>
+<smd name="8" x="2" y="1.1" dx="0.6" dy="1" layer="1" rot="R180" stop="no" cream="no"/>
+<smd name="9" x="1.2" y="1.1" dx="0.6" dy="1" layer="1" rot="R180" stop="no" cream="no"/>
+<smd name="10" x="0.4" y="1.1" dx="0.6" dy="1" layer="1" rot="R180" stop="no" cream="no"/>
+<smd name="11" x="-0.4" y="1.1" dx="0.6" dy="1" layer="1" rot="R180" stop="no" cream="no"/>
+<smd name="12" x="-1.2" y="1.1" dx="0.6" dy="1" layer="1" rot="R180" stop="no" cream="no"/>
+<smd name="13" x="-2" y="1.1" dx="0.6" dy="1" layer="1" rot="R180" stop="no" cream="no"/>
+<smd name="14" x="-2" y="0" dx="0.6" dy="1" layer="1" rot="R270" stop="no" cream="no"/>
+<wire x1="-2.475" y1="1.475" x2="2.475" y2="1.475" width="0.2032" layer="51"/>
+<wire x1="2.475" y1="1.475" x2="2.475" y2="-1.475" width="0.2032" layer="51"/>
+<wire x1="2.475" y1="-1.475" x2="-2.475" y2="-1.475" width="0.2032" layer="51"/>
+<wire x1="-2.475" y1="-1.475" x2="-2.475" y2="1.475" width="0.2032" layer="51"/>
+<rectangle x1="-2.25" y1="-1.5" x2="-1.75" y2="-0.7" layer="31"/>
+<rectangle x1="-2.4" y1="-0.25" x2="-1.6" y2="0.25" layer="31"/>
+<polygon width="0.05" layer="1">
+<vertex x="-1.725" y="-0.625"/>
+<vertex x="-1.725" y="-1.575"/>
+<vertex x="-2.275" y="-1.575"/>
+<vertex x="-2.275" y="-0.725"/>
+<vertex x="-2.175" y="-0.625"/>
+</polygon>
+<polygon width="0.1" layer="29">
+<vertex x="-1.7" y="-0.6"/>
+<vertex x="-2.175" y="-0.6"/>
+<vertex x="-2.3" y="-0.725"/>
+<vertex x="-2.3" y="-1.6"/>
+<vertex x="-1.7" y="-1.6"/>
+</polygon>
+<rectangle x1="-1.55" y1="-1.65" x2="-0.85" y2="-0.55" layer="29"/>
+<rectangle x1="-0.75" y1="-1.65" x2="-0.05" y2="-0.55" layer="29"/>
+<rectangle x1="-1.45" y1="-1.5" x2="-0.95" y2="-0.7" layer="31"/>
+<rectangle x1="-0.65" y1="-1.5" x2="-0.15" y2="-0.7" layer="31"/>
+<rectangle x1="0.05" y1="-1.65" x2="0.75" y2="-0.55" layer="29"/>
+<rectangle x1="0.15" y1="-1.5" x2="0.65" y2="-0.7" layer="31"/>
+<rectangle x1="0.85" y1="-1.65" x2="1.55" y2="-0.55" layer="29"/>
+<rectangle x1="0.95" y1="-1.5" x2="1.45" y2="-0.7" layer="31"/>
+<rectangle x1="1.65" y1="-1.65" x2="2.35" y2="-0.55" layer="29"/>
+<rectangle x1="1.75" y1="-1.5" x2="2.25" y2="-0.7" layer="31"/>
+<rectangle x1="1.65" y1="0.55" x2="2.35" y2="1.65" layer="29" rot="R180"/>
+<rectangle x1="1.75" y1="0.7" x2="2.25" y2="1.5" layer="31" rot="R180"/>
+<rectangle x1="0.85" y1="0.55" x2="1.55" y2="1.65" layer="29" rot="R180"/>
+<rectangle x1="0.95" y1="0.7" x2="1.45" y2="1.5" layer="31" rot="R180"/>
+<rectangle x1="0.05" y1="0.55" x2="0.75" y2="1.65" layer="29" rot="R180"/>
+<rectangle x1="0.15" y1="0.7" x2="0.65" y2="1.5" layer="31" rot="R180"/>
+<rectangle x1="-0.75" y1="0.55" x2="-0.05" y2="1.65" layer="29" rot="R180"/>
+<rectangle x1="-0.65" y1="0.7" x2="-0.15" y2="1.5" layer="31" rot="R180"/>
+<rectangle x1="-1.55" y1="0.55" x2="-0.85" y2="1.65" layer="29" rot="R180"/>
+<rectangle x1="-1.45" y1="0.7" x2="-0.95" y2="1.5" layer="31" rot="R180"/>
+<rectangle x1="-2.35" y1="0.55" x2="-1.65" y2="1.65" layer="29" rot="R180"/>
+<rectangle x1="-2.25" y1="0.7" x2="-1.75" y2="1.5" layer="31" rot="R180"/>
+<rectangle x1="1.6" y1="-0.25" x2="2.4" y2="0.25" layer="31" rot="R180"/>
+<rectangle x1="1.65" y1="-0.55" x2="2.35" y2="0.55" layer="29" rot="R270"/>
+<rectangle x1="-2.35" y1="-0.55" x2="-1.65" y2="0.55" layer="29" rot="R90"/>
+<circle x="-1.6" y="-0.8" radius="0.4" width="0.2032" layer="51"/>
+<text x="-2.5766" y="1.777" size="1.27" layer="25">&gt;NAME</text>
+<text x="-2.5766" y="-3.555" size="1.27" layer="27">&gt;VALUE</text>
+</package>
 </packages>
 <symbols>
 <symbol name="COMPLETE_100_F4XX">
@@ -402,6 +468,28 @@
 <pin name="PD7(5T)" x="73.66" y="83.82" length="middle" rot="R180"/>
 <pin name="VDD_5" x="-5.08" y="109.22" length="middle"/>
 <pin name="VDD_6" x="-5.08" y="106.68" length="middle"/>
+</symbol>
+<symbol name="LSM303DLHC">
+<wire x1="-15.24" y1="15.24" x2="-15.24" y2="-17.78" width="0.254" layer="94"/>
+<wire x1="-15.24" y1="-17.78" x2="10.16" y2="-17.78" width="0.254" layer="94"/>
+<wire x1="10.16" y1="-17.78" x2="10.16" y2="15.24" width="0.254" layer="94"/>
+<wire x1="10.16" y1="15.24" x2="-15.24" y2="15.24" width="0.254" layer="94"/>
+<pin name="SDA" x="12.7" y="0" length="short" rot="R180"/>
+<pin name="SCL" x="12.7" y="-2.54" length="short" rot="R180"/>
+<pin name="INT1" x="12.7" y="-7.62" length="short" rot="R180"/>
+<pin name="INT2" x="12.7" y="-10.16" length="short" rot="R180"/>
+<pin name="GND" x="-12.7" y="-20.32" length="short" direction="pwr" rot="R90"/>
+<pin name="VDD_IO" x="12.7" y="10.16" length="short" direction="pwr" rot="R180"/>
+<pin name="VDD" x="12.7" y="12.7" length="short" direction="pwr" rot="R180"/>
+<pin name="SDO" x="12.7" y="2.54" length="short" direction="pas" rot="R180"/>
+<pin name="RSVD@1" x="12.7" y="-12.7" length="short" direction="pas" rot="R180"/>
+<pin name="RSVD@2" x="12.7" y="-15.24" length="short" direction="pas" rot="R180"/>
+<pin name="CS" x="12.7" y="5.08" length="short" rot="R180"/>
+<pin name="GND2" x="-10.16" y="-20.32" length="short" direction="pas" rot="R90"/>
+<pin name="GND3" x="-7.62" y="-20.32" length="short" direction="pas" rot="R90"/>
+<text x="-15.24" y="16.51" size="1.778" layer="95">&gt;NAME</text>
+<text x="0" y="-20.32" size="1.778" layer="94">&gt;VALUE</text>
+<pin name="GND1" x="-5.08" y="-20.32" length="short" direction="pas" rot="R90"/>
 </symbol>
 </symbols>
 <devicesets>
@@ -516,6 +604,36 @@ tested: YES&lt;br&gt;</description>
 <connect gate="G$1" pin="VSS_2" pad="27"/>
 <connect gate="G$1" pin="VSS_3" pad="74"/>
 <connect gate="G$1" pin="VSS_4" pad="99"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="LSM303DLHC" prefix="IC">
+<description>&lt;b&gt;Ultra compact high performance e-compass, 3D accelerometer and 3D magnetometer module&lt;/b&gt;&lt;p&gt;
+LIS302DL</description>
+<gates>
+<gate name="G$1" symbol="LSM303DLHC" x="0" y="0"/>
+</gates>
+<devices>
+<device name="" package="LGA-14">
+<connects>
+<connect gate="G$1" pin="CS" pad="7"/>
+<connect gate="G$1" pin="GND" pad="2"/>
+<connect gate="G$1" pin="GND1" pad="4"/>
+<connect gate="G$1" pin="GND2" pad="5"/>
+<connect gate="G$1" pin="GND3" pad="10"/>
+<connect gate="G$1" pin="INT1" pad="8"/>
+<connect gate="G$1" pin="INT2" pad="9"/>
+<connect gate="G$1" pin="RSVD@1" pad="3"/>
+<connect gate="G$1" pin="RSVD@2" pad="11"/>
+<connect gate="G$1" pin="SCL" pad="14"/>
+<connect gate="G$1" pin="SDA" pad="13"/>
+<connect gate="G$1" pin="SDO" pad="12"/>
+<connect gate="G$1" pin="VDD" pad="6"/>
+<connect gate="G$1" pin="VDD_IO" pad="1"/>
 </connects>
 <technologies>
 <technology name=""/>
@@ -2797,6 +2915,7 @@ Source: http://download.siliconexpert.com/pdfs/2005/02/24/Semi_Ap/2/VSH/Resistor
 <part name="GND2" library="supply1" deviceset="GND" device=""/>
 <part name="R1" library="eagle-ltspice" deviceset="R" device="" value="0"/>
 <part name="R2" library="eagle-ltspice" deviceset="R" device="" value="220"/>
+<part name="IC1" library="stm32f4" deviceset="LSM303DLHC" device="" value="LIS302DL"/>
 </parts>
 <sheets>
 <sheet>
@@ -2811,6 +2930,7 @@ Source: http://download.siliconexpert.com/pdfs/2005/02/24/Semi_Ap/2/VSH/Resistor
 <instance part="GND2" gate="1" x="320.04" y="86.36"/>
 <instance part="R1" gate="G$1" x="320.04" y="121.92" rot="R90"/>
 <instance part="R2" gate="G$1" x="294.64" y="121.92" rot="R90"/>
+<instance part="IC1" gate="G$1" x="215.9" y="91.44"/>
 </instances>
 <busses>
 </busses>
