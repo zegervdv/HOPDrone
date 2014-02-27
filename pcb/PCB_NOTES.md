@@ -1,8 +1,8 @@
-#Capacitors
+# Capacitors
 - C5 moet ceramisch zijn (minstens 25V)
 - C7 ceramisch
 
-#I2C adressen
+# I2C adressen
 - Gyroscope : 1101010b
 - Accelerometer : 0011101b
 
@@ -13,3 +13,9 @@
 4. SWDIO (PA13)
 5. NRST  (NRST)
 6. SWO   (PB3 )
+
+# Pin Headers
+- Communicatie antenne (x)
+- Communicatie Drone (x)
+- Programmer (6)
+- I2C debugger (2)
