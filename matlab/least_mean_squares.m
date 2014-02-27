@@ -22,16 +22,17 @@ pos = [100,200,100];
 pos_M = ones(N,1) * pos;
 
 % Measured distances
-Dsq = sum(((a - pos_M).^2)')'.*((1 + randn(N,1)*error).^2);
+Dsq = sum(((a - pos_M).^2),2).*((1 + randn(N,1)*error).^2);
 
 x_N = ones(N-1,1) * a(N,:);
 
 A = (-2)*(x_N - a(1:(N-1),:));
 
-B = Dsq(N,:) - Dsq(1:(N-1),:) - sum(x_N.^2')' + sum(a(1:(N-1),:).^2')';
+B = Dsq(N,:) - Dsq(1:(N-1),:) - sum(x_N.^2,2) + sum(a(1:(N-1),:).^2,2);
 
 x = A \ B;
 
 e = abs(pos - x')./x';
 e = sum(e)/3;
 end
+
