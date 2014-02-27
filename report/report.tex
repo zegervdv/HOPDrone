@@ -25,12 +25,12 @@
 \section{Antenna Design}
 \section{PCB Design}
 \section{Location Algorithm}
-	A first algortihm that can be used to determine the position of the drone is the \textit{Least Mean Square} algorithm. We will elaborate on this first and then compare the performance to the Unscented Kalman Filter, which will be used in the final system. 
+	A first algorithm that can be used to determine the position of the drone is the \textit{Least Mean Square} algorithm. We will elaborate on this first and then compare the performance to the Unscented Kalman Filter, which will be used in the final system. 
 
 	\subsection{Least Mean Square}
 	\label{subsec:LMS}
 
-		The LMS algortihm uses the distances between the drone and a number of well-known anchor points tot determine the position. The UWB antenna mounted on the drone broadcasts a very short pulse to the anchors, which will return the same pulse when it is received. The board on the drone measures the time between sending the pulse and receiving it back. Because the propagation speed of the pulse through air and the time it takes to process the pulse at the anchors are known, the distance to the anchor points can be determined as follows:
+		The LMS algorithm uses the distances between the drone and a number of well-known anchor points to determine the position. The UWB antenna mounted on the drone broadcasts a very short pulse to the anchors, which will return the same pulse when it is received. The board on the drone measures the time between sending the pulse and receiving it back. Because the propagation speed of the pulse through air and the time it takes to process the pulse at the anchors are known, the distance to the anchor points can be determined as follows:
 
 		\begin{equation}
 		\centering
