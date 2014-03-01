@@ -43,3 +43,5 @@
 *.bin
 *.hex
 *.elf
+
+.vagrant
