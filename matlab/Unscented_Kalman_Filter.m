@@ -39,7 +39,7 @@ end
 prevX = zeros(Nx, 1);
 X = zeros(Nx, 1);
 
-var = 5 * eye(Nx);
+var = 0.005 * eye(Nx);
 
 
 % N = 6 => 13 sigma points
@@ -72,7 +72,15 @@ R = std_meas^2 * eye(Na);
 for k = 1:steps
     % Calculate sigmapoints
     sigma(1, :) = prevX';
-    root = sqrt(Nx + kappa) * chol(var, 'lower');
+       
+    %best benaderende definiete want door de ruis kan er geen enkele
+    %oplossing perfect zijn
+    [evec,eival]=eig(var);
+    eival(eival<0)=eps;
+    newvar=evec*eival*evec';
+
+    %dbstop if error
+    root = sqrt(Nx + kappa) * chol(newvar, 'lower');
     for i = 2:Nx+1
        sigma(i, :) = prevX' + root(i-1, :);
        sigma(Nx + i, :) = prevX' - root(i-1, :);
@@ -113,7 +121,7 @@ for k = 1:steps
     % Update var and prevX
     prevX = mk;
     estimate(:,k) = mk;
-    var = Pk
+    var = Pk;
 end
 
 plot(pos(1,:),pos(2,:))
