@@ -1,9 +1,9 @@
 # Capacitors
-- C5 moet ceramisch zijn (minstens 25V)
 - C7 ceramisch
+- C1 en C2 ceramisch, hoge kwaliteit
+- Decoupling (10p) ceramisch
 
 # I2C adressen
-- Gyroscope : 1101010b
 - Accelerometer : 0011101b
 
 # SWD programmer
@@ -15,7 +15,8 @@
 6. SWO   (PB3 )
 
 # Pin Headers
-- Communicatie antenne (x)
+- Communicatie antenne (6 + 2 x 6)
 - Communicatie Drone (x)
 - Programmer (6)
 - I2C debugger (2)
+- Power voor antenne-bord: (2 + 2 voor bord)
