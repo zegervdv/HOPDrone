@@ -8,40 +8,25 @@ steps = 100; % Number of timesteps
 Nx = 6;
 kappa = 2;
 alpha = 1e-3;
-beta = 0;
-Fs = 1e3;
+beta = 2;
+Fs = 1e1; % 1O Hz sampling
 deltaT = 1 / Fs;
-var_u = 1e-2 * eye(Nx/2); % Noise variance on prediction: 1cm
-std_meas = 5/1e2; % Standard deviation on measurement 5cm
+var_u = 10e-2 * eye(Nx/2); % Noise variance on prediction: 1cm
+std_meas = 10e-2; % Standard deviation on measurement 5cm
 
 % Anchor points
 Na = 4;
-a1 = [0,0,20];
-a2 = [20,0,0];
-a3 = [0,20,0];
-a4 = [20,20,20];
+a1 = [0,0,2];
+a2 = [2,0,0];
+a3 = [0,2,0];
+a4 = [2,2,2];
 a5 = [0,0,0];
-a6 = [0,20,20];
-a7 = [20,0,20];
-a8 = [20,20,0];
+a6 = [0,2,2];
+a7 = [2,0,2];
+a8 = [2,2,0];
 anch = [a1; a2; a3; a4];
 
-% Movement and measurements
-pos = [1:steps; 1:steps; zeros(1,steps)] / 10;
-estimate = zeros(Nx,steps);
-
-z = zeros(steps, Na);
-for i = 1:steps
-    for j = 1:Na
-        z(i,j) = norm(pos(:,i)' - anch(j,:)) + std_meas*randn(1);
-    end
-end
-
-% Assume start at (0,0,0) at 0 velocity
-prevX = zeros(Nx, 1);
-X = zeros(Nx, 1);
-
-var = 5e-2 * eye(Nx);
+var = eye(Nx);
 
 % N = 6 => 13 sigma points
 sigma = zeros(2*Nx + 1, Nx);
@@ -70,25 +55,48 @@ Z = zeros(Na, 2*Nx + 1);
 
 R = std_meas^2 * eye(Na);
 
-for k = 1:steps
-    % Calculate sigmapoints
-    sigma(1, :) = prevX';
-    root = sqrt(Nx + kappa) * chol(var, 'lower');
-    for i = 2:Nx+1
-       sigma(i, :) = prevX' + root(i-1, :);
-       sigma(Nx + i, :) = prevX' - root(i-1, :);
-    end
+% Assume start at (0,0,0) at 0 velocity
+prevX = zeros(Nx, 1);
 
+% Movement and measurements
+estimate = zeros(Nx,steps);
+
+pos = zeros(Nx,steps);
+pos(:,1) = prevX;
+
+for k = 2:steps
+   pos(:,k) = F * pos(:,k-1) + G * randn(3,1);
+end
+
+z = zeros(steps, Na);
+for i = 1:steps
+    for j = 1:Na
+        z(i,j) = norm(pos(1:3,i)' - anch(j,:)) + std_meas*randn(1);
+    end
+end
+
+plot(pos(1,:),pos(2,:))
+
+for k = 1:steps
     % Prediction
     mkmin = F * prevX;
     Pkmin = F * var * F' + G * var_u * G';
 
+    % Calculate sigmapoints
+    sigma(1, :) = mkmin';
+    root = sqrt(Nx + kappa) * chol(Pkmin, 'lower');
+    for i = 2:Nx+1
+       sigma(i, :) = mkmin' + root(i-1, :);
+       sigma(Nx + i, :) = mkmin' - root(i-1, :);
+    end
+    
     % Measurement update
     Y = F * sigma';
-    for i = 1:Na
-       for j = 1:2*Nx+1
-        Z(i,j) = norm(sigma(j,1:3) - anch(i,:));
-       end
+
+    for i=1:2*Nx+1
+      for j=1:Na
+        Z(j,i) = norm(sigma(i,1:3) - anch(j,:));
+      end
     end
 
     Ef = mkmin;
@@ -96,12 +104,12 @@ for k = 1:steps
 
     cov_fh = zeros(Nx, Na);
     for i = 1:2*Nx+1
-        cov_fh = cov_fh + Wc(i) * (Y(:,i) - Ef) * (Z(:,i) - Eh')';
+        cov_fh = cov_fh + Wc(i) * (Y(:,i) - Ef) * (Z(:,i) - Eh')'
     end
 
     varh = zeros(Na,Na);
     for i = 1:2*Nx+1
-        varh = varh + Wc(i) * (Z(:,i) - Eh')' * (Z(:,i) - Eh');
+        varh = varh + Wc(i) * (Z(:,i) - Eh') * (Z(:,i) - Eh')';
     end
 
     K = cov_fh / (varh + R);
@@ -115,6 +123,5 @@ for k = 1:steps
     var = Pk
 end
 
-plot(pos(1,:),pos(2,:))
 hold on;
 plot(estimate(1,:),estimate(2,:),'r')
