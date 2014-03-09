@@ -14,10 +14,12 @@
 5. NRST  (NRST)
 6. SWO   (PB3 )
 
+R6 open laten
+
 # Pin Headers
 - [x] Communicatie antenne (6 + 2 x 6)
 - [ ] Communicatie Drone (x)
-- [ ] Programmer (6)
+- [x] Programmer (6)
 - [ ] I2C debugger (2)
 - [ ] Power voor antenne-bord: (2 + 2 voor bord)
 - [x] Jumper powerselectie (3)
