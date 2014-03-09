@@ -15,8 +15,9 @@
 6. SWO   (PB3 )
 
 # Pin Headers
-- Communicatie antenne (6 + 2 x 6)
-- Communicatie Drone (x)
-- Programmer (6)
-- I2C debugger (2)
-- Power voor antenne-bord: (2 + 2 voor bord)
+- [x] Communicatie antenne (6 + 2 x 6)
+- [ ] Communicatie Drone (x)
+- [ ] Programmer (6)
+- [ ] I2C debugger (2)
+- [ ] Power voor antenne-bord: (2 + 2 voor bord)
+- [x] Jumper powerselectie (3)
