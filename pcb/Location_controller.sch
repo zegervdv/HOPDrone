@@ -3662,6 +3662,7 @@ Source: http://download.siliconexpert.com/pdfs/2005/02/24/Semi_Ap/2/VSH/Resistor
 <part name="GND6" library="supply1" deviceset="GND" device=""/>
 <part name="POWER" library="pinhead" deviceset="PINHD-1X3" device=""/>
 <part name="JP2" library="pinhead" deviceset="PINHD-1X20" device=""/>
+<part name="GND7" library="supply1" deviceset="GND" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -3731,6 +3732,7 @@ Source: http://download.siliconexpert.com/pdfs/2005/02/24/Semi_Ap/2/VSH/Resistor
 <instance part="GND6" gate="1" x="27.94" y="142.24" rot="R180"/>
 <instance part="POWER" gate="A" x="-58.42" y="116.84" rot="R180"/>
 <instance part="JP2" gate="A" x="-50.8" y="-60.96" rot="R90"/>
+<instance part="GND7" gate="1" x="-38.1" y="-81.28"/>
 </instances>
 <busses>
 </busses>
@@ -3921,6 +3923,11 @@ Source: http://download.siliconexpert.com/pdfs/2005/02/24/Semi_Ap/2/VSH/Resistor
 <segment>
 <pinref part="C25" gate="G$1" pin="2"/>
 <pinref part="GND6" gate="1" pin="GND"/>
+</segment>
+<segment>
+<pinref part="JP2" gate="A" pin="15"/>
+<wire x1="-38.1" y1="-63.5" x2="-38.1" y2="-78.74" width="0.1524" layer="91"/>
+<pinref part="GND7" gate="1" pin="GND"/>
 </segment>
 </net>
 <net name="N$1" class="0">
@@ -4169,6 +4176,30 @@ Source: http://download.siliconexpert.com/pdfs/2005/02/24/Semi_Ap/2/VSH/Resistor
 <junction x="-43.18" y="106.68"/>
 <pinref part="POWER" gate="A" pin="1"/>
 <wire x1="-43.18" y1="114.3" x2="-55.88" y2="114.3" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="USART2_TX" class="0">
+<segment>
+<pinref part="U$1" gate="G$1" pin="PA2/ETH_MDIO/ADC123_IN2(5T)"/>
+<wire x1="40.64" y1="66.04" x2="15.24" y2="66.04" width="0.1524" layer="91"/>
+<label x="15.24" y="66.04" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="JP2" gate="A" pin="18"/>
+<wire x1="-30.48" y1="-63.5" x2="-30.48" y2="-78.74" width="0.1524" layer="91"/>
+<label x="-30.48" y="-83.82" size="1.778" layer="95" rot="R90"/>
+</segment>
+</net>
+<net name="USART2_RX" class="0">
+<segment>
+<pinref part="U$1" gate="G$1" pin="PA3/ETH_MII_COL/ADC123_IN2(5T)"/>
+<wire x1="40.64" y1="63.5" x2="15.24" y2="63.5" width="0.1524" layer="91"/>
+<label x="15.24" y="60.96" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="JP2" gate="A" pin="19"/>
+<wire x1="-27.94" y1="-63.5" x2="-27.94" y2="-78.74" width="0.1524" layer="91"/>
+<label x="-25.4" y="-83.82" size="1.778" layer="95" rot="R90"/>
 </segment>
 </net>
 </nets>
