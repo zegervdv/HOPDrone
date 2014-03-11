@@ -1,6 +1,8 @@
 % HOP 2014
 % Unscented Kalman Filter
 
+close all;
+
 % Constants
 steps = 100; % Number of timesteps
 Nx = 6;
@@ -9,7 +11,7 @@ alpha = 1e-3;
 beta = 0;
 Fs = 1e3;
 deltaT = 1 / Fs;
-var_u = 1 * eye(Nx/2); % Noise variance on prediction: 1m
+var_u = 1e-2 * eye(Nx/2); % Noise variance on prediction: 1cm
 std_meas = 5/1e2; % Standard deviation on measurement 5cm
 
 % Anchor points
@@ -39,7 +41,7 @@ end
 prevX = zeros(Nx, 1);
 X = zeros(Nx, 1);
 
-var = 0.005 * eye(Nx);
+var = 5e-2 * eye(Nx);
 
 
 % N = 6 => 13 sigma points
@@ -72,24 +74,16 @@ R = std_meas^2 * eye(Na);
 for k = 1:steps
     % Calculate sigmapoints
     sigma(1, :) = prevX';
-       
-    %best benaderende definiete want door de ruis kan er geen enkele
-    %oplossing perfect zijn
-    [evec,eival]=eig(var);
-    eival(eival<0)=eps;
-    newvar=evec*eival*evec';
-
-    %dbstop if error
-    root = sqrt(Nx + kappa) * chol(newvar, 'lower');
+    root = sqrt(Nx + kappa) * chol(var, 'lower');
     for i = 2:Nx+1
        sigma(i, :) = prevX' + root(i-1, :);
        sigma(Nx + i, :) = prevX' - root(i-1, :);
     end
-    
+
     % Prediction
     mkmin = F * prevX;
     Pkmin = F * var * F' + G * var_u * G';
-    
+
     % Measurement update
     Y = F * sigma';
     for i = 1:Na
@@ -97,31 +91,31 @@ for k = 1:steps
         Z(i,j) = norm(sigma(j,1:3) - anch(i,:));
        end
     end
-    
+
     Z = Z + std_meas * randn(Na, 2*Nx+1);
-    
+
     Ef = mkmin;
     Eh = Wm * Z';
-    
+
     cov_fh = zeros(Nx, Na);
     for i = 1:2*Nx+1
         cov_fh = cov_fh + Wc(i) * (Y(:,i) - Ef) * (Z(:,i) - Eh')';
     end
-    
+
     varh = zeros(Na,Na);
     for i = 1:2*Nx+1
         varh = varh + Wc(i) * (Z(:,i) - Eh')' * (Z(:,i) - Eh');
     end
-    
+
     K = cov_fh / (varh + R);
     mu = Eh;
     mk = mkmin + K * (z(k,:) - mu)';
     Pk = Pkmin - K * (varh + R) * K';
-    
+
     % Update var and prevX
     prevX = mk;
     estimate(:,k) = mk;
-    var = Pk;
+    var = Pk
 end
 
 plot(pos(1,:),pos(2,:))
