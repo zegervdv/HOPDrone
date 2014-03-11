@@ -3006,64 +3006,6 @@ Source: http://download.siliconexpert.com/pdfs/2005/02/24/Semi_Ap/2/VSH/Resistor
 </deviceset>
 </devicesets>
 </library>
-<library name="con-molex">
-<description>&lt;b&gt;Molex Connectors&lt;/b&gt;&lt;p&gt;
-&lt;author&gt;Created by librarian@cadsoft.de&lt;/author&gt;</description>
-<packages>
-<package name="22-23-2021">
-<description>.100" (2.54mm) Center Headers - 2 Pin</description>
-<wire x1="-2.54" y1="3.175" x2="2.54" y2="3.175" width="0.254" layer="21"/>
-<wire x1="2.54" y1="3.175" x2="2.54" y2="1.27" width="0.254" layer="21"/>
-<wire x1="2.54" y1="1.27" x2="2.54" y2="-3.175" width="0.254" layer="21"/>
-<wire x1="2.54" y1="-3.175" x2="-2.54" y2="-3.175" width="0.254" layer="21"/>
-<wire x1="-2.54" y1="-3.175" x2="-2.54" y2="1.27" width="0.254" layer="21"/>
-<wire x1="-2.54" y1="1.27" x2="-2.54" y2="3.175" width="0.254" layer="21"/>
-<wire x1="-2.54" y1="1.27" x2="2.54" y2="1.27" width="0.254" layer="21"/>
-<pad name="1" x="-1.27" y="0" drill="1" shape="long" rot="R90"/>
-<pad name="2" x="1.27" y="0" drill="1" shape="long" rot="R90"/>
-<text x="-2.54" y="3.81" size="1.016" layer="25" ratio="10">&gt;NAME</text>
-<text x="-2.54" y="-5.08" size="1.016" layer="27" ratio="10">&gt;VALUE</text>
-</package>
-</packages>
-<symbols>
-<symbol name="MV">
-<wire x1="1.27" y1="0" x2="0" y2="0" width="0.6096" layer="94"/>
-<text x="2.54" y="-0.762" size="1.524" layer="95">&gt;NAME</text>
-<text x="-0.762" y="1.397" size="1.778" layer="96">&gt;VALUE</text>
-<pin name="S" x="-2.54" y="0" visible="off" length="short" direction="pas"/>
-</symbol>
-<symbol name="M">
-<wire x1="1.27" y1="0" x2="0" y2="0" width="0.6096" layer="94"/>
-<text x="2.54" y="-0.762" size="1.524" layer="95">&gt;NAME</text>
-<pin name="S" x="-2.54" y="0" visible="off" length="short" direction="pas"/>
-</symbol>
-</symbols>
-<devicesets>
-<deviceset name="22-23-2021" prefix="X">
-<description>.100" (2.54mm) Center Header - 2 Pin</description>
-<gates>
-<gate name="-1" symbol="MV" x="0" y="0" addlevel="always" swaplevel="1"/>
-<gate name="-2" symbol="M" x="0" y="-2.54" addlevel="always" swaplevel="1"/>
-</gates>
-<devices>
-<device name="" package="22-23-2021">
-<connects>
-<connect gate="-1" pin="S" pad="1"/>
-<connect gate="-2" pin="S" pad="2"/>
-</connects>
-<technologies>
-<technology name="">
-<attribute name="MF" value="MOLEX" constant="no"/>
-<attribute name="MPN" value="22-23-2021" constant="no"/>
-<attribute name="OC_FARNELL" value="1462926" constant="no"/>
-<attribute name="OC_NEWARK" value="25C3832" constant="no"/>
-</technology>
-</technologies>
-</device>
-</devices>
-</deviceset>
-</devicesets>
-</library>
 <library name="pinhead">
 <description>&lt;b&gt;Pin Header Connectors&lt;/b&gt;&lt;p&gt;
 &lt;author&gt;Created by librarian@cadsoft.de&lt;/author&gt;</description>
@@ -3831,6 +3773,138 @@ Source: http://download.siliconexpert.com/pdfs/2005/02/24/Semi_Ap/2/VSH/Resistor
 </deviceset>
 </devicesets>
 </library>
+<library name="BaseApp">
+<packages>
+<package name="DCJACK_2MM_PTH">
+<wire x1="4.5" y1="14.2" x2="2.4" y2="14.2" width="0.2032" layer="21"/>
+<wire x1="-4.5" y1="3.3" x2="-4.5" y2="0" width="0.2032" layer="51"/>
+<wire x1="4.5" y1="0" x2="4.5" y2="3.3" width="0.2032" layer="51"/>
+<wire x1="4.5" y1="0" x2="-4.5" y2="0" width="0.2032" layer="51"/>
+<wire x1="4.5" y1="3.3" x2="4.5" y2="8.4" width="0.2032" layer="21"/>
+<wire x1="4.5" y1="14.2" x2="4.5" y2="13.1" width="0.2032" layer="21"/>
+<wire x1="-4.5" y1="3.3" x2="-4.5" y2="14.2" width="0.2032" layer="21"/>
+<wire x1="-4.5" y1="14.2" x2="-2.6" y2="14.2" width="0.2032" layer="21"/>
+<wire x1="-4.5" y1="3.3" x2="4.5" y2="3.3" width="0.2032" layer="21"/>
+<wire x1="-4.5" y1="3.3" x2="4.5" y2="3.3" width="0.2032" layer="51"/>
+<wire x1="-4.5" y1="3.3" x2="-4.5" y2="12.45" width="0.2032" layer="51"/>
+<wire x1="-4.5" y1="12.45" x2="-4.5" y2="14.2" width="0.2032" layer="51"/>
+<wire x1="4.5" y1="3.3" x2="4.5" y2="8.35" width="0.2032" layer="51"/>
+<wire x1="4.5" y1="8.35" x2="4.5" y2="8.4" width="0.2032" layer="51"/>
+<wire x1="-4.5" y1="14.2" x2="2.65" y2="14.2" width="0.2032" layer="51"/>
+<wire x1="4.5" y1="14.2" x2="2.65" y2="14.2" width="0.2032" layer="51"/>
+<wire x1="2.65" y1="14.2" x2="2.4" y2="14.2" width="0.2032" layer="51"/>
+<wire x1="4.5" y1="14.2" x2="4.5" y2="8.35" width="0.2032" layer="51"/>
+<wire x1="-4.5" y1="12.45" x2="4.4" y2="12.45" width="0.2032" layer="51"/>
+<pad name="PWR" x="0" y="13.6" drill="1.5" shape="long"/>
+<pad name="GND" x="0" y="7.35" drill="1.5" shape="long"/>
+<pad name="GNDBREAK" x="4.8" y="10.75" drill="1.5" shape="long" rot="R90"/>
+<text x="-5.08" y="0" size="1.27" layer="25" rot="R90">&gt;NAME</text>
+<text x="6.35" y="0" size="1.27" layer="27" rot="R90">&gt;VALUE</text>
+<text x="-3.302" y="1.27" size="0.8128" layer="51">DC 2.0/2.1</text>
+</package>
+<package name="DCJACK_2MM_SMT">
+<wire x1="-6.54" y1="4.5" x2="-7.54" y2="3.5" width="0.127" layer="51" curve="90"/>
+<wire x1="-7.54" y1="3.5" x2="-7.54" y2="-3.5" width="0.127" layer="51"/>
+<wire x1="-7.54" y1="-3.5" x2="-6.54" y2="-4.5" width="0.127" layer="51" curve="90"/>
+<wire x1="-6.54" y1="-4.5" x2="7.714" y2="-4.5" width="0.127" layer="51"/>
+<wire x1="7.714" y1="-4.5" x2="7.714" y2="-1.492" width="0.127" layer="51"/>
+<wire x1="7.714" y1="-1.492" x2="6.46" y2="-1.492" width="0.127" layer="51"/>
+<wire x1="6.46" y1="-1.492" x2="6.46" y2="4.5" width="0.127" layer="51"/>
+<wire x1="6.46" y1="4.5" x2="-6.54" y2="4.5" width="0.127" layer="51"/>
+<wire x1="-6.54" y1="4.5" x2="-7.54" y2="3.5" width="0.127" layer="21" curve="90"/>
+<wire x1="-7.54" y1="3.5" x2="-7.54" y2="-3.5" width="0.127" layer="21"/>
+<wire x1="-7.54" y1="-3.5" x2="-6.54" y2="-4.5" width="0.127" layer="21" curve="90"/>
+<wire x1="7.714" y1="-4.5" x2="7.714" y2="-1.492" width="0.127" layer="21"/>
+<wire x1="7.714" y1="-1.492" x2="6.46" y2="-1.492" width="0.127" layer="21"/>
+<wire x1="6.46" y1="-1.492" x2="6.46" y2="4.5" width="0.127" layer="21"/>
+<wire x1="-4.208" y1="4.5" x2="-6.54" y2="4.5" width="0.127" layer="21"/>
+<wire x1="2.142" y1="4.5" x2="-0.952" y2="4.5" width="0.127" layer="21"/>
+<wire x1="6.46" y1="4.5" x2="5.398" y2="4.5" width="0.127" layer="21"/>
+<wire x1="-6.54" y1="-4.5" x2="-4.224" y2="-4.5" width="0.127" layer="21"/>
+<wire x1="-0.952" y1="-4.5" x2="2.126" y2="-4.5" width="0.127" layer="21"/>
+<wire x1="5.398" y1="-4.5" x2="7.714" y2="-4.5" width="0.127" layer="21"/>
+<smd name="PWR1" x="-2.54" y="5.5" dx="2.4" dy="2" layer="1"/>
+<smd name="PWR2" x="3.66" y="5.5" dx="2.4" dy="2" layer="1"/>
+<smd name="GNDBREAK" x="3.66" y="-5.5" dx="2.4" dy="2" layer="1"/>
+<smd name="GND" x="-2.54" y="-5.5" dx="2.4" dy="2" layer="1"/>
+<text x="-1.778" y="2.794" size="1.4224" layer="21" ratio="12" rot="R90">+</text>
+<text x="-3.556" y="-3.81" size="0.8128" layer="21">GND</text>
+<hole x="-2.54" y="0" drill="1.6"/>
+<hole x="1.96" y="0" drill="1.8"/>
+<polygon width="0.0254" layer="41" spacing="0.254">
+<vertex x="-1.27" y="-5.7404"/>
+<vertex x="-1.27" y="-5.2578"/>
+<vertex x="-1.2446" y="-5.2578"/>
+<vertex x="-1.2446" y="-5.7404"/>
+</polygon>
+<polygon width="0.0254" layer="41" spacing="0.254">
+<vertex x="-2.794" y="-4.4196"/>
+<vertex x="-2.3114" y="-4.4196"/>
+<vertex x="-2.3114" y="-4.445"/>
+<vertex x="-2.794" y="-4.445"/>
+</polygon>
+<polygon width="0.0254" layer="41" spacing="0.254">
+<vertex x="2.3622" y="-5.7404"/>
+<vertex x="2.3622" y="-5.2578"/>
+<vertex x="2.3876" y="-5.2578"/>
+<vertex x="2.3876" y="-5.7404"/>
+</polygon>
+<polygon width="0.0254" layer="41" spacing="0.254">
+<vertex x="3.8862" y="-4.445"/>
+<vertex x="3.4036" y="-4.445"/>
+<vertex x="3.4036" y="-4.4196"/>
+<vertex x="3.8862" y="-4.4196"/>
+</polygon>
+</package>
+</packages>
+<symbols>
+<symbol name="DCBARREL">
+<wire x1="2.54" y1="0" x2="2.54" y2="-2.54" width="0.1524" layer="94"/>
+<wire x1="2.54" y1="-2.54" x2="1.27" y2="-2.54" width="0.254" layer="94"/>
+<wire x1="-2.54" y1="-2.54" x2="-1.27" y2="-2.54" width="0.254" layer="94"/>
+<wire x1="-1.27" y1="-2.54" x2="0" y2="-1.27" width="0.254" layer="94"/>
+<wire x1="0" y1="-1.27" x2="1.27" y2="-2.54" width="0.254" layer="94"/>
+<wire x1="2.54" y1="3.175" x2="2.54" y2="1.905" width="0.254" layer="94"/>
+<wire x1="-1.905" y1="3.175" x2="-1.905" y2="1.905" width="0.254" layer="94" curve="180"/>
+<wire x1="2.54" y1="1.905" x2="-1.905" y2="1.905" width="0.254" layer="94"/>
+<wire x1="2.54" y1="3.175" x2="-1.905" y2="3.175" width="0.254" layer="94"/>
+<text x="-2.54" y="5.08" size="1.27" layer="95">&gt;NAME</text>
+<text x="-2.54" y="-5.08" size="1.27" layer="96">&gt;VALUE</text>
+<pin name="PWR" x="5.08" y="2.54" visible="pin" length="short" direction="pwr" rot="R180"/>
+<pin name="GNDBREAK" x="5.08" y="0" visible="pin" length="short" direction="pwr" rot="R180"/>
+<pin name="GND" x="5.08" y="-2.54" visible="pin" length="short" direction="pwr" rot="R180"/>
+</symbol>
+</symbols>
+<devicesets>
+<deviceset name="DCBARREL">
+<gates>
+<gate name="G$1" symbol="DCBARREL" x="0" y="0"/>
+</gates>
+<devices>
+<device name="PTH" package="DCJACK_2MM_PTH">
+<connects>
+<connect gate="G$1" pin="GND" pad="GND"/>
+<connect gate="G$1" pin="GNDBREAK" pad="GNDBREAK"/>
+<connect gate="G$1" pin="PWR" pad="PWR"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="SMT" package="DCJACK_2MM_SMT">
+<connects>
+<connect gate="G$1" pin="GND" pad="GND"/>
+<connect gate="G$1" pin="GNDBREAK" pad="GNDBREAK"/>
+<connect gate="G$1" pin="PWR" pad="PWR1"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+</devicesets>
+</library>
 </libraries>
 <attributes>
 </attributes>
@@ -3867,7 +3941,6 @@ Source: http://download.siliconexpert.com/pdfs/2005/02/24/Semi_Ap/2/VSH/Resistor
 <part name="C8" library="eagle-ltspice" deviceset="C" device="" value="100n"/>
 <part name="C9" library="eagle-ltspice" deviceset="C" device="" value="100n"/>
 <part name="GND13" library="supply1" deviceset="GND" device=""/>
-<part name="X1" library="con-molex" deviceset="22-23-2021" device=""/>
 <part name="GND14" library="supply1" deviceset="GND" device=""/>
 <part name="GND15" library="supply1" deviceset="GND" device=""/>
 <part name="VDD7" library="supply1" deviceset="VDD" device=""/>
@@ -3912,6 +3985,7 @@ Source: http://download.siliconexpert.com/pdfs/2005/02/24/Semi_Ap/2/VSH/Resistor
 <part name="GND18" library="supply1" deviceset="GND" device=""/>
 <part name="RCM_POWER" library="pinhead" deviceset="PINHD-1X2" device=""/>
 <part name="GND19" library="supply1" deviceset="GND" device=""/>
+<part name="U$2" library="BaseApp" deviceset="DCBARREL" device="PTH"/>
 </parts>
 <sheets>
 <sheet>
@@ -3952,8 +4026,6 @@ Source: http://download.siliconexpert.com/pdfs/2005/02/24/Semi_Ap/2/VSH/Resistor
 <instance part="C8" gate="G$1" x="-43.18" y="73.66"/>
 <instance part="C9" gate="G$1" x="-55.88" y="101.6"/>
 <instance part="GND13" gate="1" x="-55.88" y="93.98"/>
-<instance part="X1" gate="-1" x="-76.2" y="124.46" rot="R90"/>
-<instance part="X1" gate="-2" x="-68.58" y="124.46" rot="R90"/>
 <instance part="GND14" gate="1" x="-68.58" y="119.38"/>
 <instance part="GND15" gate="1" x="10.16" y="66.04"/>
 <instance part="VDD7" gate="G$1" x="10.16" y="124.46"/>
@@ -3998,6 +4070,7 @@ Source: http://download.siliconexpert.com/pdfs/2005/02/24/Semi_Ap/2/VSH/Resistor
 <instance part="GND18" gate="1" x="-104.14" y="101.6"/>
 <instance part="RCM_POWER" gate="G$1" x="-154.94" y="129.54" rot="R90"/>
 <instance part="GND19" gate="1" x="-157.48" y="119.38"/>
+<instance part="U$2" gate="G$1" x="-73.66" y="132.08" rot="MR270"/>
 </instances>
 <busses>
 </busses>
@@ -4202,10 +4275,6 @@ Source: http://download.siliconexpert.com/pdfs/2005/02/24/Semi_Ap/2/VSH/Resistor
 <wire x1="27.94" y1="-66.04" x2="55.88" y2="-66.04" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="X1" gate="-2" pin="S"/>
-<pinref part="GND14" gate="1" pin="GND"/>
-</segment>
-<segment>
 <pinref part="GND18" gate="1" pin="GND"/>
 <pinref part="DRN_POWER" gate="G$1" pin="1"/>
 <wire x1="-104.14" y1="104.14" x2="-104.14" y2="119.38" width="0.1524" layer="91"/>
@@ -4214,6 +4283,12 @@ Source: http://download.siliconexpert.com/pdfs/2005/02/24/Semi_Ap/2/VSH/Resistor
 <pinref part="RCM_POWER" gate="G$1" pin="1"/>
 <pinref part="GND19" gate="1" pin="GND"/>
 <wire x1="-157.48" y1="127" x2="-157.48" y2="121.92" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="U$2" gate="G$1" pin="GND"/>
+<pinref part="GND14" gate="1" pin="GND"/>
+<wire x1="-71.12" y1="127" x2="-68.58" y2="127" width="0.1524" layer="91"/>
+<wire x1="-68.58" y1="127" x2="-68.58" y2="121.92" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$1" class="0">
@@ -4551,9 +4626,9 @@ Source: http://download.siliconexpert.com/pdfs/2005/02/24/Semi_Ap/2/VSH/Resistor
 </net>
 <net name="N$5" class="0">
 <segment>
-<pinref part="X1" gate="-1" pin="S"/>
 <pinref part="POWER" gate="A" pin="1"/>
-<wire x1="-76.2" y1="121.92" x2="-76.2" y2="101.6" width="0.1524" layer="91"/>
+<wire x1="-76.2" y1="127" x2="-76.2" y2="101.6" width="0.1524" layer="91"/>
+<pinref part="U$2" gate="G$1" pin="PWR"/>
 </segment>
 </net>
 <net name="IN_3V" class="0">

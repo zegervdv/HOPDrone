@@ -16,6 +16,9 @@
 
 R6 open laten
 
+# RCM connectie
+- Gebruik USART2
+
 # Pin Headers
 - [x] Communicatie antenne (6 + 2 x 6)
 - [ ] Communicatie Drone (x)
