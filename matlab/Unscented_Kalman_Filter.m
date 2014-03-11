@@ -33,7 +33,7 @@ estimate = zeros(Nx,steps);
 z = zeros(steps, Na);
 for i = 1:steps
     for j = 1:Na
-        z(i,j) = norm(pos(:,i)' - anch(j,:));
+        z(i,j) = norm(pos(:,i)' - anch(j,:)) + std_meas*randn(1);
     end
 end
 
@@ -42,7 +42,6 @@ prevX = zeros(Nx, 1);
 X = zeros(Nx, 1);
 
 var = 5e-2 * eye(Nx);
-
 
 % N = 6 => 13 sigma points
 sigma = zeros(2*Nx + 1, Nx);
@@ -91,8 +90,6 @@ for k = 1:steps
         Z(i,j) = norm(sigma(j,1:3) - anch(i,:));
        end
     end
-
-    Z = Z + std_meas * randn(Na, 2*Nx+1);
 
     Ef = mkmin;
     Eh = Wm * Z';
