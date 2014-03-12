@@ -1,7 +1,8 @@
-#Bill of Materials
+# Bill of Materials
 
 - STM32F407VGT6 : 2064368
 - CRYSTAL 8MHz  : 2142512
 - ACCELEROMETER : 1435588
 - VOLTAGE REG   : 1652368
+- LED           : 2290335
 

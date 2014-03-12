@@ -3,6 +3,10 @@
 - C1 en C2 ceramisch, hoge kwaliteit
 - Decoupling (10p) ceramisch
 
+# LEDS
+- PWR: Constante verbinden wanneer bord is aangesloten op voeding
+- ERR: Indicatie van error (PD12: zie LED4 in DISCOVERY)
+
 # I2C adressen
 - Accelerometer : 0011101b
 
