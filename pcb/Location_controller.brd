@@ -125,14 +125,14 @@
 <wire x1="75" y1="0" x2="75" y2="48" width="0" layer="20"/>
 <wire x1="75" y1="48" x2="0" y2="48" width="0" layer="20"/>
 <wire x1="0" y1="48" x2="0" y2="0" width="0" layer="20"/>
-<text x="51.48" y="44.77" size="1.778" layer="51" rot="R180">BAT</text>
-<text x="57.53" y="44.84" size="1.778" layer="52" rot="R180">DRN</text>
-<text x="69.2" y="4.08" size="1.778" layer="51" rot="R180">VDD</text>
-<text x="69.3" y="6.91" size="1.778" layer="51" rot="R180">SWCLK</text>
-<text x="69.35" y="9.43" size="1.778" layer="51" rot="R180">GND</text>
-<text x="69.3" y="11.89" size="1.778" layer="51" rot="R180">SWDIO</text>
-<text x="69.57" y="14.61" size="1.778" layer="51" rot="R180">NRST</text>
-<text x="69.42" y="17.14" size="1.778" layer="51" rot="R180">SWO</text>
+<text x="47.35" y="43.35" size="1.778" layer="51">BAT</text>
+<text x="52.82" y="43.35" size="1.778" layer="52">DRN</text>
+<text x="69.14" y="4.21" size="1.778" layer="51" rot="R180">VDD</text>
+<text x="69.16" y="6.91" size="1.778" layer="51" rot="R180">SWCLK</text>
+<text x="69.16" y="9.43" size="1.778" layer="51" rot="R180">GND</text>
+<text x="69.11" y="11.89" size="1.778" layer="51" rot="R180">SWDIO</text>
+<text x="69.11" y="14.57" size="1.778" layer="51" rot="R180">NRST</text>
+<text x="69.13" y="17.13" size="1.778" layer="51" rot="R180">SWO</text>
 </plain>
 <libraries>
 <library name="stm32f4">
@@ -877,144 +877,224 @@ Your Eurocircuits Team
 <attribute name="MF" value="" x="9.99" y="23.73" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="OC_FARNELL" value="1667008" x="9.99" y="23.73" size="1.778" layer="27" rot="R90" display="off"/>
 </element>
-<element name="C1" library="eagle-ltspice" package="C0805" value="20p" x="14.85" y="27.3" rot="R90">
+<element name="C1" library="eagle-ltspice" package="C0805" value="20p" x="14.85" y="27.3" smashed="yes" rot="R90">
 <attribute name="SPICEMODEL" value="NONE" x="14.85" y="27.3" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="SPICEPREFIX" value="C" x="14.85" y="27.3" size="1.778" layer="27" rot="R90" display="off"/>
+<attribute name="NAME" x="15.23" y="29.4" size="1.27" layer="25" rot="R90"/>
+<attribute name="VALUE" x="17.39" y="26.03" size="1.27" layer="27" rot="R90"/>
 </element>
-<element name="C2" library="eagle-ltspice" package="C0805" value="20p" x="14.85" y="20" rot="R270">
+<element name="C2" library="eagle-ltspice" package="C0805" value="20p" x="14.85" y="20" smashed="yes" rot="R270">
 <attribute name="SPICEMODEL" value="NONE" x="14.85" y="20" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="SPICEPREFIX" value="C" x="14.85" y="20" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="NAME" x="15.35" y="15.5" size="1.27" layer="25" rot="R90"/>
+<attribute name="VALUE" x="12.31" y="21.27" size="1.27" layer="27" rot="R270"/>
 </element>
-<element name="R1" library="eagle-ltspice" package="R0805" value="0" x="19.35" y="26">
+<element name="R1" library="eagle-ltspice" package="R0805" value="0" x="19.35" y="26" smashed="yes">
 <attribute name="SPICEMODEL" value="NONE" x="19.35" y="26" size="1.778" layer="27" display="off"/>
 <attribute name="SPICEPREFIX" value="R" x="19.35" y="26" size="1.778" layer="27" display="off"/>
+<attribute name="NAME" x="17.265" y="27.05" size="1.27" layer="25"/>
+<attribute name="VALUE" x="18.715" y="23.46" size="1.27" layer="27"/>
 </element>
-<element name="R2" library="eagle-ltspice" package="R0805" value="220" x="19.35" y="21.99">
+<element name="R2" library="eagle-ltspice" package="R0805" value="220" x="19.35" y="21.99" smashed="yes">
 <attribute name="SPICEMODEL" value="NONE" x="19.35" y="21.99" size="1.778" layer="27" display="off"/>
 <attribute name="SPICEPREFIX" value="R" x="19.35" y="21.99" size="1.778" layer="27" display="off"/>
+<attribute name="NAME" x="17.315" y="23.04" size="1.27" layer="25"/>
+<attribute name="VALUE" x="18.715" y="19.45" size="1.27" layer="27"/>
 </element>
 <element name="IC1" library="stm32f4" package="LGA-14" value="LIS302DL" x="39.08" y="40.67" rot="R90"/>
-<element name="R3" library="eagle-ltspice" package="R0805" value="10k" x="33.16" y="38.57" rot="R90">
+<element name="R3" library="eagle-ltspice" package="R0805" value="10k" x="33.16" y="38.57" smashed="yes" rot="R90">
 <attribute name="SPICEMODEL" value="NONE" x="33.16" y="38.57" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="SPICEPREFIX" value="R" x="33.16" y="38.57" size="1.778" layer="27" rot="R90" display="off"/>
+<attribute name="NAME" x="31.89" y="37.935" size="1.27" layer="25" rot="R90"/>
+<attribute name="VALUE" x="35.7" y="37.935" size="1.27" layer="27" rot="R90"/>
 </element>
-<element name="R4" library="eagle-ltspice" package="R0805" value="10k" x="40.86" y="35.92" rot="R90">
+<element name="R4" library="eagle-ltspice" package="R0805" value="10k" x="40.86" y="35.92" smashed="yes" rot="R90">
 <attribute name="SPICEMODEL" value="NONE" x="40.86" y="35.92" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="SPICEPREFIX" value="R" x="40.86" y="35.92" size="1.778" layer="27" rot="R90" display="off"/>
+<attribute name="NAME" x="41.95" y="36.105" size="1.27" layer="25" rot="R270"/>
+<attribute name="VALUE" x="43.4" y="35.285" size="1.27" layer="27" rot="R90"/>
 </element>
-<element name="C6" library="eagle-ltspice" package="C0805" value="10u" x="45.23" y="40.53" rot="R180">
+<element name="C6" library="eagle-ltspice" package="C0805" value="10u" x="45.23" y="40.53" smashed="yes" rot="R180">
 <attribute name="SPICEMODEL" value="NONE" x="45.23" y="40.53" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="SPICEPREFIX" value="C" x="45.23" y="40.53" size="1.778" layer="27" rot="R180" display="off"/>
+<attribute name="NAME" x="45.55" y="41.6" size="1.27" layer="25"/>
+<attribute name="VALUE" x="46.5" y="43.07" size="1.27" layer="27" rot="R180"/>
 </element>
-<element name="C7" library="eagle-ltspice" package="C0805" value="100n" x="45.24" y="37.62" rot="R180">
+<element name="C7" library="eagle-ltspice" package="C0805" value="100n" x="45.24" y="37.62" smashed="yes" rot="R180">
 <attribute name="SPICEMODEL" value="NONE" x="45.24" y="37.62" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="SPICEPREFIX" value="C" x="45.24" y="37.62" size="1.778" layer="27" rot="R180" display="off"/>
+<attribute name="NAME" x="47.79" y="36.55" size="1.27" layer="25" rot="R180"/>
+<attribute name="VALUE" x="46.51" y="40.16" size="1.27" layer="27" rot="R180"/>
 </element>
-<element name="REG" library="stm32f4" package="TSOP-5" value="NCP551" x="59.83" y="37.76" rot="R270"/>
-<element name="C8" library="eagle-ltspice" package="C0805" value="100n" x="55.69" y="37.66" rot="R90">
+<element name="REG" library="stm32f4" package="TSOP-5" value="NCP551" x="59.83" y="37.76" smashed="yes" rot="R270">
+<attribute name="NAME" x="59.83" y="39.66" size="1.016" layer="25" rot="R90"/>
+</element>
+<element name="C8" library="eagle-ltspice" package="C0805" value="100n" x="55.69" y="37.66" smashed="yes" rot="R90">
 <attribute name="SPICEMODEL" value="NONE" x="55.69" y="37.66" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="SPICEPREFIX" value="C" x="55.69" y="37.66" size="1.778" layer="27" rot="R90" display="off"/>
+<attribute name="NAME" x="54.66" y="35.67" size="1.27" layer="25" rot="R90"/>
+<attribute name="VALUE" x="58.23" y="36.39" size="1.27" layer="27" rot="R90"/>
 </element>
-<element name="C9" library="eagle-ltspice" package="C0805" value="100n" x="64.46" y="38.73">
+<element name="C9" library="eagle-ltspice" package="C0805" value="100n" x="64.46" y="38.73" smashed="yes">
 <attribute name="SPICEMODEL" value="NONE" x="64.46" y="38.73" size="1.778" layer="27" display="off"/>
 <attribute name="SPICEPREFIX" value="C" x="64.46" y="38.73" size="1.778" layer="27" display="off"/>
+<attribute name="NAME" x="62.46" y="39.78" size="1.27" layer="25"/>
+<attribute name="VALUE" x="63.19" y="36.19" size="1.27" layer="27"/>
 </element>
-<element name="C10" library="eagle-ltspice" package="C0805" value="100n" x="30.06" y="20.38" rot="R180">
+<element name="C10" library="eagle-ltspice" package="C0805" value="100n" x="30.06" y="20.38" smashed="yes" rot="R180">
 <attribute name="SPICEMODEL" value="NONE" x="30.06" y="20.38" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="SPICEPREFIX" value="C" x="30.06" y="20.38" size="1.778" layer="27" rot="R180" display="off"/>
+<attribute name="NAME" x="28.04" y="21.4" size="1.27" layer="25"/>
+<attribute name="VALUE" x="31.33" y="22.92" size="1.27" layer="27" rot="R180"/>
 </element>
-<element name="C3" library="eagle-ltspice" package="C0805" value="1u" x="36.61" y="12.01" rot="R180">
+<element name="C3" library="eagle-ltspice" package="C0805" value="1u" x="36.61" y="12.01" smashed="yes" rot="R180">
 <attribute name="SPICEMODEL" value="NONE" x="36.61" y="12.01" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="SPICEPREFIX" value="C" x="36.61" y="12.01" size="1.778" layer="27" rot="R180" display="off"/>
+<attribute name="NAME" x="38.64" y="13.05" size="1.27" layer="25" rot="R270"/>
+<attribute name="VALUE" x="37.88" y="14.55" size="1.27" layer="27" rot="R180"/>
 </element>
-<element name="C4" library="eagle-ltspice" package="C0805" value="1u" x="50.79" y="9.28" rot="R270">
+<element name="C4" library="eagle-ltspice" package="C0805" value="1u" x="50.79" y="9.28" smashed="yes" rot="R270">
 <attribute name="SPICEMODEL" value="NONE" x="50.79" y="9.28" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="SPICEPREFIX" value="C" x="50.79" y="9.28" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="NAME" x="51.84" y="7.15" size="1.27" layer="25" rot="R180"/>
+<attribute name="VALUE" x="48.25" y="10.55" size="1.27" layer="27" rot="R270"/>
 </element>
-<element name="C5" library="eagle-ltspice" package="C0805" value="1u" x="52.26" y="33.17" rot="R270">
+<element name="C5" library="eagle-ltspice" package="C0805" value="1u" x="52.26" y="33.17" smashed="yes" rot="R270">
 <attribute name="SPICEMODEL" value="NONE" x="52.26" y="33.17" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="SPICEPREFIX" value="C" x="52.26" y="33.17" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="NAME" x="53.3" y="35.16" size="1.27" layer="25" rot="R270"/>
+<attribute name="VALUE" x="49.72" y="34.44" size="1.27" layer="27" rot="R270"/>
 </element>
-<element name="C11" library="eagle-ltspice" package="C0805" value="1u" x="28.08" y="11.28" rot="R270">
+<element name="C11" library="eagle-ltspice" package="C0805" value="1u" x="28.08" y="11.28" smashed="yes" rot="R270">
 <attribute name="SPICEMODEL" value="NONE" x="28.08" y="11.28" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="SPICEPREFIX" value="C" x="28.08" y="11.28" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="NAME" x="29.12" y="13.32" size="1.27" layer="25" rot="R270"/>
+<attribute name="VALUE" x="25.54" y="12.55" size="1.27" layer="27" rot="R270"/>
 </element>
-<element name="C12" library="eagle-ltspice" package="C0805" value="1u" x="20.2" y="16.52" rot="R270">
+<element name="C12" library="eagle-ltspice" package="C0805" value="1u" x="20.2" y="16.52" smashed="yes" rot="R270">
 <attribute name="SPICEMODEL" value="NONE" x="20.2" y="16.52" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="SPICEPREFIX" value="C" x="20.2" y="16.52" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="NAME" x="21.59" y="14.39" size="1.27" layer="25" rot="R180"/>
+<attribute name="VALUE" x="17.66" y="17.79" size="1.27" layer="27" rot="R270"/>
 </element>
-<element name="C13" library="eagle-ltspice" package="C0805" value="1u" x="25.7" y="16.52" rot="R270">
+<element name="C13" library="eagle-ltspice" package="C0805" value="1u" x="25.7" y="16.52" smashed="yes" rot="R270">
 <attribute name="SPICEMODEL" value="NONE" x="25.7" y="16.52" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="SPICEPREFIX" value="C" x="25.7" y="16.52" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="NAME" x="27.02" y="14.26" size="1.27" layer="25" rot="R180"/>
+<attribute name="VALUE" x="23.16" y="17.79" size="1.27" layer="27" rot="R270"/>
 </element>
-<element name="C14" library="eagle-ltspice" package="C0805" value="10n" x="36.61" y="9.01" rot="R180">
+<element name="C14" library="eagle-ltspice" package="C0805" value="10n" x="36.61" y="9.01" smashed="yes" rot="R180">
 <attribute name="SPICEMODEL" value="NONE" x="36.61" y="9.01" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="SPICEPREFIX" value="C" x="36.61" y="9.01" size="1.778" layer="27" rot="R180" display="off"/>
+<attribute name="NAME" x="38.66" y="10.05" size="1.27" layer="25" rot="R270"/>
+<attribute name="VALUE" x="37.88" y="11.55" size="1.27" layer="27" rot="R180"/>
 </element>
-<element name="C15" library="eagle-ltspice" package="C0805" value="10n" x="53.88" y="9.3" rot="R270">
+<element name="C15" library="eagle-ltspice" package="C0805" value="10n" x="53.88" y="9.3" smashed="yes" rot="R270">
 <attribute name="SPICEMODEL" value="NONE" x="53.88" y="9.3" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="SPICEPREFIX" value="C" x="53.88" y="9.3" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="NAME" x="55.48" y="7.15" size="1.27" layer="25" rot="R180"/>
+<attribute name="VALUE" x="51.34" y="10.57" size="1.27" layer="27" rot="R270"/>
 </element>
-<element name="C16" library="eagle-ltspice" package="C0805" value="10n" x="55.68" y="33.15" rot="R270">
+<element name="C16" library="eagle-ltspice" package="C0805" value="10n" x="55.68" y="33.15" smashed="yes" rot="R270">
 <attribute name="SPICEMODEL" value="NONE" x="55.68" y="33.15" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="SPICEPREFIX" value="C" x="55.68" y="33.15" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="NAME" x="56.71" y="35.18" size="1.27" layer="25" rot="R270"/>
+<attribute name="VALUE" x="53.14" y="34.42" size="1.27" layer="27" rot="R270"/>
 </element>
-<element name="C17" library="eagle-ltspice" package="C0805" value="10n" x="31.79" y="11.27" rot="R270">
+<element name="C17" library="eagle-ltspice" package="C0805" value="10n" x="31.79" y="11.27" smashed="yes" rot="R270">
 <attribute name="SPICEMODEL" value="NONE" x="31.79" y="11.27" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="SPICEPREFIX" value="C" x="31.79" y="11.27" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="NAME" x="32.84" y="13.33" size="1.27" layer="25" rot="R270"/>
+<attribute name="VALUE" x="29.25" y="12.54" size="1.27" layer="27" rot="R270"/>
 </element>
-<element name="C18" library="eagle-ltspice" package="C0805" value="10n" x="22.95" y="16.51" rot="R270">
+<element name="C18" library="eagle-ltspice" package="C0805" value="10n" x="22.95" y="16.51" smashed="yes" rot="R270">
 <attribute name="SPICEMODEL" value="NONE" x="22.95" y="16.51" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="SPICEPREFIX" value="C" x="22.95" y="16.51" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="NAME" x="21.5" y="18.76" size="1.27" layer="25"/>
+<attribute name="VALUE" x="20.41" y="17.78" size="1.27" layer="27" rot="R270"/>
 </element>
-<element name="C19" library="eagle-ltspice" package="C0805" value="10n" x="28.44" y="16.51" rot="R270">
+<element name="C19" library="eagle-ltspice" package="C0805" value="10n" x="28.44" y="16.51" smashed="yes" rot="R270">
 <attribute name="SPICEMODEL" value="NONE" x="28.44" y="16.51" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="SPICEPREFIX" value="C" x="28.44" y="16.51" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="NAME" x="30.9" y="14.6" size="1.27" layer="25" rot="R90"/>
+<attribute name="VALUE" x="25.9" y="17.78" size="1.27" layer="27" rot="R270"/>
 </element>
-<element name="C20" library="eagle-ltspice" package="C0805" value="1u" x="32.52" y="33.5">
+<element name="C20" library="eagle-ltspice" package="C0805" value="1u" x="32.52" y="33.5" smashed="yes">
 <attribute name="SPICEMODEL" value="NONE" x="32.52" y="33.5" size="1.778" layer="27" display="off"/>
 <attribute name="SPICEPREFIX" value="C" x="32.52" y="33.5" size="1.778" layer="27" display="off"/>
+<attribute name="NAME" x="30.76" y="34.67" size="1.27" layer="25"/>
+<attribute name="VALUE" x="31.25" y="30.96" size="1.27" layer="27"/>
 </element>
-<element name="C21" library="eagle-ltspice" package="C0805" value="1u" x="22.9" y="31.23" rot="R90">
+<element name="C21" library="eagle-ltspice" package="C0805" value="1u" x="22.9" y="31.23" smashed="yes" rot="R90">
 <attribute name="SPICEMODEL" value="NONE" x="22.9" y="31.23" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="SPICEPREFIX" value="C" x="22.9" y="31.23" size="1.778" layer="27" rot="R90" display="off"/>
+<attribute name="NAME" x="24.38" y="34.61" size="1.27" layer="25" rot="R180"/>
+<attribute name="VALUE" x="25.44" y="29.96" size="1.27" layer="27" rot="R90"/>
 </element>
-<element name="C22" library="eagle-ltspice" package="C0805" value="10n" x="32.51" y="31.17">
+<element name="C22" library="eagle-ltspice" package="C0805" value="10n" x="32.51" y="31.17" smashed="yes">
 <attribute name="SPICEMODEL" value="NONE" x="32.51" y="31.17" size="1.778" layer="27" display="off"/>
 <attribute name="SPICEPREFIX" value="C" x="32.51" y="31.17" size="1.778" layer="27" display="off"/>
+<attribute name="NAME" x="32.82" y="30.06" size="1.27" layer="25" rot="R180"/>
+<attribute name="VALUE" x="31.24" y="28.63" size="1.27" layer="27"/>
 </element>
-<element name="C23" library="eagle-ltspice" package="C0805" value="10n" x="20.15" y="31.23" rot="R90">
+<element name="C23" library="eagle-ltspice" package="C0805" value="10n" x="20.15" y="31.23" smashed="yes" rot="R90">
 <attribute name="SPICEMODEL" value="NONE" x="20.15" y="31.23" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="SPICEPREFIX" value="C" x="20.15" y="31.23" size="1.778" layer="27" rot="R90" display="off"/>
+<attribute name="NAME" x="19.04" y="29.14" size="1.27" layer="25" rot="R90"/>
+<attribute name="VALUE" x="22.69" y="29.96" size="1.27" layer="27" rot="R90"/>
 </element>
-<element name="C24" library="eagle-ltspice" package="C0805" value="2.2u" x="55.29" y="27.81">
+<element name="C24" library="eagle-ltspice" package="C0805" value="2.2u" x="55.29" y="27.81" smashed="yes">
 <attribute name="SPICEMODEL" value="NONE" x="55.29" y="27.81" size="1.778" layer="27" display="off"/>
 <attribute name="SPICEPREFIX" value="C" x="55.29" y="27.81" size="1.778" layer="27" display="off"/>
+<attribute name="NAME" x="53.26" y="28.85" size="1.27" layer="25"/>
+<attribute name="VALUE" x="54.02" y="25.27" size="1.27" layer="27"/>
 </element>
-<element name="C25" library="eagle-ltspice" package="C0805" value="2.2u" x="46.85" y="9.34" rot="R270">
+<element name="C25" library="eagle-ltspice" package="C0805" value="2.2u" x="46.85" y="9.34" smashed="yes" rot="R270">
 <attribute name="SPICEMODEL" value="NONE" x="46.85" y="9.34" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="SPICEPREFIX" value="C" x="46.85" y="9.34" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="NAME" x="47.9" y="11.39" size="1.27" layer="25" rot="R270"/>
+<attribute name="VALUE" x="44.31" y="10.61" size="1.27" layer="27" rot="R270"/>
 </element>
-<element name="POWER" library="pinhead" package="1X03" value="" x="51.92" y="41.43"/>
-<element name="R5" library="eagle-ltspice" package="R0805" value="10k" x="36.58" y="35.01" rot="R270">
+<element name="POWER" library="pinhead" package="1X03" value="" x="51.92" y="41.43" smashed="yes">
+<attribute name="NAME" x="48.7338" y="38.4188" size="1.27" layer="25" ratio="10"/>
+<attribute name="VALUE" x="48.11" y="38.255" size="1.27" layer="27"/>
+</element>
+<element name="R5" library="eagle-ltspice" package="R0805" value="10k" x="36.58" y="35.01" smashed="yes" rot="R270">
 <attribute name="SPICEMODEL" value="NONE" x="36.58" y="35.01" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="SPICEPREFIX" value="R" x="36.58" y="35.01" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="NAME" x="37.65" y="36.875" size="1.27" layer="25" rot="R270"/>
+<attribute name="VALUE" x="34.04" y="35.645" size="1.27" layer="27" rot="R270"/>
 </element>
-<element name="C26" library="eagle-ltspice" package="C0805" value="10n" x="28.4" y="31.23" rot="R90">
+<element name="C26" library="eagle-ltspice" package="C0805" value="10n" x="28.4" y="31.23" smashed="yes" rot="R90">
 <attribute name="SPICEMODEL" value="NONE" x="28.4" y="31.23" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="SPICEPREFIX" value="C" x="28.4" y="31.23" size="1.778" layer="27" rot="R90" display="off"/>
+<attribute name="NAME" x="29.91" y="34.67" size="1.27" layer="25" rot="R180"/>
+<attribute name="VALUE" x="30.94" y="29.96" size="1.27" layer="27" rot="R90"/>
 </element>
-<element name="C27" library="eagle-ltspice" package="C0805" value="1u" x="25.65" y="31.23" rot="R90">
+<element name="C27" library="eagle-ltspice" package="C0805" value="1u" x="25.65" y="31.23" smashed="yes" rot="R90">
 <attribute name="SPICEMODEL" value="NONE" x="25.65" y="31.23" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="SPICEPREFIX" value="C" x="25.65" y="31.23" size="1.778" layer="27" rot="R90" display="off"/>
+<attribute name="NAME" x="27.11" y="29.13" size="1.27" layer="25" rot="R180"/>
+<attribute name="VALUE" x="28.19" y="29.96" size="1.27" layer="27" rot="R90"/>
 </element>
-<element name="SWD" library="pinhead" package="1X06" value="" x="70.71" y="9.85" rot="R90"/>
-<element name="R6" library="eagle-ltspice" package="R0805" value="0" x="64.79" y="4.26" rot="R180">
-<attribute name="SPICEMODEL" value="NONE" x="64.79" y="4.26" size="1.778" layer="27" rot="R180" display="off"/>
-<attribute name="SPICEPREFIX" value="R" x="64.79" y="4.26" size="1.778" layer="27" rot="R180" display="off"/>
+<element name="SWD" library="pinhead" package="1X06" value="" x="70.71" y="9.85" smashed="yes" rot="R90">
+<attribute name="NAME" x="73.8612" y="2.5238" size="1.27" layer="25" ratio="10" rot="R90"/>
+<attribute name="VALUE" x="73.885" y="2.23" size="1.27" layer="27" rot="R90"/>
 </element>
-<element name="DRN_POWER" library="pinhead" package="1X02" value="" x="3.76" y="40.69" rot="R90"/>
-<element name="RCM_POWER" library="pinhead" package="1X02" value="" x="71.14" y="40.35" rot="R90"/>
+<element name="R6" library="eagle-ltspice" package="R0805" value="0" x="60.46" y="3.35" smashed="yes" rot="R180">
+<attribute name="SPICEMODEL" value="NONE" x="60.46" y="3.35" size="1.778" layer="27" rot="R180" display="off"/>
+<attribute name="SPICEPREFIX" value="R" x="60.46" y="3.35" size="1.778" layer="27" rot="R180" display="off"/>
+<attribute name="NAME" x="62.505" y="2.29" size="1.27" layer="25" rot="R180"/>
+<attribute name="VALUE" x="61.095" y="5.89" size="1.27" layer="27" rot="R180"/>
+</element>
+<element name="DRN_POWER" library="pinhead" package="1X02" value="" x="3.76" y="40.69" smashed="yes" rot="R90">
+<attribute name="NAME" x="1.7612" y="34.9538" size="1.27" layer="25" ratio="10" rot="R90"/>
+<attribute name="VALUE" x="6.935" y="38.15" size="1.27" layer="27" rot="R90"/>
+</element>
+<element name="RCM_POWER" library="pinhead" package="1X02" value="" x="71.14" y="40.35" smashed="yes" rot="R90">
+<attribute name="NAME" x="69.3112" y="36.7938" size="1.27" layer="25" ratio="10" rot="R90"/>
+<attribute name="VALUE" x="74.315" y="37.81" size="1.27" layer="27" rot="R90"/>
+</element>
 <element name="U$2" library="BaseApp" package="DCJACK_2MM_PTH" value="DCBARRELPTH" x="75.01" y="25.22" rot="R90"/>
 <element name="JP1" library="pinhead" package="1X06" value="" x="41.91" y="2.54"/>
 <element name="JP2" library="pinhead" package="1X06" value="" x="25.4" y="2.54"/>
@@ -1384,8 +1464,6 @@ Your Eurocircuits Team
 <wire x1="50.32" y1="31.65" x2="49.2" y2="32.77" width="0.4064" layer="1"/>
 <wire x1="52.26" y1="34.12" x2="48.76" y2="37.62" width="0.4064" layer="1"/>
 <wire x1="48.76" y1="37.62" x2="46.19" y2="37.62" width="0.4064" layer="1"/>
-<wire x1="63.84" y1="4.26" x2="62.87" y2="4.26" width="0.4064" layer="1"/>
-<wire x1="62.87" y1="4.26" x2="56.86" y2="10.27" width="0.4064" layer="1"/>
 <wire x1="56.86" y1="10.27" x2="53.9" y2="10.27" width="0.4064" layer="1"/>
 <wire x1="53.9" y1="10.27" x2="53.88" y2="10.25" width="0.4064" layer="1"/>
 <wire x1="40.18" y1="42.67" x2="40.18" y2="43.14" width="0.4064" layer="1"/>
@@ -1445,6 +1523,8 @@ Your Eurocircuits Team
 <wire x1="32.58" y1="18.81" x2="33.62" y2="18.81" width="0.3048" layer="1"/>
 <wire x1="40.18" y1="38.67" x2="40.78" y2="38.07" width="0.4064" layer="1"/>
 <wire x1="40.78" y1="38.07" x2="42.68" y2="38.07" width="0.4064" layer="1"/>
+<wire x1="59.51" y1="3.35" x2="56.86" y2="3.35" width="0.4064" layer="1"/>
+<wire x1="56.86" y1="3.35" x2="56.86" y2="10.27" width="0.4064" layer="1"/>
 </signal>
 <signal name="I2C_SCL">
 <contactref element="U$1" pad="92"/>
@@ -1515,8 +1595,8 @@ Your Eurocircuits Team
 <signal name="N$6">
 <contactref element="SWD" pad="1"/>
 <contactref element="R6" pad="1"/>
-<wire x1="65.74" y1="4.26" x2="66.5" y2="3.5" width="0.4064" layer="1"/>
-<wire x1="66.5" y1="3.5" x2="70.71" y2="3.5" width="0.4064" layer="1"/>
+<wire x1="70.71" y1="3.5" x2="61.41" y2="3.5" width="0.4064" layer="1"/>
+<wire x1="61.41" y1="3.5" x2="61.41" y2="3.35" width="0.4064" layer="1"/>
 </signal>
 <signal name="SWCLK">
 <contactref element="SWD" pad="2"/>
