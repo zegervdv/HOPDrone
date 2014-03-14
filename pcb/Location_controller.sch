@@ -3730,6 +3730,7 @@ Source: www.kingbright.com</description>
 <part name="ERR" library="eagle-ltspice" deviceset="LED_E" device=""/>
 <part name="GND21" library="supply1" deviceset="GND" device=""/>
 <part name="GND22" library="supply1" deviceset="GND" device=""/>
+<part name="I2C" library="pinhead" deviceset="PINHD-1X2" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -3825,6 +3826,7 @@ Source: www.kingbright.com</description>
 <instance part="ERR" gate="G$1" x="147.32" y="38.1"/>
 <instance part="GND21" gate="1" x="-154.94" y="106.68"/>
 <instance part="GND22" gate="1" x="147.32" y="27.94"/>
+<instance part="I2C" gate="G$1" x="-106.68" y="12.7"/>
 </instances>
 <busses>
 </busses>
@@ -4271,6 +4273,11 @@ Source: www.kingbright.com</description>
 <pinref part="R4" gate="G$1" pin="2"/>
 <wire x1="-12.7" y1="25.4" x2="-12.7" y2="10.16" width="0.1524" layer="91"/>
 </segment>
+<segment>
+<pinref part="I2C" gate="G$1" pin="2"/>
+<wire x1="-109.22" y1="12.7" x2="-124.46" y2="12.7" width="0.1524" layer="91"/>
+<label x="-124.46" y="10.16" size="1.778" layer="95"/>
+</segment>
 </net>
 <net name="I2C_SDA" class="0">
 <segment>
@@ -4284,6 +4291,11 @@ Source: www.kingbright.com</description>
 <label x="-30.48" y="12.7" size="1.778" layer="95"/>
 <pinref part="R3" gate="G$1" pin="2"/>
 <wire x1="-22.86" y1="25.4" x2="-22.86" y2="12.7" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="I2C" gate="G$1" pin="1"/>
+<wire x1="-109.22" y1="15.24" x2="-124.46" y2="15.24" width="0.1524" layer="91"/>
+<label x="-124.46" y="15.24" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="N$8" class="0">

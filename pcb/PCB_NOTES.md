@@ -7,6 +7,13 @@
 - PWR: Constante verbinden wanneer bord is aangesloten op voeding
 - ERR: Indicatie van error (PD12: zie LED4 in DISCOVERY)
 
+# ESD
+- Zeners: 1431155 (Langdurig: 5V op 3V3 lijn)
+- TVS: 8737568 (Kort: ontlading)
+
+# Reset button
+- 2396053
+
 # I2C adressen
 - Accelerometer : 0011101b
 
@@ -27,6 +34,6 @@ R6 open laten
 - [x] Communicatie antenne (6 + 2 x 6)
 - [ ] Communicatie Drone (x)
 - [x] Programmer (6)
-- [ ] I2C debugger (2)
+- [x] I2C debugger (2)
 - [ ] Power voor antenne-bord: (2 + 2 voor bord)
 - [x] Jumper powerselectie (3)
