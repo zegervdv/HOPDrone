@@ -4,6 +4,7 @@
 SRCS = main.c
 SRCS+= stm32f4_discovery.c
 SRCS+= system_stm32f4xx.c
+SRCS+= leds.c
 
 # all the files will be generated with this name (main.elf, main.bin, main.hex, etc)
 
