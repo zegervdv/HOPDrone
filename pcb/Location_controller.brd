@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="6.4">
+<eagle version="6.5.0">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
@@ -127,14 +127,9 @@
 <wire x1="0" y1="48" x2="0" y2="0" width="0" layer="20"/>
 <text x="47.35" y="43.35" size="1.778" layer="51">BAT</text>
 <text x="52.82" y="43.35" size="1.778" layer="52">DRN</text>
-<text x="69.14" y="4.21" size="1.778" layer="51" rot="R180">VDD</text>
-<text x="69.16" y="6.91" size="1.778" layer="51" rot="R180">SWCLK</text>
-<text x="69.16" y="9.43" size="1.778" layer="51" rot="R180">GND</text>
-<text x="69.11" y="11.89" size="1.778" layer="51" rot="R180">SWDIO</text>
-<text x="69.11" y="14.57" size="1.778" layer="51" rot="R180">NRST</text>
-<text x="69.13" y="17.13" size="1.778" layer="51" rot="R180">SWO</text>
 <text x="15.75" y="39.72" size="1.778" layer="52">SDA</text>
 <text x="15.75" y="37.11" size="1.778" layer="52">SCL</text>
+<circle x="73.38" y="3.44" radius="0.45276875" width="0.4064" layer="51"/>
 </plain>
 <libraries>
 <library name="stm32f4">
@@ -1134,7 +1129,7 @@ Your Eurocircuits Team
 <attribute name="VALUE" x="28.19" y="29.96" size="1.27" layer="27" rot="R90"/>
 </element>
 <element name="SWD" library="pinhead" package="1X06" value="" x="70.71" y="9.85" smashed="yes" rot="R90">
-<attribute name="NAME" x="73.8612" y="2.5238" size="1.27" layer="25" ratio="10" rot="R90"/>
+<attribute name="NAME" x="72.6962" y="1.7112" size="1.27" layer="25" ratio="10" rot="R180"/>
 <attribute name="VALUE" x="73.885" y="2.23" size="1.27" layer="27" rot="R90"/>
 </element>
 <element name="R6" library="eagle-ltspice" package="R0805" value="0" x="60.46" y="3.35" smashed="yes" rot="R180">
