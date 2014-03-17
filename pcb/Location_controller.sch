@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="6.5.0">
+<eagle version="6.4">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
@@ -3792,6 +3792,10 @@ Source: www.kingbright.com</description>
 <part name="GND24" library="supply1" deviceset="GND" device=""/>
 <part name="R9" library="eagle-ltspice" deviceset="R" device="" value="510"/>
 <part name="GND21" library="supply1" deviceset="GND" device=""/>
+<part name="D4" library="stm32f4" deviceset="ZDIODE" device=""/>
+<part name="GND26" library="supply1" deviceset="GND" device=""/>
+<part name="D3" library="stm32f4" deviceset="ZDIODE" device=""/>
+<part name="GND25" library="supply1" deviceset="GND" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -3893,6 +3897,10 @@ Source: www.kingbright.com</description>
 <instance part="GND24" gate="1" x="-119.38" y="-2.54"/>
 <instance part="R9" gate="G$1" x="157.48" y="-12.7" rot="R270"/>
 <instance part="GND21" gate="1" x="157.48" y="-20.32"/>
+<instance part="D4" gate="G$1" x="73.66" y="-83.82" rot="R90"/>
+<instance part="GND26" gate="1" x="73.66" y="-88.9"/>
+<instance part="D3" gate="G$1" x="78.74" y="-60.96" rot="R90"/>
+<instance part="GND25" gate="1" x="78.74" y="-88.9"/>
 </instances>
 <busses>
 </busses>
@@ -4132,6 +4140,15 @@ Source: www.kingbright.com</description>
 <segment>
 <pinref part="R9" gate="G$1" pin="2"/>
 <pinref part="GND21" gate="1" pin="GND"/>
+</segment>
+<segment>
+<pinref part="D4" gate="G$1" pin="P2"/>
+<pinref part="GND26" gate="1" pin="GND"/>
+</segment>
+<segment>
+<pinref part="D3" gate="G$1" pin="P2"/>
+<pinref part="GND25" gate="1" pin="GND"/>
+<wire x1="78.74" y1="-86.36" x2="78.74" y2="-63.5" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$1" class="0">
@@ -4443,8 +4460,9 @@ Source: www.kingbright.com</description>
 <net name="SWO" class="0">
 <segment>
 <pinref part="SWD" gate="A" pin="6"/>
-<wire x1="27.94" y1="-58.42" x2="66.04" y2="-58.42" width="0.1524" layer="91"/>
+<wire x1="27.94" y1="-58.42" x2="78.74" y2="-58.42" width="0.1524" layer="91"/>
 <label x="73.66" y="-58.42" size="1.778" layer="95" rot="R180"/>
+<pinref part="D3" gate="G$1" pin="P1"/>
 </segment>
 <segment>
 <pinref part="U$1" gate="G$1" pin="PB3/JTDO(5T)"/>
@@ -4472,14 +4490,16 @@ Source: www.kingbright.com</description>
 </net>
 <net name="SWDIO" class="0">
 <segment>
-<pinref part="SWD" gate="A" pin="4"/>
-<wire x1="27.94" y1="-63.5" x2="66.04" y2="-63.5" width="0.1524" layer="91"/>
-<label x="73.66" y="-63.5" size="1.778" layer="95" rot="R180"/>
-</segment>
-<segment>
 <pinref part="U$1" gate="G$1" pin="PA13/JTMS-SWDAT(5T)"/>
 <wire x1="40.64" y1="38.1" x2="22.86" y2="38.1" width="0.1524" layer="91"/>
 <label x="22.86" y="38.1" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="SWD" gate="A" pin="4"/>
+<wire x1="27.94" y1="-63.5" x2="73.66" y2="-63.5" width="0.1524" layer="91"/>
+<label x="73.66" y="-63.5" size="1.778" layer="95" rot="R180"/>
+<wire x1="73.66" y1="-63.5" x2="73.66" y2="-81.28" width="0.1524" layer="91"/>
+<pinref part="D4" gate="G$1" pin="P1"/>
 </segment>
 </net>
 <net name="N$5" class="0">

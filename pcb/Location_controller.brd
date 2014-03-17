@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="6.5.0">
+<eagle version="6.4">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
@@ -1189,6 +1189,8 @@ Your Eurocircuits Team
 <attribute name="SPICEMODEL" value="NONE" x="33.67" y="33.2" size="1.778" layer="28" rot="MR270" display="off"/>
 <attribute name="SPICEPREFIX" value="R" x="33.67" y="33.2" size="1.778" layer="28" rot="MR270" display="off"/>
 </element>
+<element name="D4" library="stm32f4" package="SMB" value="ZDIODE" x="64.37" y="10.93" rot="R180"/>
+<element name="D3" library="stm32f4" package="SMB" value="ZDIODE" x="64.26" y="16.91" rot="R180"/>
 </elements>
 <signals>
 <signal name="OSC_IN">
@@ -1409,13 +1411,12 @@ Your Eurocircuits Team
 <contactref element="PWR" pad="C"/>
 <wire x1="70.27" y1="33.298" x2="68.855" y2="33.298" width="0.8128" layer="1"/>
 <wire x1="68.855" y1="33.298" x2="68.855" y2="31.815" width="1.016" layer="1"/>
-<wire x1="72.58" y1="37.64" x2="72.425" y2="37.795" width="1.016" layer="1"/>
 <contactref element="ERR" pad="C"/>
-<wire x1="72.425" y1="37.795" x2="71.14" y2="39.08" width="1.016" layer="1"/>
+<wire x1="72.75" y1="37.47" x2="71.14" y2="39.08" width="1.016" layer="1"/>
 <wire x1="57.89" y1="14.988" x2="58.75" y2="14.128" width="0.4064" layer="1"/>
 <wire x1="58.75" y1="14.128" x2="58.75" y2="9.36" width="0.4064" layer="1"/>
 <wire x1="58.75" y1="9.36" x2="59.53" y2="8.58" width="0.4064" layer="1"/>
-<wire x1="59.53" y1="8.58" x2="70.71" y2="8.58" width="0.4064" layer="1"/>
+<wire x1="59.8102" y1="8.58" x2="70.71" y2="8.58" width="0.4064" layer="1"/>
 <contactref element="D1" pad="2"/>
 <contactref element="D2" pad="2"/>
 <wire x1="9.1118" y1="44.4916" x2="9.0218" y2="44.4916" width="0.4064" layer="1"/>
@@ -1429,7 +1430,12 @@ Your Eurocircuits Team
 <wire x1="70.442" y1="33.47" x2="72.65" y2="33.47" width="1.016" layer="1"/>
 <wire x1="72.65" y1="33.47" x2="72.75" y2="33.57" width="1.016" layer="1"/>
 <wire x1="72.75" y1="33.57" x2="72.75" y2="37.47" width="1.016" layer="1"/>
-<wire x1="72.75" y1="37.47" x2="72.58" y2="37.64" width="1.016" layer="1"/>
+<contactref element="D4" pad="2"/>
+<contactref element="D3" pad="2"/>
+<wire x1="59.53" y1="8.58" x2="59.8102" y2="8.58" width="0.4064" layer="1"/>
+<wire x1="59.8102" y1="8.58" x2="62.2618" y2="11.0316" width="0.4064" layer="1"/>
+<wire x1="58.75" y1="14.128" x2="59.2682" y2="14.128" width="0.4064" layer="1"/>
+<wire x1="59.2682" y1="14.128" x2="62.1518" y2="17.0116" width="0.4064" layer="1"/>
 </signal>
 <signal name="N$1">
 <contactref element="Q1" pad="1"/>
@@ -1755,6 +1761,9 @@ Your Eurocircuits Team
 <wire x1="65.35" y1="16.2" x2="70.71" y2="16.2" width="0.4064" layer="16"/>
 <wire x1="49.8" y1="33.83" x2="49.8" y2="31.75" width="0.4064" layer="16"/>
 <wire x1="49.8" y1="31.75" x2="65.35" y2="16.2" width="0.4064" layer="16"/>
+<contactref element="D3" pad="1"/>
+<wire x1="66.5714" y1="17.037" x2="69.873" y2="17.037" width="0.4064" layer="1"/>
+<wire x1="69.873" y1="17.037" x2="70.71" y2="16.2" width="0.4064" layer="1"/>
 </signal>
 <signal name="NRST">
 <contactref element="SWD" pad="5"/>
@@ -1775,13 +1784,16 @@ Your Eurocircuits Team
 <wire x1="35.28" y1="22.31" x2="33.62" y2="22.31" width="0.3048" layer="1"/>
 </signal>
 <signal name="SWDIO">
-<contactref element="SWD" pad="4"/>
 <contactref element="U$1" pad="72"/>
 <wire x1="49.62" y1="27.31" x2="51.29" y2="27.31" width="0.3048" layer="1"/>
-<wire x1="70.71" y1="11.12" x2="73.5" y2="11.12" width="0.4064" layer="1"/>
 <wire x1="73.5" y1="11.12" x2="73.5" y2="22.14" width="0.4064" layer="1"/>
 <wire x1="73.5" y1="22.14" x2="56.46" y2="22.14" width="0.4064" layer="1"/>
 <wire x1="56.46" y1="22.14" x2="51.29" y2="27.31" width="0.3048" layer="1"/>
+<contactref element="SWD" pad="4"/>
+<contactref element="D4" pad="1"/>
+<wire x1="70.71" y1="11.12" x2="73.5" y2="11.12" width="0.4064" layer="1"/>
+<wire x1="66.6814" y1="11.057" x2="70.647" y2="11.057" width="0.4064" layer="1"/>
+<wire x1="70.647" y1="11.057" x2="70.71" y2="11.12" width="0.4064" layer="1"/>
 </signal>
 <signal name="N$5">
 <contactref element="POWER" pad="1"/>
