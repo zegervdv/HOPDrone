@@ -5863,6 +5863,12 @@ Source: http://www.diodes.com/datasheets/ds23001.pdf</description>
 <part name="D8" library="diode" deviceset="DIODE-" device="SOD523"/>
 <part name="GND29" library="supply1" deviceset="GND" device=""/>
 <part name="GND30" library="supply1" deviceset="GND" device=""/>
+<part name="D9" library="diode" deviceset="DIODE-" device="SOD523"/>
+<part name="D10" library="diode" deviceset="DIODE-" device="SOD523"/>
+<part name="D11" library="diode" deviceset="DIODE-" device="SOD523"/>
+<part name="GND31" library="supply1" deviceset="GND" device=""/>
+<part name="GND32" library="supply1" deviceset="GND" device=""/>
+<part name="GND33" library="supply1" deviceset="GND" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -5976,6 +5982,12 @@ Source: http://www.diodes.com/datasheets/ds23001.pdf</description>
 <instance part="D8" gate="G$1" x="-27.94" y="-86.36" rot="R90"/>
 <instance part="GND29" gate="1" x="-33.02" y="-91.44"/>
 <instance part="GND30" gate="1" x="-27.94" y="-91.44"/>
+<instance part="D9" gate="G$1" x="91.44" y="-71.12" rot="R90"/>
+<instance part="D10" gate="G$1" x="99.06" y="-71.12" rot="R90"/>
+<instance part="D11" gate="G$1" x="106.68" y="-71.12" rot="R90"/>
+<instance part="GND31" gate="1" x="91.44" y="-88.9"/>
+<instance part="GND32" gate="1" x="99.06" y="-88.9"/>
+<instance part="GND33" gate="1" x="106.68" y="-88.9"/>
 </instances>
 <busses>
 </busses>
@@ -6240,6 +6252,21 @@ Source: http://www.diodes.com/datasheets/ds23001.pdf</description>
 <segment>
 <pinref part="D8" gate="G$1" pin="A"/>
 <pinref part="GND30" gate="1" pin="GND"/>
+</segment>
+<segment>
+<pinref part="GND31" gate="1" pin="GND"/>
+<pinref part="D9" gate="G$1" pin="A"/>
+<wire x1="91.44" y1="-86.36" x2="91.44" y2="-73.66" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="D10" gate="G$1" pin="A"/>
+<pinref part="GND32" gate="1" pin="GND"/>
+<wire x1="99.06" y1="-73.66" x2="99.06" y2="-86.36" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="D11" gate="G$1" pin="A"/>
+<pinref part="GND33" gate="1" pin="GND"/>
+<wire x1="106.68" y1="-73.66" x2="106.68" y2="-86.36" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$1" class="0">
@@ -6547,8 +6574,9 @@ Source: http://www.diodes.com/datasheets/ds23001.pdf</description>
 <net name="SWCLK" class="0">
 <segment>
 <pinref part="SWD" gate="A" pin="2"/>
-<wire x1="27.94" y1="-68.58" x2="66.04" y2="-68.58" width="0.1524" layer="91"/>
+<wire x1="27.94" y1="-68.58" x2="91.44" y2="-68.58" width="0.1524" layer="91"/>
 <label x="73.66" y="-68.58" size="1.778" layer="95" rot="R180"/>
+<pinref part="D9" gate="G$1" pin="C"/>
 </segment>
 <segment>
 <pinref part="U$1" gate="G$1" pin="PA14/JTCK-SWCLK(5T)"/>
@@ -6562,6 +6590,10 @@ Source: http://www.diodes.com/datasheets/ds23001.pdf</description>
 <wire x1="27.94" y1="-58.42" x2="78.74" y2="-58.42" width="0.1524" layer="91"/>
 <label x="73.66" y="-58.42" size="1.778" layer="95" rot="R180"/>
 <pinref part="D3" gate="G$1" pin="P1"/>
+<pinref part="D11" gate="G$1" pin="C"/>
+<wire x1="106.68" y1="-68.58" x2="106.68" y2="-58.42" width="0.1524" layer="91"/>
+<wire x1="106.68" y1="-58.42" x2="78.74" y2="-58.42" width="0.1524" layer="91"/>
+<junction x="78.74" y="-58.42"/>
 </segment>
 <segment>
 <pinref part="U$1" gate="G$1" pin="PB3/JTDO(5T)"/>
@@ -6599,6 +6631,10 @@ Source: http://www.diodes.com/datasheets/ds23001.pdf</description>
 <label x="73.66" y="-63.5" size="1.778" layer="95" rot="R180"/>
 <wire x1="73.66" y1="-63.5" x2="73.66" y2="-81.28" width="0.1524" layer="91"/>
 <pinref part="D4" gate="G$1" pin="P1"/>
+<pinref part="D10" gate="G$1" pin="C"/>
+<wire x1="99.06" y1="-68.58" x2="99.06" y2="-63.5" width="0.1524" layer="91"/>
+<wire x1="99.06" y1="-63.5" x2="73.66" y2="-63.5" width="0.1524" layer="91"/>
+<junction x="73.66" y="-63.5"/>
 </segment>
 </net>
 <net name="N$5" class="0">
