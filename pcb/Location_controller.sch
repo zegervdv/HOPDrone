@@ -85,8 +85,12 @@
 <layer number="131" name="tAdjust" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="132" name="bAdjust" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="144" name="Drill_legend" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="150" name="Notes" color="7" fill="1" visible="no" active="yes"/>
 <layer number="151" name="HeatSink" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="152" name="_bDocu" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="153" name="FabDoc1" color="6" fill="1" visible="no" active="no"/>
+<layer number="154" name="FabDoc2" color="2" fill="1" visible="no" active="no"/>
+<layer number="155" name="FabDoc3" color="7" fill="15" visible="no" active="no"/>
 <layer number="199" name="Contour" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="200" name="200bmp" color="1" fill="10" visible="no" active="no"/>
 <layer number="201" name="201bmp" color="2" fill="1" visible="no" active="no"/>
@@ -3563,138 +3567,6 @@ Source: www.kingbright.com</description>
 </deviceset>
 </devicesets>
 </library>
-<library name="BaseApp">
-<packages>
-<package name="DCJACK_2MM_PTH">
-<wire x1="4.5" y1="14.2" x2="2.4" y2="14.2" width="0.2032" layer="21"/>
-<wire x1="-4.5" y1="3.3" x2="-4.5" y2="0" width="0.2032" layer="51"/>
-<wire x1="4.5" y1="0" x2="4.5" y2="3.3" width="0.2032" layer="51"/>
-<wire x1="4.5" y1="0" x2="-4.5" y2="0" width="0.2032" layer="51"/>
-<wire x1="4.5" y1="3.3" x2="4.5" y2="8.4" width="0.2032" layer="21"/>
-<wire x1="4.5" y1="14.2" x2="4.5" y2="13.1" width="0.2032" layer="21"/>
-<wire x1="-4.5" y1="3.3" x2="-4.5" y2="14.2" width="0.2032" layer="21"/>
-<wire x1="-4.5" y1="14.2" x2="-2.6" y2="14.2" width="0.2032" layer="21"/>
-<wire x1="-4.5" y1="3.3" x2="4.5" y2="3.3" width="0.2032" layer="21"/>
-<wire x1="-4.5" y1="3.3" x2="4.5" y2="3.3" width="0.2032" layer="51"/>
-<wire x1="-4.5" y1="3.3" x2="-4.5" y2="12.45" width="0.2032" layer="51"/>
-<wire x1="-4.5" y1="12.45" x2="-4.5" y2="14.2" width="0.2032" layer="51"/>
-<wire x1="4.5" y1="3.3" x2="4.5" y2="8.35" width="0.2032" layer="51"/>
-<wire x1="4.5" y1="8.35" x2="4.5" y2="8.4" width="0.2032" layer="51"/>
-<wire x1="-4.5" y1="14.2" x2="2.65" y2="14.2" width="0.2032" layer="51"/>
-<wire x1="4.5" y1="14.2" x2="2.65" y2="14.2" width="0.2032" layer="51"/>
-<wire x1="2.65" y1="14.2" x2="2.4" y2="14.2" width="0.2032" layer="51"/>
-<wire x1="4.5" y1="14.2" x2="4.5" y2="8.35" width="0.2032" layer="51"/>
-<wire x1="-4.5" y1="12.45" x2="4.4" y2="12.45" width="0.2032" layer="51"/>
-<pad name="PWR" x="0" y="13.6" drill="1.5" shape="long"/>
-<pad name="GND" x="0" y="7.35" drill="1.5" shape="long"/>
-<pad name="GNDBREAK" x="4.8" y="10.75" drill="1.5" shape="long" rot="R90"/>
-<text x="-5.08" y="0" size="1.27" layer="25" rot="R90">&gt;NAME</text>
-<text x="6.35" y="0" size="1.27" layer="27" rot="R90">&gt;VALUE</text>
-<text x="-3.302" y="1.27" size="0.8128" layer="51">DC 2.0/2.1</text>
-</package>
-<package name="DCJACK_2MM_SMT">
-<wire x1="-6.54" y1="4.5" x2="-7.54" y2="3.5" width="0.127" layer="51" curve="90"/>
-<wire x1="-7.54" y1="3.5" x2="-7.54" y2="-3.5" width="0.127" layer="51"/>
-<wire x1="-7.54" y1="-3.5" x2="-6.54" y2="-4.5" width="0.127" layer="51" curve="90"/>
-<wire x1="-6.54" y1="-4.5" x2="7.714" y2="-4.5" width="0.127" layer="51"/>
-<wire x1="7.714" y1="-4.5" x2="7.714" y2="-1.492" width="0.127" layer="51"/>
-<wire x1="7.714" y1="-1.492" x2="6.46" y2="-1.492" width="0.127" layer="51"/>
-<wire x1="6.46" y1="-1.492" x2="6.46" y2="4.5" width="0.127" layer="51"/>
-<wire x1="6.46" y1="4.5" x2="-6.54" y2="4.5" width="0.127" layer="51"/>
-<wire x1="-6.54" y1="4.5" x2="-7.54" y2="3.5" width="0.127" layer="21" curve="90"/>
-<wire x1="-7.54" y1="3.5" x2="-7.54" y2="-3.5" width="0.127" layer="21"/>
-<wire x1="-7.54" y1="-3.5" x2="-6.54" y2="-4.5" width="0.127" layer="21" curve="90"/>
-<wire x1="7.714" y1="-4.5" x2="7.714" y2="-1.492" width="0.127" layer="21"/>
-<wire x1="7.714" y1="-1.492" x2="6.46" y2="-1.492" width="0.127" layer="21"/>
-<wire x1="6.46" y1="-1.492" x2="6.46" y2="4.5" width="0.127" layer="21"/>
-<wire x1="-4.208" y1="4.5" x2="-6.54" y2="4.5" width="0.127" layer="21"/>
-<wire x1="2.142" y1="4.5" x2="-0.952" y2="4.5" width="0.127" layer="21"/>
-<wire x1="6.46" y1="4.5" x2="5.398" y2="4.5" width="0.127" layer="21"/>
-<wire x1="-6.54" y1="-4.5" x2="-4.224" y2="-4.5" width="0.127" layer="21"/>
-<wire x1="-0.952" y1="-4.5" x2="2.126" y2="-4.5" width="0.127" layer="21"/>
-<wire x1="5.398" y1="-4.5" x2="7.714" y2="-4.5" width="0.127" layer="21"/>
-<smd name="PWR1" x="-2.54" y="5.5" dx="2.4" dy="2" layer="1"/>
-<smd name="PWR2" x="3.66" y="5.5" dx="2.4" dy="2" layer="1"/>
-<smd name="GNDBREAK" x="3.66" y="-5.5" dx="2.4" dy="2" layer="1"/>
-<smd name="GND" x="-2.54" y="-5.5" dx="2.4" dy="2" layer="1"/>
-<text x="-1.778" y="2.794" size="1.4224" layer="21" ratio="12" rot="R90">+</text>
-<text x="-3.556" y="-3.81" size="0.8128" layer="21">GND</text>
-<hole x="-2.54" y="0" drill="1.6"/>
-<hole x="1.96" y="0" drill="1.8"/>
-<polygon width="0.0254" layer="41" spacing="0.254">
-<vertex x="-1.27" y="-5.7404"/>
-<vertex x="-1.27" y="-5.2578"/>
-<vertex x="-1.2446" y="-5.2578"/>
-<vertex x="-1.2446" y="-5.7404"/>
-</polygon>
-<polygon width="0.0254" layer="41" spacing="0.254">
-<vertex x="-2.794" y="-4.4196"/>
-<vertex x="-2.3114" y="-4.4196"/>
-<vertex x="-2.3114" y="-4.445"/>
-<vertex x="-2.794" y="-4.445"/>
-</polygon>
-<polygon width="0.0254" layer="41" spacing="0.254">
-<vertex x="2.3622" y="-5.7404"/>
-<vertex x="2.3622" y="-5.2578"/>
-<vertex x="2.3876" y="-5.2578"/>
-<vertex x="2.3876" y="-5.7404"/>
-</polygon>
-<polygon width="0.0254" layer="41" spacing="0.254">
-<vertex x="3.8862" y="-4.445"/>
-<vertex x="3.4036" y="-4.445"/>
-<vertex x="3.4036" y="-4.4196"/>
-<vertex x="3.8862" y="-4.4196"/>
-</polygon>
-</package>
-</packages>
-<symbols>
-<symbol name="DCBARREL">
-<wire x1="2.54" y1="0" x2="2.54" y2="-2.54" width="0.1524" layer="94"/>
-<wire x1="2.54" y1="-2.54" x2="1.27" y2="-2.54" width="0.254" layer="94"/>
-<wire x1="-2.54" y1="-2.54" x2="-1.27" y2="-2.54" width="0.254" layer="94"/>
-<wire x1="-1.27" y1="-2.54" x2="0" y2="-1.27" width="0.254" layer="94"/>
-<wire x1="0" y1="-1.27" x2="1.27" y2="-2.54" width="0.254" layer="94"/>
-<wire x1="2.54" y1="3.175" x2="2.54" y2="1.905" width="0.254" layer="94"/>
-<wire x1="-1.905" y1="3.175" x2="-1.905" y2="1.905" width="0.254" layer="94" curve="180"/>
-<wire x1="2.54" y1="1.905" x2="-1.905" y2="1.905" width="0.254" layer="94"/>
-<wire x1="2.54" y1="3.175" x2="-1.905" y2="3.175" width="0.254" layer="94"/>
-<text x="-2.54" y="5.08" size="1.27" layer="95">&gt;NAME</text>
-<text x="-2.54" y="-5.08" size="1.27" layer="96">&gt;VALUE</text>
-<pin name="PWR" x="5.08" y="2.54" visible="pin" length="short" direction="pwr" rot="R180"/>
-<pin name="GNDBREAK" x="5.08" y="0" visible="pin" length="short" direction="pwr" rot="R180"/>
-<pin name="GND" x="5.08" y="-2.54" visible="pin" length="short" direction="pwr" rot="R180"/>
-</symbol>
-</symbols>
-<devicesets>
-<deviceset name="DCBARREL">
-<gates>
-<gate name="G$1" symbol="DCBARREL" x="0" y="0"/>
-</gates>
-<devices>
-<device name="PTH" package="DCJACK_2MM_PTH">
-<connects>
-<connect gate="G$1" pin="GND" pad="GND"/>
-<connect gate="G$1" pin="GNDBREAK" pad="GNDBREAK"/>
-<connect gate="G$1" pin="PWR" pad="PWR"/>
-</connects>
-<technologies>
-<technology name=""/>
-</technologies>
-</device>
-<device name="SMT" package="DCJACK_2MM_SMT">
-<connects>
-<connect gate="G$1" pin="GND" pad="GND"/>
-<connect gate="G$1" pin="GNDBREAK" pad="GNDBREAK"/>
-<connect gate="G$1" pin="PWR" pad="PWR1"/>
-</connects>
-<technologies>
-<technology name=""/>
-</technologies>
-</device>
-</devices>
-</deviceset>
-</devicesets>
-</library>
 <library name="diode">
 <description>&lt;b&gt;Diodes&lt;/b&gt;&lt;p&gt;
 Based on the following sources:
@@ -5754,6 +5626,125 @@ Source: http://www.diodes.com/datasheets/ds23001.pdf</description>
 </deviceset>
 </devicesets>
 </library>
+<library name="adafruit">
+<packages>
+<package name="PJ-102A">
+<wire x1="-4.6" y1="4.4" x2="4.4" y2="4.4" width="0.127" layer="21"/>
+<wire x1="4.4" y1="4.4" x2="4.4" y2="-10.2" width="0.127" layer="21"/>
+<wire x1="4.4" y1="-10.2" x2="-4.6" y2="-10.2" width="0.127" layer="21"/>
+<wire x1="-4.6" y1="-10.2" x2="-4.6" y2="4.4" width="0.127" layer="21"/>
+<pad name="RING_SW" x="-4.6" y="-6.29" drill="3" diameter="4.8" rot="R180"/>
+<pad name="TIP" x="0.1" y="-9.29" drill="3" diameter="4.8" rot="R180"/>
+<pad name="RING" x="0.1" y="-3.39" drill="3" diameter="4.8" rot="R180"/>
+</package>
+<package name="DCJACK_2MM_SMT">
+<description>2.0/2.1mm DC Jack - SMT
+&lt;p&gt;4UConnector: 03267&lt;/p&gt;
+&lt;p&gt;Note: Small tRestrict polygon's were added to the ground pads to improve solderability when this part is used in combination with a ground pour.  By default, Eagle will product four large bridges to the ground pour significantly increasing the heat distribution on the pads and preventing lead-free solder from reflowing in certain situations.  For more details, see: http://www.microbuilder.eu/Blog/09-12-14/Reducing_Thermals_for_Large_Pads_in_Eagle.aspx&lt;/p&gt;</description>
+<wire x1="-4" y1="4.5" x2="-5" y2="3.5" width="0.127" layer="51" curve="90"/>
+<wire x1="-5" y1="3.5" x2="-5" y2="-3.5" width="0.127" layer="51"/>
+<wire x1="-5" y1="-3.5" x2="-4" y2="-4.5" width="0.127" layer="51" curve="90"/>
+<wire x1="-4" y1="-4.5" x2="10.254" y2="-4.5" width="0.127" layer="51"/>
+<wire x1="10.254" y1="-4.5" x2="10.254" y2="-1.492" width="0.127" layer="51"/>
+<wire x1="10.254" y1="-1.492" x2="9" y2="-1.492" width="0.127" layer="51"/>
+<wire x1="9" y1="-1.492" x2="9" y2="4.5" width="0.127" layer="51"/>
+<wire x1="9" y1="4.5" x2="-4" y2="4.5" width="0.127" layer="51"/>
+<wire x1="-4" y1="4.5" x2="-5" y2="3.5" width="0.127" layer="21" curve="90"/>
+<wire x1="-5" y1="3.5" x2="-5" y2="-3.5" width="0.127" layer="21"/>
+<wire x1="-5" y1="-3.5" x2="-4" y2="-4.5" width="0.127" layer="21" curve="90"/>
+<wire x1="10.254" y1="-4.5" x2="10.254" y2="-1.492" width="0.127" layer="21"/>
+<wire x1="10.254" y1="-1.492" x2="9" y2="-1.492" width="0.127" layer="21"/>
+<wire x1="9" y1="-1.492" x2="9" y2="4.5" width="0.127" layer="21"/>
+<wire x1="-1.668" y1="4.5" x2="-4" y2="4.5" width="0.127" layer="21"/>
+<wire x1="4.682" y1="4.5" x2="1.588" y2="4.5" width="0.127" layer="21"/>
+<wire x1="9" y1="4.5" x2="7.938" y2="4.5" width="0.127" layer="21"/>
+<wire x1="-4" y1="-4.5" x2="-1.684" y2="-4.5" width="0.127" layer="21"/>
+<wire x1="1.588" y1="-4.5" x2="4.666" y2="-4.5" width="0.127" layer="21"/>
+<wire x1="7.938" y1="-4.5" x2="10.254" y2="-4.5" width="0.127" layer="21"/>
+<smd name="PWR1" x="0" y="5.5" dx="2.4" dy="2" layer="1"/>
+<smd name="PWR2" x="6.2" y="5.5" dx="2.4" dy="2" layer="1"/>
+<smd name="GNDBREAK" x="6.2" y="-5.5" dx="2.4" dy="2" layer="1"/>
+<smd name="GND" x="0" y="-5.5" dx="2.4" dy="2" layer="1"/>
+<text x="0.762" y="2.794" size="1.4224" layer="21" ratio="12" rot="R90">+</text>
+<text x="-1.016" y="-3.81" size="0.8128" layer="21">GND</text>
+<hole x="0" y="0" drill="1.6"/>
+<hole x="4.5" y="0" drill="1.8"/>
+<polygon width="0.0254" layer="41" spacing="0.254">
+<vertex x="1.27" y="-5.7404"/>
+<vertex x="1.27" y="-5.2578"/>
+<vertex x="1.2954" y="-5.2578"/>
+<vertex x="1.2954" y="-5.7404"/>
+</polygon>
+<polygon width="0.0254" layer="41" spacing="0.254">
+<vertex x="-0.254" y="-4.4196"/>
+<vertex x="0.2286" y="-4.4196"/>
+<vertex x="0.2286" y="-4.445"/>
+<vertex x="-0.254" y="-4.445"/>
+</polygon>
+<polygon width="0.0254" layer="41" spacing="0.254">
+<vertex x="4.9022" y="-5.7404"/>
+<vertex x="4.9022" y="-5.2578"/>
+<vertex x="4.9276" y="-5.2578"/>
+<vertex x="4.9276" y="-5.7404"/>
+</polygon>
+<polygon width="0.0254" layer="41" spacing="0.254">
+<vertex x="6.4262" y="-4.445"/>
+<vertex x="5.9436" y="-4.445"/>
+<vertex x="5.9436" y="-4.4196"/>
+<vertex x="6.4262" y="-4.4196"/>
+</polygon>
+</package>
+</packages>
+<symbols>
+<symbol name="POWERJACK-1">
+<wire x1="2.54" y1="3.175" x2="0" y2="3.175" width="0.254" layer="94"/>
+<wire x1="0" y1="3.175" x2="-1.27" y2="2.54" width="0.254" layer="94"/>
+<wire x1="-1.27" y1="2.54" x2="0" y2="1.905" width="0.254" layer="94"/>
+<wire x1="0" y1="1.905" x2="2.54" y2="1.905" width="0.254" layer="94"/>
+<wire x1="2.54" y1="1.905" x2="2.54" y2="3.175" width="0.254" layer="94"/>
+<wire x1="2.54" y1="0" x2="2.54" y2="-1.27" width="0.254" layer="94"/>
+<wire x1="2.54" y1="-2.54" x2="1.27" y2="-2.54" width="0.254" layer="94"/>
+<wire x1="1.27" y1="-2.54" x2="0" y2="-1.27" width="0.254" layer="94"/>
+<wire x1="0" y1="-1.27" x2="-1.27" y2="-2.54" width="0.254" layer="94"/>
+<text x="-2.54" y="5.08" size="1.27" layer="95">&gt;NAME</text>
+<pin name="TIP" x="5.08" y="2.54" visible="off" length="short" rot="R180"/>
+<pin name="RING" x="5.08" y="-2.54" visible="off" length="short" rot="R180"/>
+<pin name="RING_SW" x="5.08" y="0" visible="off" length="short" rot="R180"/>
+</symbol>
+</symbols>
+<devicesets>
+<deviceset name="2.1MMJACK">
+<description>2.1mm x 5.5mm THM DC jack with internal switch. Digikey part #PJ-102A, 4UCON part #05537 &lt;br&gt;
+2.1mm x 5.5mm SMT DC jack with internal switch. Digikey part #PJ-002A-SMT, 4UCON part #03267
+&lt;p&gt;By microbuilder.eu &amp; adafruit.com&lt;/p&gt;</description>
+<gates>
+<gate name="G$1" symbol="POWERJACK-1" x="0" y="0"/>
+</gates>
+<devices>
+<device name="THM" package="PJ-102A">
+<connects>
+<connect gate="G$1" pin="RING" pad="RING"/>
+<connect gate="G$1" pin="RING_SW" pad="RING_SW"/>
+<connect gate="G$1" pin="TIP" pad="TIP"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="SMT" package="DCJACK_2MM_SMT">
+<connects>
+<connect gate="G$1" pin="RING" pad="GND"/>
+<connect gate="G$1" pin="RING_SW" pad="GNDBREAK"/>
+<connect gate="G$1" pin="TIP" pad="PWR2"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+</devicesets>
+</library>
 </libraries>
 <attributes>
 </attributes>
@@ -5833,7 +5824,7 @@ Source: http://www.diodes.com/datasheets/ds23001.pdf</description>
 <part name="GND18" library="supply1" deviceset="GND" device=""/>
 <part name="RCM_POWER" library="pinhead" deviceset="PINHD-1X2" device=""/>
 <part name="GND19" library="supply1" deviceset="GND" device=""/>
-<part name="U$2" library="BaseApp" deviceset="DCBARREL" device="PTH"/>
+<part name="U$2" library="adafruit" deviceset="2.1MMJACK" device="THM"/>
 <part name="JP1" library="pinhead" deviceset="PINHD-1X6" device=""/>
 <part name="JP2" library="pinhead" deviceset="PINHD-1X6" device=""/>
 <part name="JP3" library="pinhead" deviceset="PINHD-1X6" device=""/>
@@ -6197,7 +6188,7 @@ Source: http://www.diodes.com/datasheets/ds23001.pdf</description>
 <wire x1="-127" y1="119.38" x2="-127" y2="114.3" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="U$2" gate="G$1" pin="GND"/>
+<pinref part="U$2" gate="G$1" pin="RING"/>
 <pinref part="GND14" gate="1" pin="GND"/>
 <wire x1="-71.12" y1="127" x2="-68.58" y2="127" width="0.1524" layer="91"/>
 <wire x1="-68.58" y1="127" x2="-68.58" y2="121.92" width="0.1524" layer="91"/>
@@ -6641,7 +6632,7 @@ Source: http://www.diodes.com/datasheets/ds23001.pdf</description>
 <segment>
 <pinref part="POWER" gate="A" pin="1"/>
 <wire x1="-76.2" y1="127" x2="-76.2" y2="101.6" width="0.1524" layer="91"/>
-<pinref part="U$2" gate="G$1" pin="PWR"/>
+<pinref part="U$2" gate="G$1" pin="TIP"/>
 </segment>
 </net>
 <net name="IN_3V" class="0">
