@@ -1,8 +1,26 @@
 # Bill of Materials
 
-- STM32F407VGT6 : 2064368
-- CRYSTAL 8MHz  : 2142512
-- ACCELEROMETER : 1435588
-- VOLTAGE REG   : 1652368
-- LED           : 2290335
+| Name          | Qty  | Farnell | Remarks  |
+| ------------- | :--: | ------: | -------  |
+| STM32F407VGT6 | 1    | 2064368 |          |
+| CRYSTAL 8MHz  | 1    | 2142512 | US STOCK |
+| ACCELEROMETER | 1    | 1435588 |          |
+| VOLTAGE REG   | 1    | 1652368 | NO STOCK |
+| LED           | 2    | 2290335 |          |
+| ZENER DIODE   | 4    | 1431155 | MIN 10   |
+| TVS DIODE     | 7    | 8737568 | MIN 5    |
+| CAP 20p       | 2    |         | CERAMIC  |
+| CAP 1u        | 9    |         |          |
+| CAP 10u       | 1    |         |          |
+| CAP 100n      | 4    |         | CERAMIC  |
+| CAP 10n       | 9    |         | CERAMIC  |
+| CAP 2.2u      | 2    |         |          |
+| RES 0 ohm     | 2    |         |          |
+| RES 220 ohm   | 1    |         |          |
+| RES 10K ohm   | 3    |         |          |
+| RES 68 ohm    | 2    |         |          |
+| RES 510 ohm   | 1    |         |          |
+| POWER JACK    | 1    |         | BUY?     |
+| PIN female    | 20   | GOTRON  |          |
+| PIN male      | 10   | GOTRON  |          |
 
