@@ -400,18 +400,6 @@ Source: DM00027543-118326.pdf</description>
 <text x="-2.5766" y="1.777" size="1.27" layer="25">&gt;NAME</text>
 <text x="-2.5766" y="-3.555" size="1.27" layer="27">&gt;VALUE</text>
 </package>
-<package name="TSOP-5">
-<smd name="4" x="0.95" y="0.95" dx="1.27" dy="0.7" layer="1" rot="R270"/>
-<smd name="5" x="-0.95" y="0.95" dx="1.27" dy="0.7" layer="1" rot="R270"/>
-<smd name="3" x="0.95" y="-1.45" dx="1.27" dy="0.7" layer="1" rot="R270"/>
-<smd name="1" x="-0.95" y="-1.45" dx="1.27" dy="0.7" layer="1" rot="R270"/>
-<smd name="2" x="0" y="-1.45" dx="1.27" dy="0.7" layer="1" rot="R270"/>
-<wire x1="1.9" y1="-0.95" x2="-1.9" y2="-0.95" width="0.127" layer="21"/>
-<wire x1="-1.9" y1="-0.95" x2="-1.9" y2="0.45" width="0.127" layer="21"/>
-<wire x1="-1.9" y1="0.45" x2="1.9" y2="0.45" width="0.127" layer="21"/>
-<wire x1="1.9" y1="0.45" x2="1.9" y2="-0.95" width="0.127" layer="21"/>
-<text x="-1.9" y="0" size="1.016" layer="25" rot="R180">&gt;NAME</text>
-</package>
 <package name="SMB">
 <description>&lt;b&gt;DIODE&lt;/b&gt;</description>
 <wire x1="-2.2352" y1="1.7272" x2="1.9812" y2="1.7272" width="0.1524" layer="21"/>
@@ -439,6 +427,25 @@ Source: DM00027543-118326.pdf</description>
 <text x="-2.286" y="-3.5814" size="1.27" layer="27" ratio="10">&gt;VALUE</text>
 <rectangle x1="2.032" y1="-1.143" x2="2.6162" y2="0.889" layer="51"/>
 <rectangle x1="-2.8702" y1="-1.143" x2="-2.286" y2="0.889" layer="51"/>
+</package>
+<package name="SOT23-5">
+<description>&lt;b&gt;Small Outline Transistor&lt;/b&gt;, 5 lead</description>
+<wire x1="-1.544" y1="0.713" x2="1.544" y2="0.713" width="0.1524" layer="51"/>
+<wire x1="1.544" y1="0.713" x2="1.544" y2="-0.712" width="0.1524" layer="21"/>
+<wire x1="1.544" y1="-0.712" x2="-1.544" y2="-0.712" width="0.1524" layer="51"/>
+<wire x1="-1.544" y1="-0.712" x2="-1.544" y2="0.713" width="0.1524" layer="21"/>
+<smd name="5" x="-0.95" y="1.306" dx="0.6" dy="1.2" layer="1"/>
+<smd name="4" x="0.95" y="1.306" dx="0.6" dy="1.2" layer="1"/>
+<smd name="1" x="-0.95" y="-1.306" dx="0.6" dy="1.2" layer="1"/>
+<smd name="2" x="0" y="-1.306" dx="0.6" dy="1.2" layer="1"/>
+<smd name="3" x="0.95" y="-1.306" dx="0.6" dy="1.2" layer="1"/>
+<text x="-1.778" y="-1.778" size="1.27" layer="25" ratio="10" rot="R90">&gt;NAME</text>
+<text x="3.048" y="-1.778" size="1.27" layer="27" ratio="10" rot="R90">&gt;VALUE</text>
+<rectangle x1="-1.1875" y1="0.7126" x2="-0.7125" y2="1.5439" layer="51"/>
+<rectangle x1="0.7125" y1="0.7126" x2="1.1875" y2="1.5439" layer="51"/>
+<rectangle x1="-1.1875" y1="-1.5437" x2="-0.7125" y2="-0.7124" layer="51"/>
+<rectangle x1="-0.2375" y1="-1.5437" x2="0.2375" y2="-0.7124" layer="51"/>
+<rectangle x1="0.7125" y1="-1.5437" x2="1.1875" y2="-0.7124" layer="51"/>
 </package>
 </packages>
 <symbols>
@@ -572,17 +579,6 @@ Source: DM00027543-118326.pdf</description>
 <text x="0" y="-20.32" size="1.778" layer="94">&gt;VALUE</text>
 <pin name="GND1" x="-5.08" y="-20.32" length="short" direction="pas" rot="R90"/>
 </symbol>
-<symbol name="VOLTREG">
-<wire x1="-10.16" y1="10.16" x2="10.16" y2="10.16" width="0.254" layer="94"/>
-<wire x1="10.16" y1="10.16" x2="10.16" y2="-5.08" width="0.254" layer="94"/>
-<wire x1="10.16" y1="-5.08" x2="-10.16" y2="-5.08" width="0.254" layer="94"/>
-<wire x1="-10.16" y1="-5.08" x2="-10.16" y2="10.16" width="0.254" layer="94"/>
-<pin name="VIN" x="-5.08" y="-10.16" length="middle" rot="R90"/>
-<pin name="GND" x="0" y="-10.16" length="middle" rot="R90"/>
-<pin name="ENABLE" x="5.08" y="-10.16" length="middle" rot="R90"/>
-<pin name="N/C" x="5.08" y="15.24" length="middle" rot="R270"/>
-<pin name="VOUT" x="-5.08" y="15.24" length="middle" rot="R270"/>
-</symbol>
 <symbol name="ZD">
 <wire x1="-1.27" y1="-1.27" x2="1.27" y2="0" width="0.254" layer="94"/>
 <wire x1="1.27" y1="0" x2="-1.27" y2="1.27" width="0.254" layer="94"/>
@@ -593,6 +589,20 @@ Source: DM00027543-118326.pdf</description>
 <wire x1="-2.54" y1="0" x2="2.54" y2="0" width="0.1524" layer="94"/>
 <pin name="P2" x="-2.54" y="0" visible="pad" length="point" rot="R180"/>
 <pin name="P1" x="2.54" y="0" visible="pad" length="point" rot="R180"/>
+</symbol>
+<symbol name="LT1129">
+<wire x1="-7.62" y1="5.08" x2="7.62" y2="5.08" width="0.254" layer="94"/>
+<wire x1="7.62" y1="5.08" x2="7.62" y2="-7.62" width="0.254" layer="94"/>
+<wire x1="7.62" y1="-7.62" x2="-7.62" y2="-7.62" width="0.254" layer="94"/>
+<wire x1="-7.62" y1="-7.62" x2="-7.62" y2="5.08" width="0.254" layer="94"/>
+<text x="-2.032" y="-6.604" size="1.524" layer="95">GND</text>
+<text x="-7.62" y="6.35" size="1.778" layer="95">&gt;NAME</text>
+<text x="2.54" y="6.35" size="1.778" layer="96">&gt;VALUE</text>
+<pin name="IN" x="-10.16" y="2.54" length="short" direction="in"/>
+<pin name="OUT" x="10.16" y="2.54" length="short" direction="out" rot="R180"/>
+<pin name="!SHDN" x="-10.16" y="-2.54" length="short" direction="in"/>
+<pin name="NC" x="10.16" y="0" length="short" direction="in" rot="R180"/>
+<pin name="GND" x="0" y="-10.16" visible="pad" length="short" direction="pwr" rot="R90"/>
 </symbol>
 </symbols>
 <devicesets>
@@ -744,27 +754,6 @@ LIS302DL</description>
 </device>
 </devices>
 </deviceset>
-<deviceset name="NCP551">
-<description>NCP551
-Voltage regulator</description>
-<gates>
-<gate name="G$1" symbol="VOLTREG" x="0" y="-2.54"/>
-</gates>
-<devices>
-<device name="" package="TSOP-5">
-<connects>
-<connect gate="G$1" pin="ENABLE" pad="3"/>
-<connect gate="G$1" pin="GND" pad="2"/>
-<connect gate="G$1" pin="N/C" pad="4"/>
-<connect gate="G$1" pin="VIN" pad="1"/>
-<connect gate="G$1" pin="VOUT" pad="5"/>
-</connects>
-<technologies>
-<technology name=""/>
-</technologies>
-</device>
-</devices>
-</deviceset>
 <deviceset name="ZDIODE" prefix="D">
 <description>&lt;b&gt;Z DIODE&lt;/b&gt;</description>
 <gates>
@@ -775,6 +764,27 @@ Voltage regulator</description>
 <connects>
 <connect gate="G$1" pin="P1" pad="1"/>
 <connect gate="G$1" pin="P2" pad="2"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="MCP1801">
+<description>&lt;b&gt;MCP1801&lt;/b&gt;
+150 mA, LDO Voltage Regulator</description>
+<gates>
+<gate name="G$1" symbol="LT1129" x="0" y="0"/>
+</gates>
+<devices>
+<device name="" package="SOT23-5">
+<connects>
+<connect gate="G$1" pin="!SHDN" pad="3"/>
+<connect gate="G$1" pin="GND" pad="2"/>
+<connect gate="G$1" pin="IN" pad="1"/>
+<connect gate="G$1" pin="NC" pad="4"/>
+<connect gate="G$1" pin="OUT" pad="5"/>
 </connects>
 <technologies>
 <technology name=""/>
@@ -5775,11 +5785,10 @@ Source: http://www.diodes.com/datasheets/ds23001.pdf</description>
 <part name="GND9" library="supply1" deviceset="GND" device=""/>
 <part name="GND10" library="supply1" deviceset="GND" device=""/>
 <part name="GND11" library="supply1" deviceset="GND" device=""/>
-<part name="REG" library="stm32f4" deviceset="NCP551" device=""/>
 <part name="GND12" library="supply1" deviceset="GND" device=""/>
 <part name="VDD6" library="supply1" deviceset="VDD" device=""/>
-<part name="C8" library="eagle-ltspice" deviceset="C" device="" value="100n"/>
-<part name="C9" library="eagle-ltspice" deviceset="C" device="" value="100n"/>
+<part name="C8" library="eagle-ltspice" deviceset="C" device="" value="1u"/>
+<part name="C9" library="eagle-ltspice" deviceset="C" device="" value="1u"/>
 <part name="GND13" library="supply1" deviceset="GND" device=""/>
 <part name="GND14" library="supply1" deviceset="GND" device=""/>
 <part name="GND15" library="supply1" deviceset="GND" device=""/>
@@ -5860,6 +5869,7 @@ Source: http://www.diodes.com/datasheets/ds23001.pdf</description>
 <part name="GND31" library="supply1" deviceset="GND" device=""/>
 <part name="GND32" library="supply1" deviceset="GND" device=""/>
 <part name="GND33" library="supply1" deviceset="GND" device=""/>
+<part name="VREG" library="stm32f4" deviceset="MCP1801" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -5894,12 +5904,11 @@ Source: http://www.diodes.com/datasheets/ds23001.pdf</description>
 <instance part="GND9" gate="1" x="-20.32" y="-12.7"/>
 <instance part="GND10" gate="1" x="-38.1" y="-12.7"/>
 <instance part="GND11" gate="1" x="-60.96" y="-12.7"/>
-<instance part="REG" gate="G$1" x="-38.1" y="88.9"/>
-<instance part="GND12" gate="1" x="-38.1" y="58.42"/>
-<instance part="VDD6" gate="G$1" x="-43.18" y="116.84"/>
-<instance part="C8" gate="G$1" x="-43.18" y="73.66"/>
-<instance part="C9" gate="G$1" x="-55.88" y="101.6"/>
-<instance part="GND13" gate="1" x="-55.88" y="93.98"/>
+<instance part="GND12" gate="1" x="-40.64" y="63.5"/>
+<instance part="VDD6" gate="G$1" x="-25.4" y="109.22"/>
+<instance part="C8" gate="G$1" x="-25.4" y="81.28"/>
+<instance part="C9" gate="G$1" x="-55.88" y="83.82"/>
+<instance part="GND13" gate="1" x="-55.88" y="73.66"/>
 <instance part="GND14" gate="1" x="-68.58" y="119.38"/>
 <instance part="GND15" gate="1" x="10.16" y="66.04"/>
 <instance part="VDD7" gate="G$1" x="10.16" y="124.46"/>
@@ -5979,6 +5988,7 @@ Source: http://www.diodes.com/datasheets/ds23001.pdf</description>
 <instance part="GND31" gate="1" x="91.44" y="-88.9"/>
 <instance part="GND32" gate="1" x="99.06" y="-88.9"/>
 <instance part="GND33" gate="1" x="106.68" y="-88.9"/>
+<instance part="VREG" gate="G$1" x="-40.64" y="91.44"/>
 </instances>
 <busses>
 </busses>
@@ -6048,18 +6058,9 @@ Source: http://www.diodes.com/datasheets/ds23001.pdf</description>
 <junction x="-66.04" y="-10.16"/>
 </segment>
 <segment>
-<pinref part="REG" gate="G$1" pin="GND"/>
-<pinref part="GND12" gate="1" pin="GND"/>
-<wire x1="-38.1" y1="60.96" x2="-38.1" y2="66.04" width="0.1524" layer="91"/>
-<pinref part="C8" gate="G$1" pin="2"/>
-<wire x1="-38.1" y1="66.04" x2="-38.1" y2="78.74" width="0.1524" layer="91"/>
-<wire x1="-43.18" y1="68.58" x2="-43.18" y2="66.04" width="0.1524" layer="91"/>
-<wire x1="-43.18" y1="66.04" x2="-38.1" y2="66.04" width="0.1524" layer="91"/>
-<junction x="-38.1" y="66.04"/>
-</segment>
-<segment>
 <pinref part="C9" gate="G$1" pin="2"/>
 <pinref part="GND13" gate="1" pin="GND"/>
+<wire x1="-55.88" y1="76.2" x2="-55.88" y2="78.74" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="STM32F4" gate="G$1" pin="VSS_1"/>
@@ -6259,6 +6260,16 @@ Source: http://www.diodes.com/datasheets/ds23001.pdf</description>
 <pinref part="GND33" gate="1" pin="GND"/>
 <wire x1="106.68" y1="-73.66" x2="106.68" y2="-86.36" width="0.1524" layer="91"/>
 </segment>
+<segment>
+<pinref part="VREG" gate="G$1" pin="GND"/>
+<pinref part="GND12" gate="1" pin="GND"/>
+<wire x1="-40.64" y1="81.28" x2="-40.64" y2="71.12" width="0.1524" layer="91"/>
+<pinref part="C8" gate="G$1" pin="2"/>
+<wire x1="-40.64" y1="71.12" x2="-40.64" y2="66.04" width="0.1524" layer="91"/>
+<wire x1="-25.4" y1="76.2" x2="-25.4" y2="71.12" width="0.1524" layer="91"/>
+<wire x1="-25.4" y1="71.12" x2="-40.64" y2="71.12" width="0.1524" layer="91"/>
+<junction x="-40.64" y="71.12"/>
+</segment>
 </net>
 <net name="N$1" class="0">
 <segment>
@@ -6442,16 +6453,6 @@ Source: http://www.diodes.com/datasheets/ds23001.pdf</description>
 <wire x1="48.26" y1="-71.12" x2="55.88" y2="-71.12" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="REG" gate="G$1" pin="VOUT"/>
-<pinref part="C9" gate="G$1" pin="1"/>
-<wire x1="-43.18" y1="106.68" x2="-43.18" y2="104.14" width="0.1524" layer="91"/>
-<wire x1="-55.88" y1="104.14" x2="-55.88" y2="106.68" width="0.1524" layer="91"/>
-<wire x1="-55.88" y1="106.68" x2="-43.18" y2="106.68" width="0.1524" layer="91"/>
-<wire x1="-43.18" y1="114.3" x2="-43.18" y2="106.68" width="0.1524" layer="91"/>
-<junction x="-43.18" y="106.68"/>
-<pinref part="VDD6" gate="G$1" pin="VDD"/>
-</segment>
-<segment>
 <pinref part="R7" gate="G$1" pin="2"/>
 <pinref part="VDD10" gate="G$1" pin="VDD"/>
 </segment>
@@ -6459,6 +6460,15 @@ Source: http://www.diodes.com/datasheets/ds23001.pdf</description>
 <pinref part="R5" gate="G$1" pin="1"/>
 <pinref part="VDD2" gate="G$1" pin="VDD"/>
 <wire x1="167.64" y1="-7.62" x2="170.18" y2="-7.62" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="VDD6" gate="G$1" pin="VDD"/>
+<wire x1="-25.4" y1="106.68" x2="-25.4" y2="93.98" width="0.1524" layer="91"/>
+<pinref part="VREG" gate="G$1" pin="OUT"/>
+<wire x1="-25.4" y1="93.98" x2="-30.48" y2="93.98" width="0.1524" layer="91"/>
+<pinref part="C8" gate="G$1" pin="1"/>
+<wire x1="-25.4" y1="83.82" x2="-25.4" y2="93.98" width="0.1524" layer="91"/>
+<junction x="-25.4" y="93.98"/>
 </segment>
 </net>
 <net name="I2C_SCL" class="0">
@@ -6642,22 +6652,24 @@ Source: http://www.diodes.com/datasheets/ds23001.pdf</description>
 <label x="-78.74" y="111.76" size="1.778" layer="95" rot="R90"/>
 </segment>
 <segment>
-<pinref part="REG" gate="G$1" pin="VIN"/>
-<pinref part="C8" gate="G$1" pin="1"/>
-<wire x1="-43.18" y1="78.74" x2="-43.18" y2="76.2" width="0.1524" layer="91"/>
-<pinref part="REG" gate="G$1" pin="ENABLE"/>
-<wire x1="-33.02" y1="78.74" x2="-33.02" y2="76.2" width="0.1524" layer="91"/>
-<wire x1="-33.02" y1="76.2" x2="-43.18" y2="76.2" width="0.1524" layer="91"/>
-<junction x="-43.18" y="76.2"/>
-<wire x1="-43.18" y1="76.2" x2="-50.8" y2="76.2" width="0.1524" layer="91"/>
-<label x="-50.8" y="76.2" size="1.778" layer="95"/>
-</segment>
-<segment>
 <pinref part="RCM_POWER" gate="G$1" pin="2"/>
 <wire x1="-124.46" y1="119.38" x2="-124.46" y2="114.3" width="0.1524" layer="91"/>
 <wire x1="-124.46" y1="114.3" x2="-119.38" y2="114.3" width="0.1524" layer="91"/>
 <wire x1="-119.38" y1="114.3" x2="-119.38" y2="106.68" width="0.1524" layer="91"/>
 <label x="-119.38" y="106.68" size="1.778" layer="95" rot="R90"/>
+</segment>
+<segment>
+<pinref part="VREG" gate="G$1" pin="!SHDN"/>
+<pinref part="C9" gate="G$1" pin="1"/>
+<wire x1="-50.8" y1="88.9" x2="-55.88" y2="88.9" width="0.1524" layer="91"/>
+<wire x1="-55.88" y1="88.9" x2="-55.88" y2="86.36" width="0.1524" layer="91"/>
+<wire x1="-55.88" y1="88.9" x2="-55.88" y2="93.98" width="0.1524" layer="91"/>
+<junction x="-55.88" y="88.9"/>
+<pinref part="VREG" gate="G$1" pin="IN"/>
+<wire x1="-55.88" y1="93.98" x2="-50.8" y2="93.98" width="0.1524" layer="91"/>
+<wire x1="-55.88" y1="93.98" x2="-63.5" y2="93.98" width="0.1524" layer="91"/>
+<junction x="-55.88" y="93.98"/>
+<label x="-63.5" y="93.98" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="N$4" class="0">
