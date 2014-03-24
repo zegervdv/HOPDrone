@@ -3,7 +3,7 @@
 | Name          | Qty  | Farnell | Remarks  |
 | ------------- | :--: | ------: | -------  |
 | STM32F407VGT6 | 1    | 2064368 |          |
-| CRYSTAL 8MHz  | 1    | 1842268 | US STOCK |
+| CRYSTAL 8MHz  | 1    | 1842268 |          |
 | ACCELEROMETER | 1    | 1435588 |          |
 | VOLTAGE REG   | 1    | 1578370 |          |
 | LED           | 2    | 2290335 |          |
@@ -22,6 +22,6 @@
 | RES 68 ohm    | 2    |         |          |
 | RES 510 ohm   | 1    |         |          |
 | POWER JACK    | 1    |         | BUY?     |
-| PIN female    | 20   | GOTRON  |          |
-| PIN male      | 10   | GOTRON  |          |
+| PIN female    | 20   |         |          |
+| PIN male      | 10   |         |          |
 
