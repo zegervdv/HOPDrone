@@ -3,7 +3,7 @@
 | Name          | Qty  | Farnell | Remarks  |
 | ------------- | :--: | ------: | -------  |
 | STM32F407VGT6 | 1    | 2064368 |          |
-| CRYSTAL 8MHz  | 1    | 2142512 | US STOCK |
+| CRYSTAL 8MHz  | 1    | 1842268 | US STOCK |
 | ACCELEROMETER | 1    | 1435588 |          |
 | VOLTAGE REG   | 1    | 1578370 |          |
 | LED           | 2    | 2290335 |          |
