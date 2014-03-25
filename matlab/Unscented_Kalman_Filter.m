@@ -6,12 +6,12 @@ close all;
 % Constants
 steps = 100; % Number of timesteps
 Nx = 6;
-kappa = 2;
 alpha = 1e-3;
 beta = 2;
 Fs = 1e1; % 1O Hz sampling
 deltaT = 1 / Fs;
-var_u = 10e-2 * eye(Nx/2); % Noise variance on prediction: 1cm
+kappa = alpha^2*Nx - Nx;
+var_u = 25e-2 * eye(Nx/2); % Noise variance on prediction: 1cm
 std_meas = 10e-2; % Standard deviation on measurement 5cm
 
 % Anchor points
@@ -84,14 +84,15 @@ for k = 1:steps
 
     % Calculate sigmapoints
     sigma(1, :) = mkmin';
-    root = sqrt(Nx + kappa) * chol(Pkmin, 'lower');
+    root = sqrt(Nx + kappa) * cholcov(Pkmin);
     for i = 2:Nx+1
        sigma(i, :) = mkmin' + root(i-1, :);
        sigma(Nx + i, :) = mkmin' - root(i-1, :);
     end
-    
+
     % Measurement update
-    Y = F * sigma';
+    % Y = F * sigma';
+    Y = sigma';
 
     for i=1:2*Nx+1
       for j=1:Na
@@ -104,7 +105,7 @@ for k = 1:steps
 
     cov_fh = zeros(Nx, Na);
     for i = 1:2*Nx+1
-        cov_fh = cov_fh + Wc(i) * (Y(:,i) - Ef) * (Z(:,i) - Eh')'
+        cov_fh = cov_fh + Wc(i) * (Y(:,i) - Ef) * (Z(:,i) - Eh')';
     end
 
     varh = zeros(Na,Na);
@@ -120,8 +121,15 @@ for k = 1:steps
     % Update var and prevX
     prevX = mk;
     estimate(:,k) = mk;
-    var = Pk
+    var = Pk;
+    var = (var + var') / 2;
 end
 
 hold on;
 plot(estimate(1,:),estimate(2,:),'r')
+
+% Mean Squared Error
+err = (estimate - pos).^2;
+err = sum(err, 2) / steps
+
+
