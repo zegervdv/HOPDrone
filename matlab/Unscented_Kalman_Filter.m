@@ -1,18 +1,14 @@
 % HOP 2014
 % Unscented Kalman Filter
-function [estimate] = Unscented_Kalman_Filter(pos, std_meas, F, G)
+function [estimate] = Unscented_Kalman_Filter(pos, std_meas, F, G, Nx)
 close all;
 
 % Constants
 steps = size(pos,2); % Number of timesteps
-Nx = 6;
 alpha = 1e-3;
 beta = 2;
-% Fs = 1e1; % 1O Hz sampling
-% deltaT = 1 / Fs;
 kappa = alpha^2*Nx - Nx;
-var_u = 25e-2 * eye(Nx/2); % Noise variance on prediction: 1cm
-% std_meas = 10e-2; % Standard deviation on measurement 5cm
+var_u = 25e-2 * eye(Nx/3); % Noise variance on prediction: 1cm
 
 % Anchor points
 Na = 4;
@@ -74,7 +70,6 @@ for k = 1:steps
     end
 
     % Measurement update
-    % Y = F * sigma';
     Y = sigma';
 
     for i=1:2*Nx+1
