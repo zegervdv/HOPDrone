@@ -1,18 +1,18 @@
 % HOP 2014
 % Unscented Kalman Filter
-
+function [estimate] = Unscented_Kalman_Filter(pos, std_meas, F, G)
 close all;
 
 % Constants
-steps = 100; % Number of timesteps
+steps = size(pos,2); % Number of timesteps
 Nx = 6;
 alpha = 1e-3;
 beta = 2;
-Fs = 1e1; % 1O Hz sampling
-deltaT = 1 / Fs;
+% Fs = 1e1; % 1O Hz sampling
+% deltaT = 1 / Fs;
 kappa = alpha^2*Nx - Nx;
 var_u = 25e-2 * eye(Nx/2); % Noise variance on prediction: 1cm
-std_meas = 10e-2; % Standard deviation on measurement 5cm
+% std_meas = 10e-2; % Standard deviation on measurement 5cm
 
 % Anchor points
 Na = 4;
@@ -24,7 +24,7 @@ a5 = [0,0,0];
 a6 = [0,2,2];
 a7 = [2,0,2];
 a8 = [2,2,0];
-anch = [a1; a2; a3; a4];
+anch = [a1; a2; a3; a4] * 10;
 
 var = eye(Nx);
 
@@ -41,16 +41,6 @@ Wc = 1/(2*(Nx + kappa)) * Wc;
 Wm(1) = kappa/(Nx + kappa);
 Wc(1) = kappa/(Nx + kappa) + (1 - alpha^2 + beta);
 
-% Assume function F to be linear
-F = eye(Nx);
-for i = 1:Nx/2
-    F(i, Nx/2 + i) = deltaT;
-end
-
-Gup = eye(Nx/2) * deltaT^2/2;
-Glo = eye(Nx/2) * deltaT;
-G = [Gup; Glo];
-
 Z = zeros(Na, 2*Nx + 1);
 
 R = std_meas^2 * eye(Na);
@@ -60,13 +50,6 @@ prevX = zeros(Nx, 1);
 
 % Movement and measurements
 estimate = zeros(Nx,steps);
-
-pos = zeros(Nx,steps);
-pos(:,1) = prevX;
-
-for k = 2:steps
-   pos(:,k) = F * pos(:,k-1) + G * randn(3,1);
-end
 
 z = zeros(steps, Na);
 for i = 1:steps
@@ -124,12 +107,6 @@ for k = 1:steps
     var = Pk;
     var = (var + var') / 2;
 end
-
-hold on;
-plot(estimate(1,:),estimate(2,:),'r')
-
-% Mean Squared Error
-err = (estimate - pos).^2;
-err = sum(err, 2) / steps
+end
 
 
