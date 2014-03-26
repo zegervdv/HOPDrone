@@ -22,6 +22,9 @@ a7 = [2,0,2];
 a8 = [2,2,0];
 anch = [a1; a2; a3; a4] * 10;
 
+% Add 3D accelerometer measurements
+Na = Na + 3;
+
 var = eye(Nx);
 
 % N = 6 => 13 sigma points
@@ -49,8 +52,12 @@ estimate = zeros(Nx,steps);
 
 z = zeros(steps, Na);
 for i = 1:steps
-    for j = 1:Na
+    for j = 1:Na-3
         z(i,j) = norm(pos(1:3,i)' - anch(j,:)) + std_meas*randn(1);
+    end
+    for j = Na-2:Na
+        % TODO: Add measurement noise and quantise
+        z(i,j) = pos(j+2,i) + std_meas*randn(1);
     end
 end
 
@@ -73,8 +80,12 @@ for k = 1:steps
     Y = sigma';
 
     for i=1:2*Nx+1
-      for j=1:Na
+      for j=1:Na-3
         Z(j,i) = norm(sigma(i,1:3) - anch(j,:));
+      end
+      for j=Na-2:Na
+        % Use Sigmapoints as estimates for acceleration
+        Z(j,i) = sigma(i,j+2);
       end
     end
 
