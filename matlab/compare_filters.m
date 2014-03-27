@@ -2,6 +2,11 @@
 % Compare Least Mean Squares to Unscented Kalman Filter
 close all
 
+% Include accelerometer data
+
+INC_ACC = 0;
+
+% Constants
 
 steps = 1000; % Number of timesteps
 Nx = 9;
@@ -35,13 +40,15 @@ for k = 2:steps
 end
 
 lms = least_mean_squares(pos(1:3,:), 0.05);
-ukf = Unscented_Kalman_Filter(pos, 0.05, F, G, Nx);
+ukf = Unscented_Kalman_Filter(pos, 0.05, F, G, Nx, 0);
+ukf_acc = Unscented_Kalman_Filter(pos, 0.05, F, G, Nx,1);
 
 figure(1);
 plot(pos(1,:), pos(2,:));
 hold on
 plot(lms(1,:), lms(2,:), 'r');
 plot(ukf(1,:), ukf(2,:), 'k');
+plot(ukf_acc(1,:), ukf_acc(2,:), 'm');
 
 speed = sqrt(pos(4,:).^2 + pos(5,:).^2 + pos(6,:).^2);
 max(speed)
@@ -50,7 +57,11 @@ mean(speed)
 figure(2);
 err_lms = sum((lms - pos(1:3,:)).^2) / 3;
 err_ukf = sum((ukf(1:3,:) - pos(1:3,:)).^2) / 3;
+err_ukf_acc = sum((ukf_acc(1:3,:) - pos(1:3,:)).^2) / 3;
+
 
 cdf_plot(err_lms, 'r');
 hold on;
 cdf_plot(err_ukf, 'k');
+cdf_plot(err_ukf_acc, 'm');
+
