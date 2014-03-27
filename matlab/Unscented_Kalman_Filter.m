@@ -1,6 +1,6 @@
 % HOP 2014
 % Unscented Kalman Filter
-function [estimate] = Unscented_Kalman_Filter(pos, std_meas, F, G, Nx, INC_ACC)
+function [estimate] = Unscented_Kalman_Filter(pos, std_meas, F, G, Nx, Fs, INC_ACC)
 close all;
 
 % Constants
@@ -9,6 +9,7 @@ alpha = 1e-3;
 beta = 2;
 kappa = alpha^2*Nx - Nx;
 var_u = 25e-2 * eye(Nx/3); % Noise variance on prediction: 1cm
+deltaT = 1/Fs;
 
 % Anchor points
 Na = 4;
@@ -44,7 +45,7 @@ Wc(1) = kappa/(Nx + kappa) + (1 - alpha^2 + beta);
 
 Z = zeros(Na, 2*Nx + 1);
 
-R = std_meas^2 * eye(Na);
+R = std_meas^2 * eye(Na); % Wrong, last 3 need different variance, because accelerometer noise
 
 % Assume start at (0,0,0) at 0 velocity
 prevX = zeros(Nx, 1);
@@ -60,7 +61,7 @@ for i = 1:steps
     end
     for j = Na-2:Na
         % TODO: Add measurement noise and quantise
-        z(i,j) = pos(j+2,i) + 4*std_meas*randn(1);
+        z(i,j) = pos(j+2,i) + 2*std_meas*randn(1);
     end
 end
 else
@@ -80,6 +81,7 @@ for k = 1:steps
     Pkmin = F * var * F' + G * var_u * G';
 
     % Calculate sigmapoints
+    prevSigma = sigma;
     sigma(1, :) = mkmin';
     root = sqrt(Nx + kappa) * cholcov(Pkmin);
     for i = 2:Nx+1
@@ -96,7 +98,10 @@ if INC_ACC == 1
       end
       for j=Na-2:Na
         % Use Sigmapoints as estimates for acceleration
-        Z(j,i) = sigma(i,j+2);
+        %Z(j,i) = sigma(i,j+2);
+        
+        % TODO: Replace 4 by variable number of amchor points
+        Z(j,i)= 0.5*(sigma(i,j-4) - prevSigma(i,j-4))*deltaT^2;
       end
     end
 else
