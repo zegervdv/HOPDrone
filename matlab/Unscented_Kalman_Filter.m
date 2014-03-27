@@ -1,6 +1,6 @@
 % HOP 2014
 % Unscented Kalman Filter
-function [estimate] = Unscented_Kalman_Filter(pos, std_meas, F, G, Nx)
+function [estimate] = Unscented_Kalman_Filter(pos, std_meas, F, G, Nx, INC_ACC)
 close all;
 
 % Constants
@@ -22,8 +22,10 @@ a7 = [2,0,2];
 a8 = [2,2,0];
 anch = [a1; a2; a3; a4] * 10;
 
+if INC_ACC == 1
 % Add 3D accelerometer measurements
 Na = Na + 3;
+end 
 
 var = eye(Nx);
 
@@ -51,14 +53,23 @@ prevX = zeros(Nx, 1);
 estimate = zeros(Nx,steps);
 
 z = zeros(steps, Na);
+if INC_ACC == 1
 for i = 1:steps
     for j = 1:Na-3
         z(i,j) = norm(pos(1:3,i)' - anch(j,:)) + std_meas*randn(1);
     end
     for j = Na-2:Na
         % TODO: Add measurement noise and quantise
-        z(i,j) = pos(j+2,i) + std_meas*randn(1);
+        z(i,j) = pos(j+2,i) + 4*std_meas*randn(1);
     end
+end
+else
+for i = 1:steps
+    for j = 1:Na
+        z(i,j) = norm(pos(1:3,i)' - anch(j,:)) + std_meas*randn(1);
+    end
+end    
+    
 end
 
 plot(pos(1,:),pos(2,:))
@@ -78,7 +89,7 @@ for k = 1:steps
 
     % Measurement update
     Y = sigma';
-
+if INC_ACC == 1
     for i=1:2*Nx+1
       for j=1:Na-3
         Z(j,i) = norm(sigma(i,1:3) - anch(j,:));
@@ -88,7 +99,13 @@ for k = 1:steps
         Z(j,i) = sigma(i,j+2);
       end
     end
-
+else
+    for i=1:2*Nx+1
+      for j=1:Na
+        Z(j,i) = norm(sigma(i,1:3) - anch(j,:));
+      end
+    end
+end
     Ef = mkmin;
     Eh = Wm * Z';
 
