@@ -1,7 +1,7 @@
 # Capacitors
 - C7 ceramisch
 - C1 en C2 ceramisch, hoge kwaliteit
-- Decoupling (10p) ceramisch
+- Decoupling (10n) ceramisch
 
 # LEDS
 - PWR: Constante verbinden wanneer bord is aangesloten op voeding
