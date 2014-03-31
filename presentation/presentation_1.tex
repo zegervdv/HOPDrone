@@ -1,8 +1,19 @@
 \documentclass{beamer}
-\usetheme[faculty=tw,language=english,framenumber,totalframenumber]{UniversiteitGent}
+\usetheme[faculty=tw,language=dutch,framenumber,totalframenumber]{UniversiteitGent}
 
-\title{\textbf{Hardware Design Project:}\\Indoor localisation for Drone}
-\author{Laurens Bogaert, Thomas Deckmyn \& Zeger Van de Vannet}
+\title{\textbf{Hardware Ontwerpsproject}}
+\subtitle{Indoor localisatie voor Drones}
+\author{Laurens Bogaert, Thomas Deckmyn \& Zeger Van de Vannet\\Groep 5}
+
+\AtBeginSection[]
+{
+  \begin{frame}
+    \frametitle{Inhoudstafel}
+    \tableofcontents[currentsection]
+  \end{frame}
+}
+
+\usepackage{pifont}
 
 \begin{document}
 
@@ -10,13 +21,146 @@
   \titlepage
 \end{frame}
 
-\section{PCB Design}
-  \subsection{Schematic}
+\section{Inleiding}
+\subsection{Situering}
   \begin{frame}
-    \frametitle{Components}
-    Accelerometer
+    \frametitle{Situering}
+    GPS:
+    \begin{itemize}
+        \item Niet voor binnen
+        \item Onnauwkeurig (3 m)
+        \item Hoogtemeting beperkt
+    \end{itemize}
   \end{frame}
-\section{Algorithms}
-\section{Antenna Design}
+  \begin{frame}
+    \frametitle{Situering}
+    3 onderdelen:
+    \begin{itemize}
+      \item Algoritmes
+      \item Antenne
+      \item PCB + Controller
+    \end{itemize}
+  \end{frame}
+\subsection{Planning}
+  \begin{frame}
+    \frametitle{Planning}
+    \begin{tabular}{|l | l | l|}
+      \hline
+      Week & Titel & Status\\
+      \hline
+      1 & Toekenning onderwerp & \checkmark\\
+      2 & Literatuurstudie \& $1^{ste}$ algoritme & \checkmark\\
+      3 & Kennismaking ADS \& $2^{de}$ algoritme & \checkmark\\
+      4 - 6 & Antenne design (L \& T) \& PCB-ontwerp (Z) & \checkmark \\
+      7 & Afwerking $2^{de}$ algoritme \& Fabricage Antenne (T) & \checkmark \\
+       & Vergelijking Algoritmes & \checkmark\\
+      8 & Uitmeten Antenne  & \ldots \\
+      & Implementatie Microcontroller & \ding{55} \\
+      \hline
+    \end{tabular}
+  \end{frame}
+  \begin{frame}
+    \frametitle{Planning}
+    \begin{verse}
+       "Failure is always an option"
+    \end{verse}
+    \pause
+    \begin{itemize}
+      \item Redesign Antenne
+    \end{itemize}
+  \end{frame}
+  \begin{frame}
+    \frametitle{TODO}
+    \begin{itemize}
+      \item Solderen PCB
+      \item Testen PCB
+      \item Implementatie van algoritmes op microcontroller
+      \item Integratie
+    \end{itemize}
+  \end{frame}
+\section{PCB Design}
+\section{Algoritmes}
+\subsection{Ankers}
+  \begin{frame}
+    \frametitle{Opstelling}
+    % TODO: Opstelling.pdf invoegen
+  \end{frame}
+  \begin{frame}
+    \frametitle{Ankers}
+    \begin{itemize}
+      \item Gekende positie
+      \item Afstand via pulsen $\Rightarrow$ UWB
+      \item Meetruis
+    \end{itemize}
+    % TODO: Figuur DME.jpg
+  \end{frame}
+\subsection{Lokalisatie Algoritme}
+  \begin{frame}
+    \frametitle{Algoritmes}
+    \begin{itemize}
+      \item LMS: Least Mean Square
+      \item Kalman 
+    \end{itemize}
+  \end{frame}
+  \begin{frame}
+    \frametitle{Least Mean Square}
+    \begin{itemize}
+      \item Geen geheugen
+        \begin{itemize}
+          \item Geen invloed van het verleden
+        \end{itemize}
+      \item Wat indien er meer vergelijkingen dan onbekenden zijn?
+        \begin{itemize}
+          \item \# ankers $>$ \# dimensies + 1
+          % TODO: LMS.jpg toevoegen
+        \end{itemize}
+    \end{itemize}
+  \end{frame}
+  \begin{frame}
+    \frametitle{Kalman Filter}
+    \begin{itemize}
+      \item Geheugen $\Rightarrow$ matrices
+      \item Bewegingsvrijheid van de drone is beperkt
+      \item 2 onderdelen:
+        \begin{itemize}
+          \item Voorspellen
+          \item Meten en updaten
+        \end{itemize}
+    \end{itemize}
+  \end{frame}
+  \begin{frame}
+    \frametitle{Uitbreiden Kalman Filter}
+    \begin{itemize}
+      \item Extra Sensoren
+        \begin{itemize}
+          \item Accelerometer
+          \item Gyroscoop
+          \item Hoogtemeter
+          \item \ldots
+        \end{itemize}
+      \item Doel: nauwkeuriger volgen
+    \end{itemize}
+  \end{frame}
+\subsection{Resultaten}
+  \begin{frame}
+    \frametitle{Resultaten: Simulaties}
+    % TODO: Afgelegdeweg.jpg (links) en ingezoomd (rechts)
+  \end{frame}
+  \begin{frame}
+    \frametitle{Resultaten: Simulaties}
+    % TODO: Cumulatieve errors
+  \end{frame}
+  \begin{frame}
+    \frametitle{LMS vs. Kalman Filter}
+    \begin{tabular}{|l|l|}
+      \hline
+      LMS & Kalman Filter \\
+      \hline
+      (+) Eenvoudiger & (-) Complexer \\
+      (-) Ruwere schatting & (+) Nauwkeuriger \\
+      \hline
+    \end{tabular}
+  \end{frame}
+\section{Antenne Ontwerp}
 
 \end{document}
