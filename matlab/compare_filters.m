@@ -43,6 +43,10 @@ plot(pos(1,:), pos(2,:));
 hold on
 plot(lms(1,:), lms(2,:), 'r');
 plot(ukf(1,:), ukf(2,:), 'k');
+legend('Gevolgd', 'LMS', 'Kalman');
+title('Pad');
+xlabel('x coördinaat [m]');
+ylabel('y coördinaat [m]');
 
 figure(2);
 err_lms = sum((lms - pos(1:3,:)).^2) / 3;
@@ -51,3 +55,7 @@ err_ukf = sum((ukf(1:3,:) - pos(1:3,:)).^2) / 3;
 cdf_plot(err_lms, 'r');
 hold on;
 cdf_plot(err_ukf, 'k');
+legend('LMS', 'Kalman');
+title('Cumulatieve Distributiefunctie');
+xlabel('Gemiddelde kwadratische fout [m^2]');
+ylabel('Fractie [-]');

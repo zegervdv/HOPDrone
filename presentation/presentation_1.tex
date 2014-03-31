@@ -80,6 +80,21 @@
     \end{itemize}
   \end{frame}
 \section{PCB Design}
+\subsection{Onderdelen}
+  \begin{frame}
+    \frametitle{Onderdelen}
+    \begin{itemize}
+      \item Microcontroller: STM32F4
+      \item Accelerometer
+    \end{itemize}
+  \end{frame}
+  \begin{frame}
+    \begin{figure}
+      \begin{center}
+        \includegraphics[width=\textwidth]{images/layout.pdf}
+      \end{center}
+    \end{figure}
+  \end{frame}
 \section{Algoritmes}
 \subsection{Ankers}
   \begin{frame}
@@ -121,13 +136,12 @@
       \item Wat indien er meer vergelijkingen dan onbekenden zijn?
         \begin{itemize}
           \item \# ankers $>$ \# dimensies + 1
-          \begin{figure}
-            \begin{center}
-              \includegraphics[width=.5\textwidth]{images/LMS.jpg}
-            \end{center}
-          \end{figure}
         \end{itemize}
     \end{itemize}
+    \begin{figure}
+      \centering
+        \includegraphics[width=.5\textwidth]{images/LMS.jpg}
+    \end{figure}
   \end{frame}
   \begin{frame}
     \frametitle{Kalman Filter}
@@ -144,7 +158,7 @@
   \begin{frame}
     \frametitle{Uitbreiden Kalman Filter}
     \begin{itemize}
-      \item Extra Sensoren
+      \item Extra Sensoren (Sensor Fusion)
         \begin{itemize}
           \item Accelerometer
           \item Gyroscoop
@@ -157,11 +171,30 @@
 \subsection{Resultaten}
   \begin{frame}
     \frametitle{Resultaten: Simulaties}
-    % TODO: Afgelegdeweg.jpg (links) en ingezoomd (rechts)
+    \begin{columns}[c]
+      \begin{column}{.5\textwidth}
+        \begin{figure}
+          \begin{center}
+            \includegraphics[width=\linewidth]{images/simulatie_pad.eps}
+          \end{center}
+        \end{figure}
+      \end{column}
+      \begin{column}{.5\textwidth}
+        \begin{figure}
+          \begin{center}
+            \includegraphics[width=\linewidth]{images/simulatie_pad_zoom.eps}
+          \end{center}
+        \end{figure}
+      \end{column}
+    \end{columns}
   \end{frame}
   \begin{frame}
     \frametitle{Resultaten: Simulaties}
-    % TODO: Cumulatieve errors
+    \begin{figure}
+      \begin{center}
+        \includegraphics[width=.6\linewidth]{images/simulatie_cumulatief.eps}
+      \end{center}
+    \end{figure}
   \end{frame}
   \begin{frame}
     \frametitle{LMS vs. Kalman Filter}
