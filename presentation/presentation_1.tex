@@ -1,5 +1,6 @@
 \documentclass{beamer}
 \usetheme[faculty=tw,language=dutch,framenumber,totalframenumber]{UniversiteitGent}
+\usepackage{siunitx}
 
 \title{\textbf{Hardware Ontwerpsproject}}
 \subtitle{Indoor localisatie voor Drones}
@@ -162,5 +163,70 @@
     \end{tabular}
   \end{frame}
 \section{Antenne Ontwerp}
+  \begin{frame}
+  \frametitle{Referentie Antenne}
+  \begin{columns}[c]
+  \begin{column}{0.5\textwidth}
+    \begin{itemize}
+      \item BroadSpec\texttrademark  UWB Antenne 
+      \item Omnidirectioneel in azimuth
+      \item Ontwerpsparameters:
+      \begin{itemize}
+        \item $\SI{3.1}{\giga\hertz}$ - $\SI{5.3}{\giga\hertz}$
+        \item Gain nominaal $\approx \SI{3}{\decibel}$ 
+        \item Lineaire fase respons
+        \item Efficientie $\approx$ 90\%
+      \end{itemize}
+    \end{itemize}
+    \end{column}
+
+    \begin{column}{0.5\textwidth}
+    \centering
+      \includegraphics[width=0.7\textwidth]{images/Pulson400UWB.jpg}
+    \end{column}
+    \end{columns}
+
+  \end{frame}
+
+  \begin{frame}
+  \frametitle{Antenne Ontwerp}
+  \begin{itemize}
+    \item Start: Rechthoekige Patch Antenne
+      \begin{itemize}
+        \item Lengte: Resonantie frequentie $f_0 = \SI{4.2}{\mega\hertz}$
+              \begin{align}  L = \frac{c}{2 f_r \sqrt{\epsilon_r}}  \nonumber \end{align}
+        \item Breedte: \begin{align} \text{Uitgestraald vermogen} \nonumber & \implies \text{Resonantie weerstand} \downarrow \\ & \implies \text{Bandbreedte} \uparrow, \text{Efficiency} \uparrow \nonumber \end{align}
+
+      \end{itemize}
+    \item Dimensies drone! $\implies$ Andere manier BW $\uparrow$ 
+    \end{itemize}
+  \end{frame}
+
+  \begin{frame}
+  \frametitle{Antenne Ontwerp}
+  
+  \begin{columns}[c]
+  \begin{column}{0.5\textwidth}
+    \begin{itemize}
+      \item Toevoegen \textit{Trap} $\implies$ BW $\uparrow$
+      \item Partieel grondvlak
+      \begin{itemize}
+        \item Optimaliseren dimensies \begin{align} & \implies \text{Vlakke } S_{11} \nonumber \\ & \implies \text{Lineaire fase} \nonumber \end{align}
+      \end{itemize}
+
+    \end{itemize}
+  \end{column}
+
+  \begin{column}{0.5\textwidth}
+  \centering
+    \includegraphics[width=0.7\textwidth]{images/antenne_ontwerp.png}
+  \end{column}
+  \end{columns}
+  \end{frame}
+
+  \begin{frame}
+  \frametitle{Simulatie Antenne}
+
+  \end{frame}
 
 \end{document}
