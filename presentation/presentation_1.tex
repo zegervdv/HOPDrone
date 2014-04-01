@@ -2,6 +2,7 @@
 \usetheme[faculty=tw,language=dutch,framenumber,totalframenumber]{UniversiteitGent}
 \usepackage{siunitx}
 
+
 \title{\textbf{Hardware Ontwerpsproject}}
 \subtitle{Indoor localisatie voor Drones}
 \author{Laurens Bogaert, Thomas Deckmyn \& Zeger Van de Vannet\\Groep 5}
@@ -207,20 +208,21 @@
       \hline
     \end{tabular}
   \end{frame}
-\section{Antenne Ontwerp}
+\section{UWB Antenne}
+\subsection{Referentie}
   \begin{frame}
-  \frametitle{Referentie Antenne}
+  \frametitle{Referentie}
   \begin{columns}[c]
   \begin{column}{0.5\textwidth}
     \begin{itemize}
       \item BroadSpec\texttrademark  UWB Antenne 
-      \item Omnidirectioneel in azimuth
+      \item Dipool: omni in azimuth
       \item Ontwerpsparameters:
       \begin{itemize}
         \item $\SI{3.1}{\giga\hertz}$ - $\SI{5.3}{\giga\hertz}$
         \item Gain nominaal $\approx \SI{3}{\decibel}$ 
         \item Lineaire fase respons
-        \item Efficientie $\approx$ 90\%
+        \item Effici\"entie $\approx$ 90\%
       \end{itemize}
     \end{itemize}
     \end{column}
@@ -233,14 +235,45 @@
 
   \end{frame}
 
+\subsection{Ontwerp}
   \begin{frame}
-  \frametitle{Antenne Ontwerp}
+  \frametitle{Ontwerp UWB Antenne}
+  \begin{columns}[c]
+  \begin{column}{0.5\textwidth}
+  \begin{itemize}
+        \item UWB topologie
+         \begin{itemize}
+            \item Bow Tie
+            \item Halter 
+           \end{itemize}
+        \item $S_{11}$ niet vlak, fase niet lineair
+        \begin{itemize}
+          \item ADS: optimaliseren
+        \end{itemize}
+        \item Black foam: $\epsilon_r = 1.495 \implies$ \\ Aromatisch poly: $\epsilon_r = 2.55$ 
+      \end{itemize}
+    \begin{figure}[H]
+    \includegraphics[width=0.7\textwidth]{images/halter.pdf}
+    \end{figure}
+  \end{column}
+
+  \begin{column}{0.5\textwidth}
+    \centering
+    \begin{figure}[H]
+    \includegraphics[width=0.7\textwidth]{images/bowtie.pdf}
+    \end{figure}
+  \end{column}
+  \end{columns}
+  \end{frame}
+
+  \begin{frame}
+  \frametitle{Ontwerp UWB Antenne}
   \begin{itemize}
     \item Start: Rechthoekige Patch Antenne
       \begin{itemize}
         \item Lengte: Resonantie frequentie $f_0 = \SI{4.2}{\mega\hertz}$
               \begin{align}  L = \frac{c}{2 f_r \sqrt{\epsilon_r}}  \nonumber \end{align}
-        \item Breedte: \begin{align} \text{Uitgestraald vermogen} \nonumber & \implies \text{Resonantie weerstand} \downarrow \\ & \implies \text{Bandbreedte} \uparrow, \text{Efficiency} \uparrow \nonumber \end{align}
+        \item Breedte: \begin{align} \text{Uitgestraald vermogen} \nonumber & \implies \text{Resonantie weerstand} \downarrow \\ & \implies \text{Bandbreedte} \uparrow, \text{Effici\"entie} \uparrow \nonumber \end{align}
 
       \end{itemize}
     \item Dimensies drone! $\implies$ Andere manier BW $\uparrow$ 
@@ -248,7 +281,7 @@
   \end{frame}
 
   \begin{frame}
-  \frametitle{Antenne Ontwerp}
+  \frametitle{Ontwerp UWB Antenne}
   
   \begin{columns}[c]
   \begin{column}{0.5\textwidth}
@@ -264,14 +297,74 @@
 
   \begin{column}{0.5\textwidth}
   \centering
-    \includegraphics[width=0.7\textwidth]{images/antenne_ontwerp.png}
+    \includegraphics[width=0.7\textwidth]{images/patch_stairs.pdf}
   \end{column}
   \end{columns}
   \end{frame}
 
+\subsection{Simulatie}
   \begin{frame}
-  \frametitle{Simulatie Antenne}
+  \frametitle{ADS Simulatie}
+    \begin{columns}[c]
+      \begin{column}{0.5\textwidth}
+      \begin{itemize}
+        \item $S_{11} < \SI{-10}{\decibel}$: \\ $\SI{3.1}{\giga\hertz}$ - $\SI{6.7}{\giga\hertz}$
+      \end{itemize}
+        \begin{figure}
+          \includegraphics[width=\textwidth]{images/S11_ADS_sim.eps}
+        \end{figure}
 
+      \end{column}
+
+      \begin{column}{0.5\textwidth}
+      \begin{itemize}
+        \item Lineaire fase respons: \\ OK
+      \end{itemize}
+        \begin{figure}
+          \includegraphics[width=\textwidth]{images/fase_respons_ADS_sim.eps}
+        \end{figure}
+      \end{column}
+    \end{columns}
+  \end{frame}
+
+  \begin{frame}
+  \frametitle{ADS Simulatie}
+    \begin{columns}[c]
+      \begin{column}{0.5\textwidth}
+      \begin{itemize}
+        \item Effici\"entie 50\% - 96\% in gewenste band
+      \end{itemize}
+        \begin{figure}
+          \includegraphics[width=\textwidth]{images/eff_ADS_sim.eps}
+        \end{figure}
+
+      \end{column}
+
+      \begin{column}{0.5\textwidth}
+      \begin{itemize}
+        \item Gain $\approx \SI{3}{\decibel}$ in gewenste band 
+      \end{itemize}
+        \begin{figure}
+          \includegraphics[width=\textwidth]{images/gain_ADS_sim.eps}
+        \end{figure}
+      \end{column}
+    \end{columns}
+  \end{frame}
+
+\subsection{Prototype}
+  \begin{frame}
+  \frametitle{Prototype}
+    \begin{itemize}
+      \item Metingen worden verwerkt
+    \end{itemize}
+    \begin{columns}[c]
+    \begin{column}{0.5\textwidth}
+      \includegraphics[width=\textwidth, height=0.75\textwidth]{images/patch_proto_front.jpg}
+    \end{column}%
+    \begin{column}{0.5\textwidth}
+      \includegraphics[width=\textwidth, height=0.75\textwidth]{images/patch_proto_back.jpg}
+    \end{column}
+    \end{columns}
   \end{frame}
 
 \end{document}
