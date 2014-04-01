@@ -33,7 +33,7 @@ close all
 %meas_file_fold_path = 'C:\Program Files\MATLAB71\work\Measurement_Scripts_New\Orban_meas_01_09\measurements';
 %meas_file_fold_path = 'C:\Program Files\MATLAB71\work\Measurement_Scripts_New\dppa_jacket_front_bot-no_bot_meas_29_10_08\measurements_az_plane';
 %meas_file_fold_path = 'C:\Program Files\MATLAB71\work\Measurement_Scripts_New\Patrick_onbody_meas\measurements';
-meas_file_fold_path = 'C:\Program Files\MATLAB71\work\Measurement_Scripts_New\Measurements_bending_rad_pat_aram_stretch_09_11\measurements';
+meas_file_fold_path = '.';
 
 %meas_file_name_no_ext = 'gps5_pattern_xz_yz_text_meas';
 %meas_file_name_no_ext = 'dppa_jacket_bot_port2';
@@ -42,7 +42,7 @@ meas_file_fold_path = 'C:\Program Files\MATLAB71\work\Measurement_Scripts_New\Me
 %meas_file_name_no_ext = 'gps_tuned';
 %meas_file_name_no_ext = 'dppa_jacket_no_bot_port1';
 %meas_file_name_no_ext = 'test_12_radpat';
-meas_file_name_no_ext = 'flat_rad_pat_xz_yz_1_575';
+meas_file_name_no_ext = 'UWB_patch_stairs_V2_all';
 
 
 %meas_file_fold_path = 'C:\Program Files\MATLAB71\work\GPS_prot_4_meas\open_space';
@@ -55,7 +55,7 @@ meas_file_name_no_ext = 'flat_rad_pat_xz_yz_1_575';
 %meas_file_name_no_ext = 'GPS_luigi_4_ob_exp';
 
 
-meas_file_name = [meas_file_fold_path,'\',meas_file_name_no_ext,'.txt'];
+meas_file_name = [meas_file_fold_path,'/',meas_file_name_no_ext,'.txt'];
 
 %-------------------------------------------------------
 %Set name of the 2port calibration. file from NWA 
@@ -64,19 +64,19 @@ meas_file_name = [meas_file_fold_path,'\',meas_file_name_no_ext,'.txt'];
 %cal_file_name = 'C:\Program Files\MATLAB71\work\GPS_prot_4_meas\open_space\GPS_luigi_4_os_pol0_data.txt';   %must be obtained by the NWA saving in the "DATA" format (and not "FORMATTED")
 %cal_file_name = 'C:\Program Files\MATLAB71\work\Measurement_Scripts_New\ref_meas_test_pol0.txt';   %must be obtained by the NWA saving in the "DATA" format (and not "FORMATTED")
 %cal_file_name = 'C:\Program Files\MATLAB71\work\Measurement_Scripts_New\Patrick_onbody_meas\ref_measurements\ref_meas_BL_DD_V.txt';   %must be obtained by the NWA saving in the "DATA" format (and not "FORMATTED")
-cal_file_name = 'C:\Program Files\MATLAB71\work\Measurement_Scripts_New\Measurements_bending_rad_pat_aram_stretch_09_11\ref_measurements\flat_pol_par.txt';   %must be obtained by the NWA saving in the "DATA" format (and not "FORMATTED")
+cal_file_name = 'ref_meas_patch_stairs_pol0.cti';   %must be obtained by the NWA saving in the "DATA" format (and not "FORMATTED")
 
 
 %-------------------------------------------------------
 %Set the output folder path 
 %-------------------------------------------------------
 %out_folder_path = 'C:\Program Files\MATLAB71\work\Measurement_Scripts_New\Patrick_onbody_meas\processed_meas_and_plots';
-out_folder_path = 'C:\Program Files\MATLAB71\work\Measurement_Scripts_New\Measurements_bending_rad_pat_aram_stretch_09_11\proc_meas_and_plots';
+out_folder_path = '.';
 
 %-----------------------------------
 %Set distance between antennas [m]
 %-----------------------------------
-d=4.182;
+d=4.66;
 
 %---------------------------------END Insert Inputs-------------------------------%
 
@@ -267,7 +267,7 @@ figure
 plot(azimuth, Gr(ind_roll_0,:))
 title('Gain Pattern in dB on XZ plane')
 G_XZ = [azimuth, Gr(ind_roll_0,:).'];
-save([out_folder_path,'\',meas_file_name_no_ext,'_gain_XZ.txt'], 'G_XZ', '-ascii');
+save([out_folder_path,'/',meas_file_name_no_ext,'_gain_XZ.txt'], 'G_XZ', '-ascii');
 end
 
 if ind_roll_90  %chek if roll=90 data exists
@@ -275,16 +275,16 @@ figure
 plot(azimuth, Gr(ind_roll_90,:))
 title('Gain Pattern in dB on YZ plane')
 G_YZ = [azimuth, Gr(ind_roll_90,:).'];
-save([out_folder_path,'\',meas_file_name_no_ext,'_gain_YZ.txt'], 'G_YZ', '-ascii');
+save([out_folder_path,'/',meas_file_name_no_ext,'_gain_YZ.txt'], 'G_YZ', '-ascii');
 end
 
-saveas(figure(1),[out_folder_path,'\',meas_file_name_no_ext,'_gain_XZ.fig'])
-saveas(figure(2),[out_folder_path,'\',meas_file_name_no_ext,'_gain_YZ.fig'])
+saveas(figure(1),[out_folder_path,'/',meas_file_name_no_ext,'_gain_XZ.fig'])
+saveas(figure(2),[out_folder_path,'/',meas_file_name_no_ext,'_gain_YZ.fig'])
 
 
 %build S22(f) (antenna under test) (freq, |s11|dB) for plot or analysis purposes
 S22_dB_f = [Freq_list,S22_cal_dB];
-save([out_folder_path,'\',meas_file_name_no_ext,'_S11_dB_f.txt'], 'S22_dB_f', '-ascii');
+save([out_folder_path,'/',meas_file_name_no_ext,'_S11_dB_f.txt'], 'S22_dB_f', '-ascii');
 
 
 
