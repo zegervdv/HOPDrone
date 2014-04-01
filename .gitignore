@@ -1,5 +1,7 @@
 *.pdf
 
+!presentation/images/*.pdf
+presentation/images/*-eps-converted-to.pdf
 *.s#*
 *.b#*
 *.l#*
