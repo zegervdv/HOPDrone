@@ -33,7 +33,7 @@ close all;
 %meas_file_name = 'pattern_3D_dppa_2_port2_osExp';
 
 meas_file_folder = '.';
-meas_file_name = 'uwb_dipole_3D_1G';
+meas_file_name = 'uwb_dipole_3D_4_5G';
 
 
 meas_file_path = [meas_file_folder,'/',meas_file_name,'.txt'];
@@ -50,7 +50,7 @@ meas_file_path = [meas_file_folder,'/',meas_file_name,'.txt'];
 cal_file_folder = '.';
 cal_file_name = 'ref_meas2_dipole_board_pol0';
 
-cal_file_path = [cal_file_folder,'/',cal_file_name,'.txt'];
+cal_file_path = [cal_file_folder,'/',cal_file_name,'.cti'];
 
 %-------------------------------------------------------
 % Set Out Folder
@@ -65,7 +65,7 @@ out_folder = '.';
 %-----------------------------------
 %Set distance between antennas [m]
 %-----------------------------------
-d=4.355;
+d=4.69;
 %---------------------------------END Insert Inputs-------------------------------%
 
 
@@ -78,7 +78,7 @@ d=4.355;
 %--------------------------
 [S21_pol_0,azimuth,roll,frequency, polarization_0] = parser(meas_file_path, 'Polarization', 0);
 
-[S21_pol_90,azimuth,roll,frequency, polarization_90] = parser(meas_file_path, 'Polarization', 90);
+%[S21_pol_90,azimuth,roll,frequency, polarization_90] = parser(meas_file_path, 'Polarization', 90);
 
 %note: 
 % data_pol_0 and data_pol_90  are  matrices phipoints x thetapoints, each element of
@@ -89,12 +89,12 @@ d=4.355;
 %we re-obtain the matrices phipoints x thetapoints of the modulus of S21:
 S21_dB_pol_0 = 20*log10(abs(S21_pol_0));
 
-S21_dB_pol_90 = 20*log10(abs(S21_pol_90));
+% S21_dB_pol_90 = 20*log10(abs(S21_pol_90));
 
 %..and of the phases
 S21_ph_pol_0 = angle(S21_pol_0);
 
-S21_ph_pol_90 = angle(S21_pol_90);
+% S21_ph_pol_90 = angle(S21_pol_90);
 
 
 
@@ -248,16 +248,17 @@ Corr = gain_cal_f - S21_dB_pol_0(ind_roll_0, ind_az_0);
 
 Gr_pol0 =  S21_dB_pol_0 + Corr;
 
-Gr_pol90 = S21_dB_pol_90 + Corr;
+% Gr_pol90 = S21_dB_pol_90 + Corr;
 
 %We pass in linear scale:
 Gr_pol0_lin = 10.^(Gr_pol0/10);
 
-Gr_pol90_lin = 10.^(Gr_pol90/10);
+% Gr_pol90_lin = 10.^(Gr_pol90/10);
 
 %The gain (pattern) is the sum of the last two, in linear scale
 %(it can be demonstrated)
-Gr_lin = Gr_pol0_lin + Gr_pol90_lin;
+% Gr_lin = Gr_pol0_lin + Gr_pol90_lin;
+Gr_lin = Gr_pol0_lin;
 
 %Gain (pattern) in dB
 Gr=10*log10(Gr_lin);
@@ -319,7 +320,7 @@ display(['radiation efficiency =',num2str(Rad_Eff)]);
 % Gr_YZ = [[fliplr(-azimuth(2:end)'),azimuth']' , [fliplr(Gr(ind_roll_270,1:end-1)), Gr(ind_roll_90,:)]'];
 
 Gr_XZ = [azimuth , Gr_mat(1,:).'];
-Gr_YZ = [azimuth, Gr_mat(91,:).'];
+% Gr_YZ = [azimuth, Gr_mat(91,:).'];
 
 %save([out_folder,'\',meas_file_name,'_gain_XZ.txt'], 'Gr_XZ', '-ascii');
 %save([out_folder,'\',meas_file_name,'_gain_YZ.txt'], 'Gr_YZ', '-ascii');
