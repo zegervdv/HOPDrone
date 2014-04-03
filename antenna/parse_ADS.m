@@ -1,17 +1,17 @@
 close all;
-    fileID = fopen('S11_UWB.txt');
+    fileID = fopen('simulations/S11_UWB.txt');
     C = textscan(fileID,'%f32 %f32');
     fclose(fileID);
     
-    fileID2 = fopen('Phase_UWB.txt');
+    fileID2 = fopen('simulations/Phase_UWB.txt');
     C2 = textscan(fileID2,'%f32 %f32');
     fclose(fileID2);
     
-    fileID3 = fopen('gain_UWB.txt');
+    fileID3 = fopen('simulations/gain_UWB.txt');
     C3 = textscan(fileID3,'%f32 %f32');
     fclose(fileID3);
     
-    fileID4 = fopen('eff_UWB.txt');
+    fileID4 = fopen('simulations/eff_UWB.txt');
     C4 = textscan(fileID4,'%f32 %f32');
     fclose(fileID4);
     

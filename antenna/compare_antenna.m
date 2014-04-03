@@ -1,14 +1,14 @@
 % Compare original and new antennas
 
-[origFreq, origS11] = VNA_parser_single('s11_ref.cti');
-[patchFreq, patchS11] = VNA_parser_single('s11_patch_stairs_v1.cti');
-[patch2Freq, patch2S11] = VNA_parser_single('s11_patch_stairs.cti');
+[origFreq, origS11] = VNA_parser_single('measurements/reflections/s11_ref.cti');
+[patchFreq, patchS11] = VNA_parser_single('measurements/reflections/s11_patch_stairs_v1.cti');
+[patch2Freq, patch2S11] = VNA_parser_single('measurements/reflections/s11_patch_stairs.cti');
 
-fileID = fopen('../presentation/data/S11_UWB.txt');
+fileID = fopen('simulations/S11_UWB.txt');
 C = textscan(fileID,'%f32 %f32');
 fclose(fileID);
 
-fileID = fopen('patch_stairs_v2.txt');
+fileID = fopen('simulations/patch_stairs_v2.txt');
 C2 = textscan(fileID,'%f32 %f32');
 fclose(fileID);
 
