@@ -15,12 +15,12 @@ fclose(fileID);
 close all
 figure(1);
 subplot(2,1,1);
-title('Version 1')
 plot(origFreq, 10*log(abs(origS11)));
 hold on;
 plot(patchFreq, 10*log(abs(patchS11)),'r');
 plot(C{1}*1e-9, C{2}, 'k');
 
+title('Version 1')
 legend('Reference', 'Patch','Simulation','Location','SouthEast');
 grid on;
 ylim([-50,0]);
@@ -29,13 +29,13 @@ xlabel('Frequency [GHz]');
 ylabel('S11 Magnitude [dB]');
 
 subplot(2,1,2);
-title('Version 2')
 plot(origFreq, 10*log(abs(origS11)));
 hold on
 plot(patch2Freq, 10*log(abs(patch2S11)),'r');
 plot(C2{1}*1e-9, C2{2}, 'k');
-legend('Reference', 'Patch','Simulation','Location','SouthEast');
 
+title('Version 2')
+legend('Reference', 'Patch','Simulation','Location','SouthEast');
 grid on;
 ylim([-50,0]);
 xlim([3,6]);
