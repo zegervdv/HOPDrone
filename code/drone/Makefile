@@ -4,7 +4,7 @@
 
 # Put your source files here (or *.c, etc)
 SRCS = main.c system_stm32f4xx.c
-# SRCS += stm32f4_discovery.c
+SRCS += system.c
 SRCS += leds.c
 
 # Drivers
