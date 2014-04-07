@@ -60,11 +60,14 @@ int main(void)
 
 	// Orange LED on
 	/* STM32F4_Discovery_LEDOn(LED3); */
-  InitGPIO();
+  LED_init(LED1);
+  LED_init(LED2);
+  LED_init(LED3);
 
 	// Configure the Random Number Generator, this is described in stm32f4xx_rng.c
 	/* RNG_Config(); */
-
+  LED_on(LED2);
+  LED_on(LED3);
   flash_error();
 
 	// Infinite loop
