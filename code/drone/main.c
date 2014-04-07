@@ -210,4 +210,7 @@ int main(void) {
   }
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Move initialization code to system.c
