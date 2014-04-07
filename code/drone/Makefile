@@ -10,6 +10,29 @@ SRCS += leds.c
 # Drivers
 SRCS += stm32f4xx_rcc.c stm32f4xx_exti.c stm32f4xx_gpio.c stm32f4xx_it.c stm32f4xx_usart.c misc.c stm32f4xx_rng.c stm32f4xx_syscfg.c
 
+# ARM math - Matrix functions
+SRCS += arm_mat_add_f32.c\
+				arm_mat_add_q15.c\
+				arm_mat_add_q31.c\
+				arm_mat_init_f32.c\
+				arm_mat_init_q15.c\
+				arm_mat_init_q31.c\
+				arm_mat_inverse_f32.c\
+				arm_mat_mult_f32.c\
+				arm_mat_mult_fast_q15.c\
+				arm_mat_mult_fast_q31.c\
+				arm_mat_mult_q15.c\
+				arm_mat_mult_q31.c\
+				arm_mat_scale_f32.c\
+				arm_mat_scale_q15.c\
+				arm_mat_scale_q31.c\
+				arm_mat_sub_f32.c\
+				arm_mat_sub_q15.c\
+				arm_mat_sub_q31.c\
+				arm_mat_trans_f32.c\
+				arm_mat_trans_q15.c\
+				arm_mat_trans_q31.c
+
 # Binaries will be generated with this name (.elf, .bin, .hex, etc)
 PROJ_NAME=drone
 
@@ -28,13 +51,18 @@ CFLAGS += -mlittle-endian -mthumb -mcpu=cortex-m4 -mthumb-interwork
 CFLAGS += -mfloat-abi=hard -mfpu=fpv4-sp-d16
 CFLAGS += -I.
 
+CFLAGS += -fno-strict-aliasing
 CFLAGS += -DUSE_STDPERIPH_DRIVER
+CFLAGS += -DSTM32D4XX
+CFLAGS += -DARM_MATH_CM4
+CFLAGS += -D__FPU_PRESENT
 
 vpath %.c \
 			$(STM_COMMON)/Libraries/STM32F4xx_StdPeriph_Driver/src \
 			$(STM_COMMON)/Libraries/STM32_USB_OTG_Driver/src \
 			$(STM_COMMON)/Libraries/STM32_USB_Device_Library/Core/src \
-			$(STM_COMMON)/Libraries/STM32_USB_Device_Library/Class/cdc/src
+			$(STM_COMMON)/Libraries/STM32_USB_Device_Library/Class/cdc/src \
+			$(STM_COMMON)/Libraries/CMSIS/DSP_Lib/Source/MatrixFunctions
 
 # Include files from STM libraries
 CFLAGS += -I$(STM_COMMON)/Utilities/STM32F4-Discovery

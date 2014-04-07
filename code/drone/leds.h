@@ -52,7 +52,7 @@ void LED_toggle(type_led led);
 
 /**
  * Flash Error LED1
- * Use to indicate an error occured
+ * Use to indicate an error has occured
  * Causes infinite loop and will block further execution
  */
 void flash_error(void);
