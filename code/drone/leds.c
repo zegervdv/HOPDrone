@@ -34,11 +34,11 @@ void LED_toggle(type_led led) {
   led_bank[led]->ODR ^= led_pin[led];
 }
 
-void flash_error(void) {
-  LED_on(LED1);
+void LED_blink(type_led led) {
+  LED_on(led);
   while(1){
     int nTick =  0x7FFFFF;
     for(; nTick != 0; nTick--);
-    LED_toggle(LED1);
+    LED_toggle(led);
   }
 }

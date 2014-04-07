@@ -51,8 +51,8 @@ void LED_off(type_led led);
 void LED_toggle(type_led led);
 
 /**
- * Flash Error LED1
- * Use to indicate an error has occured
+ * Blink LED
  * Causes infinite loop and will block further execution
+ * led - led identifier
  */
-void flash_error(void);
+void LED_blink(type_led led);

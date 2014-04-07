@@ -68,7 +68,7 @@ int main(void)
 	/* RNG_Config(); */
   LED_on(LED2);
   LED_on(LED3);
-  flash_error();
+  LED_blink(LED1);
 
 	// Infinite loop
 	while(1)
