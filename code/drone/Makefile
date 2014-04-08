@@ -6,12 +6,21 @@
 SRCS = main.c system_stm32f4xx.c
 SRCS += system.c
 SRCS += leds.c
+SRCS += accelerometer.c
 
 # RCM communication
 SRCS += lcm.c rcm.c rcmIf.c
 
 # Drivers
-SRCS += stm32f4xx_rcc.c stm32f4xx_exti.c stm32f4xx_gpio.c stm32f4xx_it.c stm32f4xx_usart.c misc.c stm32f4xx_rng.c stm32f4xx_syscfg.c
+SRCS += stm32f4xx_rcc.c\
+				stm32f4xx_exti.c\
+				stm32f4xx_gpio.c\
+				stm32f4xx_i2c.c\
+				stm32f4xx_it.c\
+				stm32f4xx_usart.c\
+				misc.c\
+				stm32f4xx_rng.c\
+				stm32f4xx_syscfg.c
 
 # ARM math - Matrix functions
 SRCS += arm_mat_add_f32.c\
