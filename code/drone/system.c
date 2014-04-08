@@ -9,6 +9,7 @@
 void init_system(void) {
   char data[1];
 
+  /* Initialize LEDs */
   LED_init(LED1);
   LED_init(LED2);
   LED_init(LED3);
@@ -27,6 +28,9 @@ void init_system(void) {
   if(rcmDataSend(RCM_ANTENNAMODE_TXA_RXA, 1, data))
     LED_on(LED2);
 
+  /* Initialize accelerometer */
+  I2C_init();
+  accelerometer_init();
 }
 
 void Delay(__IO uint32_t nTick) {

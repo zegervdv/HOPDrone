@@ -5,8 +5,9 @@
 
 #include "stm32f4xx_i2c.h"
 
-#define ACC_I2C_ADDRESS_READ  0x39
-#define ACC_I2C_ADDRESS_WRITE 0x38
+#define ACC_I2C_ADDRESS       0x1C
+#define ACC_I2C_ADDRESS_WRITE ACC_I2C_ADDRESS<<0
+#define ACC_I2C_ADDRESS_READ  ACC_I2C_ADDRESS<<1
 
 
 /**

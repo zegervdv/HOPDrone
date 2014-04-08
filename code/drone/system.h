@@ -8,6 +8,7 @@
 #include "arm_math.h"
 #include "rcm.h"
 #include "lcm.h"
+#include "accelerometer.h"
 
 /**
  * Initialize all peripherals
