@@ -6,6 +6,7 @@
 SRCS = main.c system_stm32f4xx.c
 SRCS += system.c
 SRCS += leds.c
+SRCS += kalman.c
 
 # Drivers
 SRCS += stm32f4xx_rcc.c stm32f4xx_exti.c stm32f4xx_gpio.c stm32f4xx_it.c stm32f4xx_usart.c misc.c stm32f4xx_rng.c stm32f4xx_syscfg.c

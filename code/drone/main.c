@@ -21,6 +21,8 @@
 #include <stdint.h>
 #include "stm32f4xx.h"
 #include "system.h"
+#include "kalman.h"
+
 
 
 void Delay(__IO uint32_t nTick);
@@ -35,6 +37,9 @@ void Delay(__IO uint32_t nTick);
 
 int main(void)
 {
+  position_t position;
+  position_t sigmapoints[NR_SIGMAPOINTS];
+
   init_system();
 
 
