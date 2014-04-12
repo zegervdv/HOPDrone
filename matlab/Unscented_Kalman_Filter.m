@@ -84,21 +84,21 @@ for k = 1:steps
     end
 
     Ef = mkmin;
-    Eh = Wm * Z';
+    Eh = Z * Wm';
 
     cov_fh = zeros(Nx, Na);
     for i = 1:2*Nx+1
-        cov_fh = cov_fh + Wc(i) * (Y(:,i) - Ef) * (Z(:,i) - Eh')';
+        cov_fh = cov_fh + Wc(i) * (Y(:,i) - Ef) * (Z(:,i) - Eh)';
     end
 
     varh = zeros(Na,Na);
     for i = 1:2*Nx+1
-        varh = varh + Wc(i) * (Z(:,i) - Eh') * (Z(:,i) - Eh')';
+        varh = varh + Wc(i) * (Z(:,i) - Eh) * (Z(:,i) - Eh)';
     end
 
     K = cov_fh / (varh + R);
     mu = Eh;
-    mk = mkmin + K * (z(k,:) - mu)';
+    mk = mkmin + K * (z(k,:)' - mu);
     Pk = Pkmin - K * (varh + R) * K';
 
     % Update var and prevX
