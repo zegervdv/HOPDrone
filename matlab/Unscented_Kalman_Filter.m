@@ -29,7 +29,7 @@ anch = [a1; a2; a3; a4] * 10;
 var = eye(Nx);
 
 % N = 6 => 13 sigma points
-sigma = zeros(2*Nx + 1, Nx);
+sigma = zeros(Nx, 2*Nx + 1);
 
 % Weights
 Wm = ones(1, 2*Nx + 1);
@@ -66,20 +66,20 @@ for k = 1:steps
     Pkmin = F * var * F' + G * var_u * G';
 
     % Calculate sigmapoints
-    sigma(1, :) = mkmin';
-    root = sqrt(Nx + kappa) * cholcov(Pkmin);
+    sigma(:,1) = mkmin;
+    root = (sqrt(Nx + kappa) * cholcov(Pkmin))';
     for i = 2:Nx+1
-       sigma(i, :) = mkmin' + root(i-1, :);
-       sigma(Nx + i, :) = mkmin' - root(i-1, :);
+       sigma(:,i) = mkmin + root(:,i-1);
+       sigma(:,Nx + i) = mkmin - root(:,i-1);
     end
 
     % Measurement update
     % Y = F * sigma';
-    Y = sigma';
+    Y = sigma;
 
     for i=1:2*Nx+1
       for j=1:Na
-        Z(j,i) = norm(sigma(i,1:3) - anch(j,:));
+        Z(j,i) = norm(sigma(1:3,i) - anch(j,:)');
       end
     end
 
