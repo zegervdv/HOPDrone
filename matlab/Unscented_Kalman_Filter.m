@@ -16,15 +16,15 @@ var_u = 25e-2 * eye(Nx/2); % Noise variance on prediction: 1cm
 
 % Anchor points
 Na = 4;
-a1 = [0,0,2];
-a2 = [2,0,0];
-a3 = [0,2,0];
-a4 = [2,2,2];
-a5 = [0,0,0];
-a6 = [0,2,2];
-a7 = [2,0,2];
-a8 = [2,2,0];
-anch = [a1; a2; a3; a4] * 10;
+a1 = [0,0,2]';
+a2 = [2,0,0]';
+a3 = [0,2,0]';
+a4 = [2,2,2]';
+a5 = [0,0,0]';
+a6 = [0,2,2]';
+a7 = [2,0,2]';
+a8 = [2,2,0]';
+anch = [a1 a2 a3 a4] * 10;
 
 var = eye(Nx);
 
@@ -51,10 +51,12 @@ prevX = zeros(Nx, 1);
 % Movement and measurements
 estimate = zeros(Nx,steps);
 
+size(anch)
+
 z = zeros(steps, Na);
 for i = 1:steps
     for j = 1:Na
-        z(i,j) = norm(pos(1:3,i)' - anch(j,:)) + std_meas*randn(1);
+        z(i,j) = norm(pos(1:3,i) - anch(:,j)) + std_meas*randn(1);
     end
 end
 
@@ -79,7 +81,7 @@ for k = 1:steps
 
     for i=1:2*Nx+1
       for j=1:Na
-        Z(j,i) = norm(sigma(1:3,i) - anch(j,:)');
+        Z(j,i) = norm(sigma(1:3,i) - anch(:,j));
       end
     end
 
