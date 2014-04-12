@@ -50,6 +50,7 @@ void kalman_update_sigmapoints(int nr_points, position_t* sigmapoints, position_
 
 /**
  * Cholesky decomposition
+ * see: http://rosettacode.org/wiki/Cholesky_decomposition#C
  * matrix - arm_matrix_instance_f32 to be decomposed
  *
  * Returns the decomposed arm_matrix_instance_f32

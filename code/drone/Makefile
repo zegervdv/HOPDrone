@@ -35,16 +35,18 @@ SIZE=arm-none-eabi-size
 
 CFLAGS  = -g -O2 -Wall -Tstm32_flash.ld
 CFLAGS += -mlittle-endian -mthumb -mcpu=cortex-m4 -mthumb-interwork
-CFLAGS += -mfloat-abi=hard -mfpu=fpv4-sp-d16
+CFLAGS += -mfloat-abi=hard -mfpu=fpv4-sp-d16 -fsingle-precision-constant
 CFLAGS += -I.
 
 CFLAGS += -fno-strict-aliasing
 CFLAGS += -DUSE_STDPERIPH_DRIVER
 CFLAGS += -DSTM32D4XX
 CFLAGS += -DARM_MATH_CM4
-CFLAGS += -D__FPU_PRESENT
+CFLAGS += -D__FPU_PRESENT=1
 
+CFLAGS += -L/usr/arm-none-eabi/lib/thumb/cortex-m4/float-abi-hard/fpuv4-sp-d16
 CFLAGS += --specs=nosys.specs
+LIBS += /usr/arm-none-eabi/lib/thumb/cortex-m4/float-abi-hard/fpuv4-sp-d16/libc.a /usr/arm-none-eabi/lib/thumb/cortex-m4/float-abi-hard/fpuv4-sp-d16/libm.a
 
 vpath %.c \
 			$(STM_COMMON)/Libraries/STM32F4xx_StdPeriph_Driver/src \

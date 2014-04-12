@@ -20,6 +20,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include "stm32f4xx.h"
+#include <sys/errno.h>
 #include "system.h"
 #include "kalman.h"
 
