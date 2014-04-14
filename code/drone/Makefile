@@ -43,6 +43,7 @@ CFLAGS += -DUSE_STDPERIPH_DRIVER
 CFLAGS += -DSTM32D4XX
 CFLAGS += -DARM_MATH_CM4
 CFLAGS += -D__FPU_PRESENT=1
+CFLAGS += -DARM_MATH_MATRIX_CHECK
 
 CFLAGS += -L/usr/arm-none-eabi/lib/thumb/cortex-m4/float-abi-hard/fpuv4-sp-d16
 CFLAGS += --specs=nosys.specs

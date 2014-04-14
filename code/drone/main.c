@@ -57,10 +57,14 @@ int main(void)
   kalman_init_dimensional_matrix(&pk);
   kalman_init_variances(&var_u, &r_matrix, NR_ANCHORS);
 
+  LED_on(LED1);
+
 	// Infinite loop
 	while(1)
 	{
+    kalman_predict(&f_matrix, &g_matrix, &prev_position, &pk, &var_u, &mkmin, &pkmin);
 		Delay(0x7FFFFF);
+    LED_toggle(LED1);
 	}
 
 }

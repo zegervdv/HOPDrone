@@ -56,11 +56,13 @@ void kalman_init_f_matrix(arm_matrix_instance_f32* f_matrix) {
     for (j = 0; j < DIMENSIONS; j++) {
       if (i == j)
         values[i*DIMENSIONS + j] = 1;
-      else
+      else {
         if (j == i + DIMENSIONS/2)
           values[i*DIMENSIONS + j] = DELTAT;
         else
           values[i*DIMENSIONS + j] = 0;
+
+      }
     }
   }
 
