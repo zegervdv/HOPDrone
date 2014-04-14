@@ -38,20 +38,21 @@ void Delay(__IO uint32_t nTick);
 
 int main(void)
 {
-  position_t position;
+  position_t position, prev_position;
+  position_t mkmin;
   position_t sigmapoints[NR_SIGMAPOINTS];
   arm_matrix_instance_f32 f_matrix, g_matrix;
+  arm_matrix_instance_f32 pkmin;
 
   init_system();
 
   kalman_init_position(&position);
+  kalman_init_position(&prev_position);
+  kalman_init_position(&mkmin);
   kalman_init_sigmapoints(sigmapoints);
   kalman_init_f_matrix(&f_matrix);
   kalman_init_g_matrix(&g_matrix);
-
-  LED_on(LED2);
-  LED_on(LED3);
-  LED_blink(LED1);
+  kalman_init_dimensional_matrix(&pkmin);
 
 	// Infinite loop
 	while(1)

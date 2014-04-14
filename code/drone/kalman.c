@@ -84,6 +84,16 @@ void kalman_init_g_matrix(arm_matrix_instance_f32* g_matrix) {
   arm_mat_init_f32(g_matrix, DIMENSIONS, DIMENSIONS, values);
 }
 
+void kalman_init_dimensional_matrix(arm_matrix_instance_f32* matrix) {
+  float32_t values[DIMENSIONS*DIMENSIONS];
+  uint8_t i;
+
+  for (i = 0; i < DIMENSIONS*DIMENSIONS; i++)
+    values[i] = 0;
+
+  arm_mat_init_f32(matrix, DIMENSIONS, DIMENSIONS, values);
+}
+
 void cholesky_decomp(arm_matrix_instance_f32 matrix, arm_matrix_instance_f32* output) {
   int8_t i,j,k;
 
