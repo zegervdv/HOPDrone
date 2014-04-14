@@ -94,6 +94,17 @@ void kalman_init_dimensional_matrix(arm_matrix_instance_f32* matrix) {
   arm_mat_init_f32(matrix, DIMENSIONS, DIMENSIONS, values);
 }
 
+void kalman_init_variances(arm_matrix_instance_f32* variance_u, arm_matrix_instance_f32* r_matrix, uint8_t nr_of_anchors) {
+  float32_t variance_arr[(DIMENSIONS/2)*(DIMENSIONS/2)];
+  float32_t r_arr[nr_of_anchors * nr_of_anchors];
+
+  kalman_eye_matrix(variance_arr, DIMENSIONS/2, PREDICTION_VAR);
+  kalman_eye_matrix(r_arr, nr_of_anchors, STD_MEASUREMENT);
+
+  arm_mat_init_f32(variance_u, DIMENSIONS/2, DIMENSIONS/2, variance_arr);
+  arm_mat_init_f32(r_matrix,nr_of_anchors, nr_of_anchors, r_arr);
+}
+
 void cholesky_decomp(arm_matrix_instance_f32 matrix, arm_matrix_instance_f32* output) {
   int8_t i,j,k;
 
@@ -114,4 +125,17 @@ void cholesky_decomp(arm_matrix_instance_f32 matrix, arm_matrix_instance_f32* ou
   }
 
   return;
+}
+
+void kalman_eye_matrix(float32_t* array, uint8_t size, float32_t value) {
+  uint8_t i,j;
+
+  for (i = 0; i < size; i++) {
+    for (j = 0; j < size; j++) {
+      if (i == j)
+        array[i * size + j] = value;
+      else
+        array[i * size + j] = 0;
+    }
+  }
 }

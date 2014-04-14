@@ -24,7 +24,7 @@
 #include "system.h"
 #include "kalman.h"
 
-
+#define NR_ANCHORS 4
 
 void Delay(__IO uint32_t nTick);
 
@@ -42,7 +42,8 @@ int main(void)
   position_t mkmin;
   position_t sigmapoints[NR_SIGMAPOINTS];
   arm_matrix_instance_f32 f_matrix, g_matrix;
-  arm_matrix_instance_f32 pkmin;
+  arm_matrix_instance_f32 pkmin, pk;
+  arm_matrix_instance_f32 var_u, r_matrix;
 
   init_system();
 
@@ -53,6 +54,8 @@ int main(void)
   kalman_init_f_matrix(&f_matrix);
   kalman_init_g_matrix(&g_matrix);
   kalman_init_dimensional_matrix(&pkmin);
+  kalman_init_dimensional_matrix(&pk);
+  kalman_init_variances(&var_u, &r_matrix, NR_ANCHORS);
 
 	// Infinite loop
 	while(1)
