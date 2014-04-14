@@ -7,6 +7,29 @@
 #include <stdlib.h>
 #include <math.h>
 
+void kalman_init_weight_factors(arm_matrix_instance_f32* weight_m, arm_matrix_instance_f32* weight_c) {
+  float32_t wc[NR_SIGMAPOINTS];
+  float32_t wm[NR_SIGMAPOINTS];
+  uint8_t i;
+
+  // Set first indices
+  wc[0] = WEIGHT_C0;
+  wm[0] = WEIGHT_M0;
+
+  for (i = 1; i < NR_SIGMAPOINTS; i++) {
+    wc[i] = WEIGHTS;
+    wm[i] = WEIGHTS;
+  }
+
+  arm_mat_init_f32(weight_m, 1, NR_SIGMAPOINTS, wm);
+  arm_mat_init_f32(weight_c, 1, NR_SIGMAPOINTS, wc);
+}
+
+void kalman_destroy_weight_factors(arm_matrix_instance_f32* weight_m, arm_matrix_instance_f32* weight_c) {
+  free(weight_m->pData);
+  free(weight_c->pData);
+}
+
 void cholesky_decomp(arm_matrix_instance_f32 matrix, arm_matrix_instance_f32* output) {
   int8_t i,j,k;
 

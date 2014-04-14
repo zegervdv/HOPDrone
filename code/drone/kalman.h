@@ -32,6 +32,17 @@
 typedef arm_matrix_instance_f32 position_t;
 
 /**
+ * Initialize constant weight factors
+ * weight_m - arm_matrix_instance_f32 pointer (1x6)
+ * weight_c - arm_matrix_instance_f32 pointer (1x6)
+ */
+void kalman_init_weight_factors(arm_matrix_instance_f32* weight_m, arm_matrix_instance_f32* weight_c);
+
+/**
+ */
+void kalman_destroy_weight_factors(arm_matrix_instance_f32* weight_m, arm_matrix_instance_f32* weigth_c);
+
+/**
  * Prediction step for Kalman filter
  */
 void kalman_predict(void);
