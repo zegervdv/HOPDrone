@@ -48,6 +48,42 @@ void kalman_init_sigmapoints(position_t* sigmapoints) {
   }
 }
 
+void kalman_init_f_matrix(arm_matrix_instance_f32* f_matrix) {
+  float32_t values[DIMENSIONS*DIMENSIONS];
+  uint8_t i,j;
+
+  for (i = 0; i < DIMENSIONS; i++) {
+    for (j = 0; j < DIMENSIONS; j++) {
+      if (i == j)
+        values[i*DIMENSIONS + j] = 1;
+      else
+        if (j == i + DIMENSIONS/2)
+          values[i*DIMENSIONS + j] = DELTAT;
+        else
+          values[i*DIMENSIONS + j] = 0;
+    }
+  }
+
+  arm_mat_init_f32(f_matrix, DIMENSIONS, DIMENSIONS, values);
+}
+
+void kalman_init_g_matrix(arm_matrix_instance_f32* g_matrix) {
+  float32_t values[DIMENSIONS*DIMENSIONS/2];
+  uint8_t i,j;
+
+  for (i = 0; i < DIMENSIONS/2; i++) {
+    for (j = 0; j < DIMENSIONS/2; j++) {
+      if (i == j) {
+        values[i*DIMENSIONS/2 + j] = (DELTAT*DELTAT)/2.0;
+        values[(i + DIMENSIONS/2)*DIMENSIONS/2 + j] = DELTAT;
+      } else
+        values[i*DIMENSIONS + j] = 0;
+    }
+  }
+
+  arm_mat_init_f32(g_matrix, DIMENSIONS, DIMENSIONS, values);
+}
+
 void cholesky_decomp(arm_matrix_instance_f32 matrix, arm_matrix_instance_f32* output) {
   int8_t i,j,k;
 

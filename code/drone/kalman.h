@@ -16,6 +16,9 @@
 #define WEIGHT_M0       KAPPA/(DIMENSIONS + KAPPA)  // Weight factor W_m for i = 0
 #define WEIGHT_C0       KAPPA/(DIMENSIONS + KAPPA) - (1 - ALPHA*ALPHA + BETA) // Weight factor W_c for i = 0
 
+// TODO: fix time or measure
+#define DELTAT          0.1
+
 
 /**
  * Position struct
@@ -49,6 +52,18 @@ void kalman_init_position(position_t* position);
  * sigmapoints - array of position_t of size NR_SIGMAPOINTS
  */
 void kalman_init_sigmapoints(position_t* sigmapoints);
+
+/**
+ * Initialize and populate F matrix
+ * f_matrix - arm_matrix_instance_f32 pointer
+ */
+void kalman_init_f_matrix(arm_matrix_instance_f32* f_matrix);
+
+/**
+ * Initialize and populate G matrix
+ * g_matrix - arm_matrix_instance_f32 pointer
+ */
+void kalman_init_g_matrix(arm_matrix_instance_f32* g_matrix);
 
 /**
  * Prediction step for Kalman filter

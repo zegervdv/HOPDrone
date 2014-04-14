@@ -40,11 +40,14 @@ int main(void)
 {
   position_t position;
   position_t sigmapoints[NR_SIGMAPOINTS];
+  arm_matrix_instance_f32 f_matrix, g_matrix;
 
   init_system();
 
   kalman_init_position(&position);
   kalman_init_sigmapoints(sigmapoints);
+  kalman_init_f_matrix(&f_matrix);
+  kalman_init_g_matrix(&g_matrix);
 
   LED_on(LED2);
   LED_on(LED3);
