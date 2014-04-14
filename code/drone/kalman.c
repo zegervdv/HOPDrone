@@ -25,9 +25,27 @@ void kalman_init_weight_factors(arm_matrix_instance_f32* weight_m, arm_matrix_in
   arm_mat_init_f32(weight_c, 1, NR_SIGMAPOINTS, wc);
 }
 
-void kalman_destroy_weight_factors(arm_matrix_instance_f32* weight_m, arm_matrix_instance_f32* weight_c) {
-  free(weight_m->pData);
-  free(weight_c->pData);
+void kalman_init_position(position_t* position) {
+  float32_t pos[DIMENSIONS];
+  uint8_t i;
+
+  for(i = 0; i < DIMENSIONS; i++) {
+    pos[0] = 0;
+  }
+
+  arm_mat_init_f32(position, DIMENSIONS, 1, pos);
+}
+
+void kalman_init_sigmapoints(position_t* sigmapoints) {
+  float32_t vectors[NR_SIGMAPOINTS][DIMENSIONS];
+  uint8_t i,j;
+
+  for (i = 0; i < NR_SIGMAPOINTS; i++) {
+    for (j = 0; j < DIMENSIONS; j++) {
+      vectors[i][j] = 0;
+    }
+    arm_mat_init_f32(&sigmapoints[i], DIMENSIONS, 1, vectors[i]);
+  }
 }
 
 void cholesky_decomp(arm_matrix_instance_f32 matrix, arm_matrix_instance_f32* output) {

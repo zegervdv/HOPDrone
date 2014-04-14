@@ -39,8 +39,16 @@ typedef arm_matrix_instance_f32 position_t;
 void kalman_init_weight_factors(arm_matrix_instance_f32* weight_m, arm_matrix_instance_f32* weight_c);
 
 /**
+ * Initialze the postition vector
+ * position - position_t pointer
  */
-void kalman_destroy_weight_factors(arm_matrix_instance_f32* weight_m, arm_matrix_instance_f32* weigth_c);
+void kalman_init_position(position_t* position);
+
+/**
+ * Initialize array of sigmapoints
+ * sigmapoints - array of position_t of size NR_SIGMAPOINTS
+ */
+void kalman_init_sigmapoints(position_t* sigmapoints);
 
 /**
  * Prediction step for Kalman filter

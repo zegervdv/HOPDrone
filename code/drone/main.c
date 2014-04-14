@@ -43,6 +43,8 @@ int main(void)
 
   init_system();
 
+  kalman_init_position(&position);
+  kalman_init_sigmapoints(sigmapoints);
 
   LED_on(LED2);
   LED_on(LED3);
