@@ -84,16 +84,17 @@ void kalman_init_variances(arm_matrix_instance_f32* variance_u, arm_matrix_insta
 
 /**
  * Prediction step for Kalman filter
- * f_matrix - arm_matrix_instance_f32 pointer to F
- * g_matrix - arm_matrix_instance_f32 pointer to G
- * variance - arm_matrix_instance_f32 pointer to Pk
- * var_u    - arm_matrix_instance_f32 pointer var_u
- * mkmin    - arm_matrix_instance_f32 pointer to mkmin, to be updated with new
- *            value
- * pkmin    - arm_matrix_instance_f32 pointer to pkmin, to be updated with new
- *            value
+ * f_matrix         - arm_matrix_instance_f32 pointer to F
+ * g_matrix         - arm_matrix_instance_f32 pointer to G
+ * prev_position    - position_t pointer to old position
+ * variance         - arm_matrix_instance_f32 pointer to Pk
+ * var_u            - arm_matrix_instance_f32 pointer var_u
+ * mkmin            - arm_matrix_instance_f32 pointer to mkmin, to be updated with new
+ *                    value
+ * pkmin            - arm_matrix_instance_f32 pointer to pkmin, to be updated with new
+ *                    value
  */
-void kalman_predict(arm_matrix_instance_f32* f_matrix, arm_matrix_instance_f32* g_matrix, arm_matrix_instance_f32* variance, arm_matrix_instance_f32* var_u, arm_matrix_instance_f32* mkmin, arm_matrix_instance_f32* pkmin);
+void kalman_predict(arm_matrix_instance_f32* f_matrix, arm_matrix_instance_f32* g_matrix, position_t* prev_position, arm_matrix_instance_f32* variance, arm_matrix_instance_f32* var_u, arm_matrix_instance_f32* mkmin, arm_matrix_instance_f32* pkmin);
 
 /**
  * Calculate Sigmapoints

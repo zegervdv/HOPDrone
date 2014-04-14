@@ -105,6 +105,39 @@ void kalman_init_variances(arm_matrix_instance_f32* variance_u, arm_matrix_insta
   arm_mat_init_f32(r_matrix,nr_of_anchors, nr_of_anchors, r_arr);
 }
 
+void kalman_predict(arm_matrix_instance_f32* f_matrix, arm_matrix_instance_f32* g_matrix, position_t* prev_position, arm_matrix_instance_f32* variance, arm_matrix_instance_f32* var_u, arm_matrix_instance_f32* mkmin, arm_matrix_instance_f32* pkmin) {
+  float32_t interm_f_data[DIMENSIONS*DIMENSIONS], interm_g_data[DIMENSIONS*DIMENSIONS];
+  float32_t interm_f_data2[DIMENSIONS*DIMENSIONS], interm_g_data2[DIMENSIONS*DIMENSIONS];
+  float32_t f_matrix_transposed_data[DIMENSIONS*DIMENSIONS], g_matrix_transposed_data[DIMENSIONS*DIMENSIONS];
+  arm_matrix_instance_f32 interm_f, interm_g, interm_f2, interm_g2, f_matrix_transposed, g_matrix_transposed;
+
+  // Initialize temporary matrices
+  arm_mat_init_f32(&interm_f, DIMENSIONS, DIMENSIONS, interm_f_data);
+  arm_mat_init_f32(&interm_g, DIMENSIONS, DIMENSIONS, interm_g_data);
+  arm_mat_init_f32(&interm_f2, DIMENSIONS, DIMENSIONS, interm_f_data2);
+  arm_mat_init_f32(&interm_g2, DIMENSIONS, DIMENSIONS, interm_g_data2);
+  arm_mat_init_f32(&f_matrix_transposed, DIMENSIONS, DIMENSIONS, f_matrix_transposed_data);
+  arm_mat_init_f32(&g_matrix_transposed, DIMENSIONS, DIMENSIONS, g_matrix_transposed_data);
+
+  // Calculate mkmin
+  arm_mat_mult_f32(f_matrix, prev_position, mkmin);
+
+  // Calculate first intermediate results
+  arm_mat_mult_f32(f_matrix, pkmin, &interm_f);
+  arm_mat_mult_f32(g_matrix, var_u, &interm_g);
+
+  // Transpose F and G
+  arm_mat_trans_f32(f_matrix, &f_matrix_transposed);
+  arm_mat_trans_f32(f_matrix, &f_matrix_transposed);
+
+  // Calculate second intermediate results
+  arm_mat_mult_f32(&interm_f, &f_matrix_transposed, &interm_f2);
+  arm_mat_mult_f32(&interm_g, &g_matrix_transposed, &interm_g2);
+
+  // Sum up
+  arm_mat_add_f32(&interm_f2, &interm_g2, pkmin);
+}
+
 void cholesky_decomp(arm_matrix_instance_f32 matrix, arm_matrix_instance_f32* output) {
   int8_t i,j,k;
 
