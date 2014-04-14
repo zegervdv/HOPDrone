@@ -39,48 +39,48 @@ typedef arm_matrix_instance_f32 position_t;
 
 /**
  * Initialize constant weight factors
- * weight_m - arm_matrix_instance_f32 pointer (1x6)
- * weight_c - arm_matrix_instance_f32 pointer (1x6)
+ * weight_m - array for matrix
+ * weight_c - array for matrix
  */
-void kalman_init_weight_factors(arm_matrix_instance_f32* weight_m, arm_matrix_instance_f32* weight_c);
+void kalman_init_weight_factors(float32_t* weight_m, float32_t* weight_c);
 
 /**
  * Initialize the postition vector
- * position - position_t pointer
+ * position - array for position
  */
-void kalman_init_position(position_t* position);
+void kalman_init_position(float32_t* position);
 
 /**
  * Initialize array of sigmapoints
- * sigmapoints - array of position_t of size NR_SIGMAPOINTS
+ * sigmapoints - array of size NR_SIGMAPOINTS
  */
-void kalman_init_sigmapoints(position_t* sigmapoints);
+void kalman_init_sigmapoints(float32_t* sigmapoints);
 
 /**
  * Initialize and populate F matrix
- * f_matrix - arm_matrix_instance_f32 pointer
+ * f_matrix - array for F matrix
  */
-void kalman_init_f_matrix(arm_matrix_instance_f32* f_matrix);
+void kalman_init_f_matrix(float32_t* f_matrix);
 
 /**
  * Initialize and populate G matrix
- * g_matrix - arm_matrix_instance_f32 pointer
+ * g_matrix - array for G matrix
  */
-void kalman_init_g_matrix(arm_matrix_instance_f32* g_matrix);
+void kalman_init_g_matrix(float32_t* g_matrix);
 
 /**
  * Initialize a DIMENSIONS x DIMENSIONS matrix
- * matrix - arm_matrix_instance_f32 pointer
+ * matrix - array for the matrix
  */
-void kalman_init_dimensional_matrix(arm_matrix_instance_f32* matrix);
+void kalman_init_dimensional_matrix(float32_t* matrix);
 
 /**
  * Initialize the variance matrices
- * variance_u    - arm_matrix_instance_f32 pointer for the prediction variance
- * r_matrix      - arm_matrix_instance_f32 pointer for the R matrix
+ * variance_u    - array for the prediction variance
+ * r_matrix      - array for the R matrix
  * nr_of_anchors - number of anchors used
  */
-void kalman_init_variances(arm_matrix_instance_f32* variance_u, arm_matrix_instance_f32* r_matrix, uint8_t nr_of_anchors);
+void kalman_init_variances(float32_t* variance_u, float32_t* r_matrix, uint8_t nr_of_anchors);
 
 /**
  * Prediction step for Kalman filter
