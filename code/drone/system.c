@@ -7,6 +7,8 @@
 #include "system.h"
 
 void init_system(void) {
+  char data[1];
+
   LED_init(LED1);
   LED_init(LED2);
   LED_init(LED3);
@@ -19,6 +21,12 @@ void init_system(void) {
     LED_off(LED2);
     Delay(0x7FFFFF);
   }
+
+  // Register with main host
+  data[0] = LCM_MSG_REGISTER_NODE;
+  if(rcmDataSend(RCM_ANTENNAMODE_TXA_RXA, 1, data))
+    LED_on(LED2);
+
 }
 
 void Delay(__IO uint32_t nTick) {

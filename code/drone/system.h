@@ -5,7 +5,9 @@
  */
 
 #include "leds.h"
+#include "arm_math.h"
 #include "rcm.h"
+#include "lcm.h"
 
 /**
  * Initialize all peripherals
