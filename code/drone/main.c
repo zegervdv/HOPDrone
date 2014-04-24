@@ -68,12 +68,10 @@ int main(void)
 	/* RNG_Config(); */
   LED_on(LED2);
   LED_on(LED3);
-  flash_error();
 
 	// Infinite loop
 	while(1)
 	{
-    /* STM32F4_Discovery_LEDToggle(LED3); */
 		Delay(0x7FFFFF);
 	}
 
