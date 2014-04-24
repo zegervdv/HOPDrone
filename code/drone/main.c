@@ -23,7 +23,6 @@
 #include "system.h"
 
 
-void Delay(__IO uint32_t nTick);
 
 /**
 **===========================================================================
@@ -37,10 +36,6 @@ int main(void)
 {
   init_system();
 
-
-  LED_on(LED2);
-  LED_on(LED3);
-
 	// Infinite loop
 	while(1)
 	{
@@ -49,8 +44,4 @@ int main(void)
 
 }
 
-void Delay(__IO uint32_t nTick)
-{
-  for(; nTick != 0; nTick--);
-}
 
