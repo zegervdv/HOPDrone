@@ -15,10 +15,10 @@ void init_system(void) {
 
   // Test connection with RCM
   // LED 2 will blink as long as no connection is established
+  rcmIfInit(USART2);
+  LED_on(LED2);
   while(initConn(USART2) != OK) {
-    LED_on(LED2);
-    Delay(0x7FFFFF);
-    LED_off(LED2);
+    LED_toggle(LED2);
     Delay(0x7FFFFF);
   }
 

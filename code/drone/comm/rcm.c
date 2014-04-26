@@ -80,7 +80,7 @@ static uint16_t msgIdCount=1;
 
 bool initConn(uint32_t usart_id){
 	//initialize interface
-	rcmIfInit(usart_id);
+	/* rcmIfInit(usart_id); */
 	uint8_t i=0;
 	// Make sure RCM is awake
 	while (rcmSleepModeSet(RCM_SLEEP_MODE_ACTIVE) != 0 && i>10)
