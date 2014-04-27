@@ -91,16 +91,16 @@ int main(void) {
 
     uint8_t i=0;
 
-    if(!err){
+    if(!err) {
       lcmMsg_DoLoc* lcmMsg= (lcmMsg_DoLoc*)&(recdata.data);
 
-      switch(lcmMsg->msgID){
+      switch(lcmMsg->msgID) {
         case LCM_MSG_DOLOCALIZATION:
           {
 
             uint32_t neighbourIDs[lcmMsg->nUsers + lcmMsg->nAnchors];
 
-            while(i<lcmMsg->nUsers+lcmMsg->nAnchors){
+            while(i<lcmMsg->nUsers+lcmMsg->nAnchors) {
               neighbourIDs[i] = lcmMsg->data[i];
               i++;
             }
@@ -111,11 +111,11 @@ int main(void) {
               bConnected = true;
 
               lcmMsg_LocInfo* locInfo = calloc(1, sizeof(lcmMsg_LocInfo));
-              if(lcmMsg->options & LCMFLAG_COOP){
+              if(lcmMsg->options & LCMFLAG_COOP) {
                 // perform ranging with the anchors AND the other neighboring users
                 PerformRanging(locInfo, (lcmMsg->nUsers+lcmMsg->nAnchors), neighbourIDs, 1);
                 locInfo->nAnchors = lcmMsg->nUsers+lcmMsg->nAnchors;
-              }else{
+              }else {
                 // perform ranging with the anchors only.
                 PerformRanging(locInfo, lcmMsg->nAnchors, neighbourIDs+lcmMsg->nUsers, 2);
                 locInfo->nAnchors = lcmMsg->nAnchors;
@@ -124,37 +124,9 @@ int main(void) {
 
               // perform non-cooperative localization if required
               if(lcmMsg->options & LCMFLAG_ONBOARD_LOCALIZATION){
-
-                if(!(lcmMsg->options & LCMFLAG_COOP)){
-
-                  if(lcmMsg->options & LCMFLAG_3D){
-                    // perform 3D localization
-                  }else{
-                    // perform 2D localization
-                    float32_t posEstimate[2] = {0.0f, 0.0f};
-                    float32_t anchorsX[lcmMsg->nAnchors];
-                    float32_t anchorsY[lcmMsg->nAnchors];
-                    uint32_t d[lcmMsg->nAnchors];
-
-                    i=0;
-                    while(i<lcmMsg->nAnchors){
-                      anchorsX[i] = int2float(lcmMsg->data[i*3 + (lcmMsg->nUsers+lcmMsg->nAnchors)]);
-                      anchorsY[i] = int2float((float32_t)lcmMsg->data[i*3 + 1 + (lcmMsg->nUsers+lcmMsg->nAnchors)]);
-                      d[i] = (float)locInfo->data[i].precisionRangeMm;
-                      i++;
-                    }
-
-                    arm_status errorStatus;
-                    /* errorStatus = Calculate2DPosition(lcmMsg->nAnchors, posEstimate, anchorsX, anchorsY, d); */
-                    // INSERT POSITIONING CODE HERE
-
-                    locInfo->estim_x = posEstimate[0]/1000.0f;
-                    locInfo->estim_y = posEstimate[1]/1000.0f;
-                    locInfo->estim_z = 0;
-                  }
-                }else{
-                  // perform cooperative localization.
-                }
+              ///////////////////////////////////////////////////
+              /////////// INSERT LOCALIZATION HERE //////////////
+              ///////////////////////////////////////////////////
               }
 
 
@@ -165,12 +137,12 @@ int main(void) {
               free(locInfo);
 
 
-            }else{
+            }else {
 
               // check that the user is still connected with the central hub (i.e. in the user list)
               i = 0;
               bConnected = false;
-              while(i<lcmMsg->nUsers){
+              while(i<lcmMsg->nUsers) {
                 if(neighbourIDs[i] == RCM_ID)
                   bConnected = true;
                 i++;
@@ -182,7 +154,7 @@ int main(void) {
 
           // This is not how it should be but ok..
 
-          if(!bConnected){
+          if(!bConnected) {
             // Try to connect with the central hub
             char data[1];
             data[0] = LCM_MSG_REGISTER_NODE;		// message id for registration
@@ -193,7 +165,7 @@ int main(void) {
 
         case LCM_MSG_GET_CONNECTION:
           {
-            if(!bConnected){
+            if(!bConnected) {
               // Try to connect with the central hub
               char data[1];
               data[0] = LCM_MSG_REGISTER_NODE;		// message id for registration
