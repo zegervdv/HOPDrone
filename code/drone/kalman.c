@@ -112,20 +112,33 @@ void kalman_predict(arm_matrix_instance_f32* f_matrix, arm_matrix_instance_f32* 
   arm_mat_add_f32(&interm_f2, &interm_g2, pkmin);
 }
 
-void cholesky_decomp(arm_matrix_instance_f32 matrix, arm_matrix_instance_f32* output) {
+void kalman_update_sigmapoints(position_t* sigmapoints, position_t mkmin, arm_matrix_instance_f32* pkmin) {
+  arm_matrix_instance_f32 root;
+  float32_t root_data[DIMENSIONS * DIMENSIONS];
+  arm_mat_init_f32(&root, DIMENSIONS, DIMENSIONS, root_data);
+
+  // Calculate the root of the variance matrix using Cholesky Decomposition
+  cholesky_decomp(pkmin, &root);
+
+  arm_mat_scale_f32(&root, DIMENSIONS + KAPPA, &root);
+
+
+}
+
+void cholesky_decomp(arm_matrix_instance_f32* matrix, arm_matrix_instance_f32* output) {
   int8_t i,j,k;
 
-  for (i = 0; i < matrix.numRows; i++) {
+  for (i = 0; i < matrix->numRows; i++) {
     for (j = 0; j < (i+1); j++) {
       float32_t s = 0;
       for (k = 0; k < j; k++) {
-        s+= output->pData[i * matrix.numRows + k] * output->pData[j * matrix.numRows + k];
+        s+= output->pData[i * matrix->numRows + k] * output->pData[j * matrix->numRows + k];
         if (i==j) {
           float32_t root;
-          arm_sqrt_f32(matrix.pData[i * matrix.numRows + i] - s, &root);
-          output->pData[i * matrix.numRows + j] = root;
+          arm_sqrt_f32(matrix->pData[i * matrix->numRows + i] - s, &root);
+          output->pData[i * matrix->numRows + j] = root;
         }else {
-          output->pData[i * matrix.numRows + j] = (1.0 / output->pData[j * matrix.numRows + j] * (matrix.pData[i * matrix.numRows + j] - s));
+          output->pData[i * matrix->numRows + j] = (1.0 / output->pData[j * matrix->numRows + j] * (matrix->pData[i * matrix->numRows + j] - s));
         }
       }
     }

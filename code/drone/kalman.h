@@ -99,14 +99,13 @@ void kalman_predict(arm_matrix_instance_f32* f_matrix, arm_matrix_instance_f32* 
 /**
  * Calculate Sigmapoints
  *
- * nr_points   - Number of sigmapoints
  * sigmapoints - Array of position_t with sigmapoints
  * mkmin       - position_t of best estimate
  * pkmin       - arm_matrix_instance_f32 with the variances
  *
  * Updates sigmapoints
  */
-void kalman_update_sigmapoints(int nr_points, position_t* sigmapoints, position_t mkmin, arm_matrix_instance_f32 pkmin);
+void kalman_update_sigmapoints(position_t* sigmapoints, position_t mkmin, arm_matrix_instance_f32* pkmin);
 
 /**
  * Cholesky decomposition
@@ -114,7 +113,7 @@ void kalman_update_sigmapoints(int nr_points, position_t* sigmapoints, position_
  * matrix - arm_matrix_instance_f32 to be decomposed
  * output - arm_matrix_instance_f32 pointer to the decomposed matrix
  */
-void cholesky_decomp(arm_matrix_instance_f32 matrix, arm_matrix_instance_f32* output);
+void cholesky_decomp(arm_matrix_instance_f32* matrix, arm_matrix_instance_f32* output);
 
 /**
  * Initialize an array in for matrix in eye format

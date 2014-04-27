@@ -163,7 +163,7 @@ int main(void) {
             }
 
             // check if this node can start ranging, if not, see if the node is in the user list
-            if(lcmMsg->activeNodeID == RCM_ID){
+            if(lcmMsg->activeNodeID == RCM_ID) {
 
               bConnected = true;
 
