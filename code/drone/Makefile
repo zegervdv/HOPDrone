@@ -8,6 +8,9 @@ SRCS += system.c
 SRCS += leds.c
 SRCS += kalman.c
 
+# RCM communication
+SRCS += rcm.c rcmIf.c
+
 # Drivers
 SRCS += stm32f4xx_rcc.c stm32f4xx_exti.c stm32f4xx_gpio.c stm32f4xx_it.c stm32f4xx_usart.c misc.c stm32f4xx_rng.c stm32f4xx_syscfg.c
 
@@ -42,8 +45,9 @@ CFLAGS += -fno-strict-aliasing
 CFLAGS += -DUSE_STDPERIPH_DRIVER
 CFLAGS += -DSTM32D4XX
 CFLAGS += -DARM_MATH_CM4
-CFLAGS += -D__FPU_PRESENT=1
+CFLAGS += -D__FPU_PRESENT
 CFLAGS += -DARM_MATH_MATRIX_CHECK
+CFLAGS += -DDELAY_TIME=100
 
 CFLAGS += -L/usr/arm-none-eabi/lib/thumb/cortex-m4/float-abi-hard/fpuv4-sp-d16
 CFLAGS += --specs=nosys.specs
@@ -54,7 +58,8 @@ vpath %.c \
 			$(STM_COMMON)/Libraries/STM32_USB_OTG_Driver/src \
 			$(STM_COMMON)/Libraries/STM32_USB_Device_Library/Core/src \
 			$(STM_COMMON)/Libraries/STM32_USB_Device_Library/Class/cdc/src \
-			$(STM_COMMON)/Libraries/CMSIS/DSP_Lib/Source/MatrixFunctions
+			$(STM_COMMON)/Libraries/CMSIS/DSP_Lib/Source/MatrixFunctions \
+			./comm
 
 # Include files from STM libraries
 CFLAGS += -I$(STM_COMMON)/Utilities/STM32F4-Discovery
@@ -63,6 +68,7 @@ CFLAGS += -I$(STM_COMMON)/Libraries/STM32F4xx_StdPeriph_Driver/inc
 CFLAGS += -I$(STM_COMMON)/Libraries/STM32_USB_Device_Library/Class/cdc/inc
 CFLAGS += -I$(STM_COMMON)/Libraries/STM32_USB_Device_Library/Core/inc
 CFLAGS += -I$(STM_COMMON)/Libraries/STM32_USB_OTG_Driver/inc
+CFLAGS += -I./comm
 
 # add startup file to build
 SRCS += $(STM_COMMON)/Libraries/CMSIS/ST/STM32F4xx/Source/Templates/TrueSTUDIO/startup_stm32f4xx.s

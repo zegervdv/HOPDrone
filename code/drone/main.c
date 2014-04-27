@@ -1,14 +1,14 @@
 /**
-*****************************************************************************
-**
-**  File        : main.c
-**
-**  Abstract    : main function.
-**
-**  Functions   : main
-**
-*****************************************************************************
-*/
+ *****************************************************************************
+ **
+ **  File        : main.c
+ **
+ **  Abstract    : main function.
+ **
+ **  Functions   : main
+ **
+ *****************************************************************************
+ */
 
 /* Includes */
 #include "stm32f4xx_rcc.h"
@@ -25,20 +25,66 @@
 #include "kalman.h"
 
 #define NR_ANCHORS 4
+#define RCM_ID 102
+#define USED_ANTENNA RCM_ANTENNAMODE_TXA_RXA
 
-void Delay(__IO uint32_t nTick);
+void PerformRanging(lcmMsg_LocInfo* locInfo, uint8_t nrAnchors, uint32_t* anchorID, uint8_t maxTrials) {
+  //first range with USED_ANTENNA then range with SECOND_ANTENNA for failed points
 
-/**
-**===========================================================================
-**
-**  Abstract: main program
-**
-**===========================================================================
-*/
+  rcmMsg_RangeInfo rangeInfo;
+  rcmMsg_DataInfo dataInfo;
+  uint8_t i=0;
+  uint8_t trial=0;
+  //first antenna
+  while(i<nrAnchors){
 
-int main(void)
-{
+    locInfo->data[i].anchorId = anchorID[i];
+    trial++;
+
+    // If no success after a number of trials, move to the next neighbour
+    if(trial > maxTrials){
+      locInfo->data[i].trials = trial;
+      trial = 0;
+      i++;
+      continue;
+    }
+
+    // Determine range to a radio. May also get data and scan packets.
+    rcmRangeTo(anchorID[i], USED_ANTENNA , 0, NULL, &rangeInfo, &dataInfo);
+
+    if ((rangeInfo.msgType == RCM_RANGE_INFO) && (rangeInfo.rangeStatus == RCM_RANGE_STATUS_SUCCESS))
+    {
+      locInfo->data[i].precisionRangeMm = rangeInfo.precisionRangeMm;
+      locInfo->data[i].precisionRangeErrEst = rangeInfo.precisionRangeErrEst;
+      locInfo->data[i].channelRiseTime = rangeInfo.channelRiseTime;
+      locInfo->data[i].reqLEDFlags = rangeInfo.reqLEDFlags;
+      locInfo->data[i].respLEDFlags = rangeInfo.respLEDFlags;
+      locInfo->data[i].timestamp = rangeInfo.timestamp;
+      locInfo->data[i].coarseTOFInBins = rangeInfo.coarseTOFInBins;
+      locInfo->data[i].trials = trial;
+
+      // range with next neighbour
+      trial = 0;
+      i++;
+    }
+
+  }
+}
+
+float32_t int2float(uint32_t in) {
+  union{
+    uint32_t 	here_write_float;
+    float32_t   here_read_float;
+  }convert;
+
+  convert.here_write_float = in;
+
+  return convert.here_read_float;
+}
+
+int main(void) {
   uint8_t i;
+  bool bConnected = false;
   float32_t weight_c_data[NR_SIGMAPOINTS];
   float32_t weight_m_data[NR_SIGMAPOINTS];
   float32_t position_data[DIMENSIONS], prev_position_data[DIMENSIONS], mkmin_data[DIMENSIONS];
@@ -95,19 +141,100 @@ int main(void)
   arm_mat_init_f32(&var_u, DIMENSIONS/2, DIMENSIONS/2, var_u_data);
   arm_mat_init_f32(&r_matrix, NR_ANCHORS, NR_ANCHORS, r_matrix_data);
 
-  LED_on(LED1);
-	// Infinite loop
-	while(1)
-	{
-    kalman_predict(&f_matrix, &g_matrix, &prev_position, &pk, &var_u, &mkmin, &pkmin);
-		Delay(0x7FFFFF);
-    LED_toggle(LED1);
-	}
+  while(true) {
 
+    rcmMsg_DataInfo recdata;
+    bool err=rcmDataReceive(&recdata);
+
+    uint8_t i=0;
+
+    if(!err) {
+      lcmMsg_DoLoc* lcmMsg= (lcmMsg_DoLoc*)&(recdata.data);
+
+      switch(lcmMsg->msgID) {
+        case LCM_MSG_DOLOCALIZATION:
+          {
+
+            uint32_t neighbourIDs[lcmMsg->nUsers + lcmMsg->nAnchors];
+
+            while(i<lcmMsg->nUsers+lcmMsg->nAnchors) {
+              neighbourIDs[i] = lcmMsg->data[i];
+              i++;
+            }
+
+            // check if this node can start ranging, if not, see if the node is in the user list
+            if(lcmMsg->activeNodeID == RCM_ID){
+
+              bConnected = true;
+
+              lcmMsg_LocInfo* locInfo = calloc(1, sizeof(lcmMsg_LocInfo));
+              if(lcmMsg->options & LCMFLAG_COOP) {
+                // perform ranging with the anchors AND the other neighboring users
+                PerformRanging(locInfo, (lcmMsg->nUsers+lcmMsg->nAnchors), neighbourIDs, 1);
+                locInfo->nAnchors = lcmMsg->nUsers+lcmMsg->nAnchors;
+              }else {
+                // perform ranging with the anchors only.
+                PerformRanging(locInfo, lcmMsg->nAnchors, neighbourIDs+lcmMsg->nUsers, 2);
+                locInfo->nAnchors = lcmMsg->nAnchors;
+              }
+
+
+              // perform non-cooperative localization if required
+              if(lcmMsg->options & LCMFLAG_ONBOARD_LOCALIZATION) {
+                kalman_predict(&f_matrix, &g_matrix, &prev_position, &pk, &var_u, &mkmin, &pkmin);
+              }
+
+
+              // send data to central hub
+              locInfo->msgID = LCM_MSG_LOC_INFO;
+              uint32_t msgSize = sizeof(lcmMsg_LocInfo) - sizeof(lcm_rangeInfo)*(LCM_MAX_NEIGHBOURS-locInfo->nAnchors);
+              rcmDataSend(USED_ANTENNA, msgSize, locInfo);
+              free(locInfo);
+
+
+            }else {
+
+              // check that the user is still connected with the central hub (i.e. in the user list)
+              i = 0;
+              bConnected = false;
+              while(i<lcmMsg->nUsers) {
+                if(neighbourIDs[i] == RCM_ID)
+                  bConnected = true;
+                i++;
+              }
+            }
+          }
+          break;
+        case LCM_MSG_LOC_INFO:
+
+          // This is not how it should be but ok..
+
+          if(!bConnected) {
+            // Try to connect with the central hub
+            char data[1];
+            data[0] = LCM_MSG_REGISTER_NODE;		// message id for registration
+            rcmDataSend(USED_ANTENNA, 1, &data);
+          }
+          // ignore
+          break;
+
+        case LCM_MSG_GET_CONNECTION:
+          {
+            if(!bConnected) {
+              // Try to connect with the central hub
+              char data[1];
+              data[0] = LCM_MSG_REGISTER_NODE;		// message id for registration
+              rcmDataSend(USED_ANTENNA, 1, &data);
+            }
+          }
+          break;
+
+        default:
+          // do nothing with unknown messages
+          break;
+      }
+
+
+    }
+  }
 }
-
-void Delay(__IO uint32_t nTick)
-{
-  for(; nTick != 0; nTick--);
-}
-

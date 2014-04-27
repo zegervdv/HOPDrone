@@ -23,6 +23,65 @@
 \newpage
 
 \section{Antenna Design}
+	
+	For the indoor localisation of the drones we use the TIME DOMAIN\texttrademark PulsOn 400 UWB module in coöperation with a STM32 microcontroller to run the Unscented Kalman Filter algorithm. The UWB modules are already equipped with a TIME DOMAIN\texttrademark Broadspec UWB Antenna, a dipole that is omnidirectional in the azimuth plane. We will use the specifications of this antenna as design parameters for or own UWB antenna. The criticial design parameters are listed below. 
+
+	\begin{itemize}
+		\item Radiate in the $\SI{3.1}{\giga\hertz}$ - $\SI{5.3}{\giga\hertz}$ band
+		\item Nominal gain $\approx \SI{3}{\decibel}$
+		\item Linear phase characteristic
+		\item Efficiency $\approx$ 90\%	
+
+	\end{itemize}
+
+	\subsection{Antenna Topology and Design}
+
+	At first we experiment with a few conventional UWB topologies like a bow tie and a bar-bell shape (see Figure \ref{fig:topologies}). After optimalisation and simulation in ADS, we conclude that the simulated S-paramters and gain are not compliant with the design parameters above. Obtaining a linear phase characteristic with these topologies proves to be very hard as well.  
+
+		\begin{figure}[H]
+		\begin{subfigure}{0.5\textwidth}
+			\centering
+			\includegraphics[width=0.5\textwidth,height=85px]{images/antenna/bow_tie.png}
+			\caption{Bow Tie Topology}
+		\end{subfigure}
+		\begin{subfigure}{0.5\textwidth}
+			\centering
+			\includegraphics[width=0.5\textwidth]{images/antenna/bar_bell.png}
+			\caption{Bar-Bell Topology}
+		\end{subfigure}
+		\caption{UWB Antenna Topologies}
+		\label{fig:topologies}
+		\end{figure} 
+
+	The substrate material that is being used to desing the antenna is \textit{Black Foam} with a low relative permittivity $\epsilon_r = 1.495$. Because of this we encounter a practical problem with respect to the dimension of the antenna, i.e. if the antenna needs to be constructed with this substrate its dimension will be too large to mount on the drone. Thus for the remaining part of the design process we opt for an \textit{Aromated Polyurethane} substrate with a higher $\epsilon_r = 2.55$, which allows us to work with smaller dimensions while radiating in the same frequency band. 
+
+	After experimenting with the exotic topologies mentioned above, we redo the design starting from a rectangular microstrip patch antenna. The length of the patch determines the resonance frequency of the device, while the width has an influence on the radiated power. A wider patch means less resonance resistance, hence more bandwidth and a higher efficiency. 
+	We want the resonance frequency of the patch to be in the predefined frequency band $\SI{3.1}{\giga\hertz}$ - $\SI{5.3}{\giga\hertz}$ and thus choose $f_0 = \SI{4.2}{\giga\hertz}$. Using equation (\ref{eq:width_patch}) we calculate the desired width of the patch.
+	\begin{equation} 
+	L = \frac{c}{2 f_r \sqrt{\epsilon_r}}
+	\label{eq:width_patch}
+	\end{equation}
+
+	The bandwidth of the antenna needs to be very wide, thus, as explained above, we would be tempted to increase the width of the patch to obtain a bigger bandwidth. Again, we are limited by the dimensions of the drone, because it needs to be fitted onto the drone and we don't want the antenna to interfere too mmuch with the aerodynamics. To increase the bandwidth we apply another technique, i.e. adding stairs to the rectangular patch and optimizing their dimensions to obtain the desired bandwidth. Also, we introduce a partial groundplane, of which we again optimize the dimensions, to realize an approximately flat $S_{11}$ and a linear phase characteristic in the wanted frequency band. The final antenna lay-out is shown in Figure \ref{fig:patch_stairs}.
+
+	\begin{figure}[H]
+	\centering
+		\includegraphics[width=0.5\textwidth]{images/antenna/patch_stairs.png}
+		\caption{Rectangular patch antenna with added stairs and partial ground plane}
+		\label{fig:patch_stairs}
+	\end{figure}
+
+	////////////////////////////////////////////////////////////////////\\
+	TODO: OPTIMIZED DIMENSIONS IN TABLE \\
+	////////////////////////////////////////////////////////////////////
+
+	\subsection{Simulation}
+
+
+	\subsection{Measurements}
+
+
+
 \section{PCB Design}
 \section{Location Algorithm}
 	A first algorithm that can be used to determine the position of the drone is the \textit{Least Mean Square} algorithm. We will elaborate on this first and then compare the performance to the Unscented Kalman Filter, which will be used in the final system. 
