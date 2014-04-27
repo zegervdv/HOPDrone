@@ -113,8 +113,10 @@ void kalman_predict(arm_matrix_instance_f32* f_matrix, arm_matrix_instance_f32* 
 }
 
 void kalman_update_sigmapoints(position_t* sigmapoints, position_t mkmin, arm_matrix_instance_f32* pkmin) {
+  uint8_t i,j;
   arm_matrix_instance_f32 root;
   float32_t root_data[DIMENSIONS * DIMENSIONS];
+
   arm_mat_init_f32(&root, DIMENSIONS, DIMENSIONS, root_data);
 
   // Calculate the root of the variance matrix using Cholesky Decomposition
@@ -122,7 +124,20 @@ void kalman_update_sigmapoints(position_t* sigmapoints, position_t mkmin, arm_ma
 
   arm_mat_scale_f32(&root, DIMENSIONS + KAPPA, &root);
 
+  // First sigmapoint is mkmin
+  for(i = 0; i < DIMENSIONS; i++) {
+    sigmapoints[0].pData[i] = mkmin.pData[i];
+  }
 
+  for(i = 0; i < DIMENSIONS; i++) {
+    for(j = 0; j < DIMENSIONS; j++) {
+      sigmapoints[i + 1].pData[j] = mkmin.pData[j] + root.pData[i + (j * DIMENSIONS)];
+    }
+
+    for(j = 0; j < DIMENSIONS; j++) {
+      sigmapoints[i + DIMENSIONS + 1].pData[j] = mkmin.pData[j] - root.pData[i + (j * DIMENSIONS)];
+    }
+  }
 }
 
 void cholesky_decomp(arm_matrix_instance_f32* matrix, arm_matrix_instance_f32* output) {
