@@ -181,7 +181,17 @@ int main(void) {
 
               // perform non-cooperative localization if required
               if(lcmMsg->options & LCMFLAG_ONBOARD_LOCALIZATION) {
+                // Prediction Step
                 kalman_predict(&f_matrix, &g_matrix, &prev_position, &pk, &var_u, &mkmin, &pkmin);
+                // Update new sigmapoints
+                kalman_update_sigmapoints(sigmapoints, mkmin, &pkmin);
+
+                // Measurement update
+
+                // Report estimated location
+                locInfo->estim_x = position.pData[0];
+                locInfo->estim_y = position.pData[1];
+                locInfo->estim_z = position.pData[2];
               }
 
 
