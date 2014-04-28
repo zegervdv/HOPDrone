@@ -35,6 +35,7 @@
 	\end{itemize}
 
 	\subsection{Antenna Topology and Design}
+	\label{subsec:ant_design}
 
 	At first we experiment with a few conventional UWB topologies like a bow tie and a bar-bell shape (see Figure \ref{fig:topologies}). After optimalisation and simulation in ADS, we conclude that the simulated S-paramters and gain are not compliant with the design parameters above. Obtaining a linear phase characteristic with these topologies proves to be very hard as well.  
 
@@ -62,7 +63,7 @@
 	\label{eq:width_patch}
 	\end{equation}
 
-	The bandwidth of the antenna needs to be very wide, thus, as explained above, we would be tempted to increase the width of the patch to obtain a bigger bandwidth. Again, we are limited by the dimensions of the drone, because it needs to be fitted onto the drone and we don't want the antenna to interfere too mmuch with the aerodynamics. To increase the bandwidth we apply another technique, i.e. adding stairs to the rectangular patch and optimizing their dimensions to obtain the desired bandwidth. Also, we introduce a partial groundplane, of which we again optimize the dimensions, to realize an approximately flat $S_{11}$ and a linear phase characteristic in the wanted frequency band. The final antenna lay-out is shown in Figure \ref{fig:patch_stairs}.
+	The bandwidth of the antenna needs to be very wide, thus, as explained above, we would be tempted to increase the width of the patch to obtain a bigger bandwidth. Again, we are limited by the dimensions of the drone, because it needs to be fitted onto the drone and we don't want the antenna to interfere too mmuch with the aerodynamics. To increase the bandwidth we apply another technique, i.e. adding stairs to the rectangular patch and optimizing their dimensions to obtain the desired bandwidth. Also, we introduce a partial groundplane, of which we again optimize the dimensions, to realize an approximately flat $S_{11}$ and a linear phase characteristic in the wanted frequency band. The final antenna lay-out is shown in Figure \ref{fig:patch_stairs} and the optimized dimensions are given in Table.
 
 	\begin{figure}[H]
 	\centering
@@ -71,18 +72,41 @@
 		\label{fig:patch_stairs}
 	\end{figure}
 
-	////////////////////////////////////////////////////////////////////\\
-	TODO: OPTIMIZED DIMENSIONS IN TABLE \\
-	////////////////////////////////////////////////////////////////////
+	\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|}
+		\hline
+		\multicolumn{2}{|c|}{\textbf{Antenna}} \\ \hline
+		L & $\SI{20.5}{\milli\meter}$ \\ \hline
+		W & $\SI{36}{\milli\meter}$ \\ \hline
+		$W_{stair}$ & $\SI{8.6}{\milli\meter}$ \\ \hline
+		$H_{stair}$ & $\SI{2.1}{\milli\meter}$ \\ \hline
+		\multicolumn{2}{|c|}{\textbf{Ground Plane}} \\ \hline
+		L & $\SI{19.2}{\milli\meter}$ \\ \hline
+		W & $\SI{36}{\milli\meter}$ \\ \hline 
+	\end{tabular}
+	\caption{Optimized dimensions for antenna and partial ground plane}
+	\label{tab:dimensions}
+	\end{table}
 
 	\subsection{Simulation}
+		While designing the antenna, simulations in ADS are used to confirm that the antenna's characteristics are as desired. In this section we will discuss the simulation results of the final design, as explained in the previous section \ref{subsec:ant_design}. 
 
+		\begin{figure}[H]
+		\centering
+			\includegraphics[width=0.7\textwidth]{../presentation/images/S11_ADS_sim.eps}
+			\caption{Simulated $S_{11}$ for designed UWB antenna}
+			\label{fig:S11_design}
+		\end{figure}
 
 	\subsection{Measurements}
 
 
 
 \section{PCB Design}
+
+
+
 \section{Location Algorithm}
 	A first algorithm that can be used to determine the position of the drone is the \textit{Least Mean Square} algorithm. We will elaborate on this first and then compare the performance to the Unscented Kalman Filter, which will be used in the final system. 
 
