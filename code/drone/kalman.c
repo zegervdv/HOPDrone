@@ -140,12 +140,14 @@ void kalman_update_sigmapoints(position_t* sigmapoints, position_t mkmin, arm_ma
   }
 }
 
-void kalman_measurement_update(arm_matrix_instance_f32* z_matrix, float32_t** anchors, position_t* sigmapoints, arm_matrix_instance_f32* weight_m, arm_matrix_instance_f32* weight_c) {
+void kalman_measurement_update(arm_matrix_instance_f32* z_matrix, float32_t** anchors, position_t* sigmapoints, arm_matrix_instance_f32* weight_m, arm_matrix_instance_f32* weight_c, arm_matrix_instance_f32* r_matrix, arm_matrix_instance_f32* pkmin, position_t* mk, arm_matrix_instance_f32* pk) {
   uint8_t i,j;
   arm_matrix_instance_f32 mu;
   arm_matrix_instance_f32 cov, var;
   arm_matrix_instance_f32 vector_y, vector_z, vector_output;
-  arm_matrix_instance_f32 temp_cov;
+  arm_matrix_instance_f32 temp_cov, temp_var;
+  arm_matrix_instance_f32 distance_anchors;
+
   float32_t mu_data[NR_ANCHORS];
   float32_t cov_data[DIMENSIONS * NR_ANCHORS] = {0};
   float32_t var_data[NR_ANCHORS * NR_ANCHORS] = {0};
@@ -153,6 +155,8 @@ void kalman_measurement_update(arm_matrix_instance_f32* z_matrix, float32_t** an
   float32_t vector_z_data[NR_ANCHORS];
   float32_t vector_output_data[NR_ANCHORS];
   float32_t temp_cov_data[DIMENSIONS * NR_ANCHORS];
+  float32_t temp_var_data[NR_ANCHORS * NR_ANCHORS];
+  float32_t distance_anchors_data[NR_ANCHORS];
 
   float32_t x_sq, y_sq, z_sq;
 
@@ -163,6 +167,8 @@ void kalman_measurement_update(arm_matrix_instance_f32* z_matrix, float32_t** an
   arm_mat_init_f32(&vector_z, NR_ANCHORS, 1, vector_z_data);
   arm_mat_init_f32(&vector_output, 1, NR_ANCHORS, vector_output_data);
   arm_mat_init_f32(&temp_cov, DIMENSIONS, NR_ANCHORS, temp_cov_data);
+  arm_mat_init_f32(&temp_var, NR_ANCHORS, NR_ANCHORS, temp_var_data);
+  arm_mat_init_f32(&distance_anchors, NR_ANCHORS, 1, distance_anchors_data);
 
   for(i = 0; i < NR_SIGMAPOINTS; i++) {
     for(j = 0; j < NR_ANCHORS; j++) {
@@ -172,6 +178,10 @@ void kalman_measurement_update(arm_matrix_instance_f32* z_matrix, float32_t** an
       z_matrix->pData[j*NR_SIGMAPOINTS + i] = sqrt(x_sq + y_sq + z_sq);
     }
   }
+
+  // Collect distances measured
+  for(i = 0; i < NR_ANCHORS; i++)
+    distance_anchors.pData[i] = anchors[i][3];
 
   // Calculate mu vector
   arm_mat_mult_f32(z_matrix, weight_m, &mu);
@@ -187,11 +197,41 @@ void kalman_measurement_update(arm_matrix_instance_f32* z_matrix, float32_t** an
 
     arm_mat_sub_f32(&vector_y, &sigmapoints[0], &vector_y);
     arm_mat_sub_f32(&vector_z, &mu, &vector_z);
+
     arm_mat_trans_f32(&vector_z, &vector_output);
-    arm_mat_mult_f32(&vector_y, &vector_z, &temp_cov);
+
+    arm_mat_mult_f32(&vector_y, &vector_output, &temp_cov);
     arm_mat_scale_f32(&temp_cov, weight_c->pData[i], &temp_cov);
+
+    arm_mat_mult_f32(&vector_z, &vector_output, &temp_var);
+    arm_mat_scale_f32(&temp_var, weight_c->pData[i], &temp_var);
+
     arm_mat_add_f32(&cov, &temp_cov, &cov);
+    arm_mat_add_f32(&var, &temp_var, &var);
   }
+
+  arm_mat_add_f32(&var, r_matrix, &temp_var);
+  // Reuse var to store the inverse
+  arm_mat_inverse_f32(&temp_var, &var);
+
+  // temp_cov is used to store K matrix
+  arm_mat_mult_f32(&cov, &var, &temp_cov);
+
+  // Reuse distance_anchors to store result
+  arm_mat_sub_f32(&distance_anchors, &mu, &distance_anchors);
+  // Reuse vector_y
+  arm_mat_mult_f32(&temp_cov, &distance_anchors, &vector_y);
+
+  // Result for mk
+  arm_mat_add_f32(&sigmapoints[0], &vector_y, mk);
+
+  // cov holds result of K * (var + R)
+  arm_mat_mult_f32(&temp_cov, &temp_var, &cov);
+  arm_mat_trans_f32(&temp_cov, &temp_cov);
+  arm_mat_mult_f32(&cov, &temp_cov, &cov);
+
+  // Result for Pk
+  arm_mat_sub_f32(pkmin, &cov, pk);
 }
 
 void cholesky_decomp(arm_matrix_instance_f32* matrix, arm_matrix_instance_f32* output) {

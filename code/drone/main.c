@@ -24,6 +24,7 @@
 #include "system.h"
 #include "kalman.h"
 
+#define NR_ANCHORS 4
 #define RCM_ID 102
 #define USED_ANTENNA RCM_ANTENNAMODE_TXA_RXA
 

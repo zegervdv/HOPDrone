@@ -113,8 +113,14 @@ void kalman_update_sigmapoints(position_t* sigmapoints, position_t mkmin, arm_ma
  * z_matrix    - arm_matrix_instance_f32* to the z_matrix
  * anchors     - array with positions and measured distance of each anchor
  * sigmapoints - array with sigmapoints
+ * weight_m    - matrix with Wm
+ * weight_c    - matrix with Wc
+ * r_matrix    - arm_matrix_instance_f32* to the noise variance matrix
+ * pkmin       - arm_matrix_instance_f32* to the variance matrix
+ * mk          - position_t* to the estimated position, prev_position
+ * pk          - arm_matrix_instance_f32* to the variance matrix
  */
-void kalman_measurement_update(arm_matrix_instance_f32* z_matrix, float32_t** anchors, position_t* sigmapoints, arm_matrix_instance_f32* weight_m, arm_matrix_instance_f32* weight_c);
+void kalman_measurement_update(arm_matrix_instance_f32* z_matrix, float32_t** anchors, position_t* sigmapoints, arm_matrix_instance_f32* weight_m, arm_matrix_instance_f32* weight_c, arm_matrix_instance_f32* r_matrix, arm_matrix_instance_f32* pkmin, position_t* mk, arm_matrix_instance_f32* pk);
 
 /**
  * Cholesky decomposition
