@@ -192,8 +192,37 @@ int main(void) {
                 locInfo->estim_x = position.pData[0];
                 locInfo->estim_y = position.pData[1];
                 locInfo->estim_z = position.pData[2];
-              }
+                if(!(lcmMsg->options & LCMFLAG_COOP)) {
+                  if(lcmMsg->options & LCMFLAG_KALMAN) {
+                    // perform Kalman Filtering
+                  }else if(lcmMsg->options & LCMFLAG_3D) {
+                    // perform 3D localization
+                    // 3D LMS here
+                  }else {
+                    // perform 2D localization
+                    float32_t posEstimate[2] = {0.0f, 0.0f};
+                    float32_t anchorsX[lcmMsg->nAnchors];
+                    float32_t anchorsY[lcmMsg->nAnchors];
+                    uint32_t d[lcmMsg->nAnchors];
 
+                    i=0;
+                    while(i<lcmMsg->nAnchors){
+                      anchorsX[i] = int2float(lcmMsg->data[i*3 + (lcmMsg->nUsers+lcmMsg->nAnchors)]);
+                      anchorsY[i] = int2float((float32_t)lcmMsg->data[i*3 + 1 + (lcmMsg->nUsers+lcmMsg->nAnchors)]);
+                      d[i] = (float)locInfo->data[i].precisionRangeMm;
+                      i++;
+                    }
+
+                    arm_status errorStatus;
+                    /* errorStatus = Calculate2DPosition(lcmMsg->nAnchors, posEstimate, anchorsX, anchorsY, d); */
+                    locInfo->estim_x = posEstimate[0]/1000.0f;
+                    locInfo->estim_y = posEstimate[1]/1000.0f;
+                    locInfo->estim_z = 0;
+                  }
+                }else {
+                  // perform cooperative localization.
+                }
+              }
 
               // send data to central hub
               locInfo->msgID = LCM_MSG_LOC_INFO;
