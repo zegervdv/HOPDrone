@@ -3,8 +3,106 @@
  */
 #include "lms.h"
 
+arm_status Calculate3DPosition(uint8_t nrAnchors, float32_t* currPosEst, float32_t* anchorsX, float32_t* anchorsY, float32_t* anchorsZ, uint32_t* d){
 
-arm_status Calculate2DPosition(uint8_t nrAnchors,float32_t* currPosEst, float32_t* anchorsX, float32_t* anchorsY, uint32_t* d){
+	uint8_t i;
+	uint8_t nrOfValids=0;
+
+	// Extract valid (nonzero) measurements to avoid division by zero (in very rare cases)
+
+	for(i=0; i<nrAnchors;i++){
+		if(d[i] != 0) nrOfValids++;
+	}
+
+	float32_t valid_anchorsX[nrOfValids];
+	float32_t valid_anchorsY[nrOfValids];
+	float32_t valid_anchorsZ[nrOfValids];
+	float32_t valid_d[nrOfValids];
+
+	uint8_t vi=0; //validity-index
+	for(i=0; i<nrAnchors; i++){
+		if(d[i] != 0){
+			valid_anchorsX[vi] = anchorsX[i];
+			valid_anchorsY[vi] = anchorsY[i];
+			valid_anchorsZ[vi] = anchorsZ[i];
+			valid_d[vi] = d[i];
+			vi++;
+		}
+	}
+
+	if(nrOfValids >= 3){ // LMS can be applied
+		float32_t b_array[nrOfValids-1];
+		float32_t A_array[3*(nrOfValids-1)];
+		float32_t AT_array[3*(nrOfValids-1)];
+
+		uint8_t i;
+		for(i=0; i<nrOfValids-1; i++){
+			b_array[i] = (valid_d[i]*valid_d[i] - valid_d[nrOfValids-1]*valid_d[nrOfValids-1])
+					- (valid_anchorsX[i]*valid_anchorsX[i]) + (valid_anchorsX[nrOfValids-1]*valid_anchorsX[nrOfValids-1])
+					- (valid_anchorsY[i]*valid_anchorsY[i]) + (valid_anchorsY[nrOfValids-1]*valid_anchorsY[nrOfValids-1])
+					- (valid_anchorsZ[i]*valid_anchorsZ[i]) + (valid_anchorsZ[nrOfValids-1]*valid_anchorsZ[nrOfValids-1]);
+			A_array[i*2] = -2*valid_anchorsX[i] + 2*valid_anchorsX[nrOfValids-1];
+			A_array[i*2 + 1] = -2*valid_anchorsY[i] + 2*valid_anchorsY[nrOfValids-1];
+			A_array[i*2 + 2] = -2*valid_anchorsZ[i] + 2*valid_anchorsZ[nrOfValids-1];
+		}
+
+		arm_matrix_instance_f32 b = {nrOfValids-1, 1, (float32_t *)b_array};
+		arm_matrix_instance_f32 A = {nrOfValids-1, 3, (float32_t *)A_array};
+		arm_matrix_instance_f32 AT = {3, nrOfValids-1, (float32_t *)AT_array};
+		
+		arm_status TransStatus = arm_mat_trans_f32(&A,&AT);
+		if(TransStatus != ARM_MATH_SUCCESS){
+			return TransStatus;
+		}
+
+		float32_t ATA_array[9];
+		arm_matrix_instance_f32 ATA = {3, 3, (float32_t *)ATA_array};
+		
+		arm_status ReusedStatus = arm_mat_mult_f32(&AT, &A, &ATA);
+		if (ReusedStatus != ARM_MATH_SUCCESS){
+			return ReusedStatus;
+
+		float32_t ATAinv_array[9];
+		float32_t det = ATA_array[0]*ATA_array[4]*ATA_array[8] + ATA_array[1]*ATA_array[5]*ATA_array[6]
+						 + ATA_array[2]*ATA_array[3]*ATA_array[7] - ATA_array[2]*ATA_array[4]*ATA_array[6]
+						 - ATA_array[1]*ATA_array[3]*ATA_array[8] - ATA_array[0]*ATA_array[5]*ATA_array[7];
+		ATAinv_array[0] = (ATA_array[8]*ATA_array[4] - ATA_array[7]*ATA_array[5])/det;
+		ATAinv_array[1] = (ATA_array[7]*ATA_array[2] - ATA_array[1]*ATA_array[8])/det;
+		ATAinv_array[2] = (ATA_array[1]*ATA_array[5] - ATA_array[4]*ATA_array[2])/det;
+		ATAinv_array[3] = (ATA_array[5]*ATA_array[6] - ATA_array[8]*ATA_array[3])/det;
+		ATAinv_array[4] = (ATA_array[0]*ATA_array[8] - ATA_array[6]*ATA_array[2])/det;
+		ATAinv_array[5] = (ATA_array[2]*ATA_array[3] - ATA_array[0]*ATA_array[5])/det;
+		ATAinv_array[6] = (ATA_array[7]*ATA_array[3] - ATA_array[6]*ATA_array[4])/det;
+		ATAinv_array[7] = (ATA_array[1]*ATA_array[6] - ATA_array[7]*ATA_array[0])/det;
+		ATAinv_array[8] = (ATA_array[4]*ATA_array[0] - ATA_array[1]*ATA_array[3])/det;
+		arm_matrix_instance_f32 ATAinv = {3, 3, (float32_t *)ATAinv_array};
+		/*ReusedStatus = arm_mat_inverse_f32(&ATA, &ATAinv);
+
+		if (ReusedStatus != ARM_MATH_SUCCESS){
+			return ReusedStatus;
+		}*/
+
+		float32_t MP_array[3*(nrOfValids-1)];
+		arm_matrix_instance_f32 MoorePenrose = {3, nrOfValids-1, (float32_t *)MP_array};
+		ReusedStatus = arm_mat_mult_f32(&ATAinv, &AT, &MoorePenrose);
+
+		if (ReusedStatus != ARM_MATH_SUCCESS){
+			return ReusedStatus;
+		}
+		arm_matrix_instance_f32 currPosEstMatrix = {3, 1, (float32_t *)currPosEst};
+		ReusedStatus = arm_mat_mult_f32(&MoorePenrose, &b, &currPosEstMatrix);
+
+		if (ReusedStatus != ARM_MATH_SUCCESS){
+			return ReusedStatus;
+		}
+
+		return ARM_MATH_SUCCESS; //if the program reaches here, no errors occurred
+		}
+	}
+}
+
+
+arm_status Calculate2DPosition(uint8_t nrAnchors, float32_t* currPosEst, float32_t* anchorsX, float32_t* anchorsY, uint32_t* d){
 
 	uint8_t j;
 	uint8_t nrOfValids =0;

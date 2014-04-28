@@ -129,7 +129,30 @@ int main(void) {
                     // perform Kalman Filtering
                   }else if(lcmMsg->options & LCMFLAG_3D) {
                     // perform 3D localization
-                    // 3D LMS here
+                    float32_t posEstimate[3] = {0.0f, 0.0f, 0.0f};
+                    float32_t anchorsX[lcmMsg->nAnchors];
+                    float32_t anchorsY[lcmMsg->nAnchors];
+                    float32_t anchorsZ[lcmMsg->nAnchors];
+                    uint32_t d[lcmMsg->nAnchors];
+
+                    i=0;
+
+                    // Fill in positions of anchor nodes in anchorsX,Y,Z and range measurement in d
+                    while(i<lcmMsg->nAnchors){
+                      anchorsX[i] = int2float(lcmMsg->data[i*3 + (lcmMsg->nUsers+lcmMsg->nAnchors)]);
+                      anchorsY[i] = int2float(lcmMsg->data[i*3 + 1 + (lcmMsg->nUsers+lcmMsg->nAnchors)]);
+                      anchorsZ[i] = int2float(lcmMsg->data[i*3 + 2 + (lcmMsg->nUsers+lcmMsg->nAnchors)]);
+                      d[i] = (float)locInfo->data[i].precisionRangeMm;
+                      i++;
+                    }
+
+                    // Calculate 3D positions and store in locInfo 
+                    arm_status errorStatus;
+                    errorStatus = Calculate3DPosition(lcmMsg->nAnchors, posEstimate, anchorsX, anchorsY, anchorsZ, d);
+                    locInfo->estim_x = posEstimate[0]/1000.0f;
+                    locInfo->estim_y = posEstimate[1]/1000.0f;
+                    locInfo->estim_z = posEstimate[2]/1000.0f;
+
                   }else {
                     // perform 2D localization
                     float32_t posEstimate[2] = {0.0f, 0.0f};
