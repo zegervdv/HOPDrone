@@ -31,6 +31,7 @@
 #define LCMFLAG_ONBOARD_LOCALIZATION	1		// on-board estimation of the position
 #define LCMFLAG_COOP					2		// enable cooperation -> ranging with anchors and users!
 #define LCMFLAG_3D						4		// enable 3D localization (only applicable when on-board localization is on)
+#define LCMFLAG_KALMAN        8 // enable kalman filter
 
 typedef struct __attribute__((__packed__)){
 	// ID of the responding radio
