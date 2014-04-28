@@ -61,6 +61,7 @@ arm_status Calculate3DPosition(uint8_t nrAnchors, float32_t* currPosEst, float32
 		arm_status ReusedStatus = arm_mat_mult_f32(&AT, &A, &ATA);
 		if (ReusedStatus != ARM_MATH_SUCCESS){
 			return ReusedStatus;
+		}
 
 		float32_t ATAinv_array[9];
 		float32_t det = ATA_array[0]*ATA_array[4]*ATA_array[8] + ATA_array[1]*ATA_array[5]*ATA_array[6]
@@ -97,7 +98,7 @@ arm_status Calculate3DPosition(uint8_t nrAnchors, float32_t* currPosEst, float32
 		}
 
 		return ARM_MATH_SUCCESS; //if the program reaches here, no errors occurred
-		}
+		
 	}
 }
 
