@@ -4,5 +4,7 @@ HOPDrone
 Indoor localization for drones
 
 ## Code
-Place source files in `src/` and headers in `inc/`.
+
+For Least Mean Square implementation: checkout `code-lms`.
+For Least Kalman implementation: checkout `code-kalman`.
 
