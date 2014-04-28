@@ -194,7 +194,7 @@ int main(void) {
                     uint8_t i = 0;
                     // perform Kalman Filtering
                     // Prediction Step
-                    kalman_predict(&f_matrix, &g_matrix, &prev_position, &pk, &var_u, &mkmin, &pkmin);
+                    kalman_predict(&f_matrix, &g_matrix, &position, &pk, &var_u, &mkmin, &pkmin);
                     // Update new sigmapoints
                     kalman_update_sigmapoints(sigmapoints, mkmin, &pkmin);
 
@@ -206,6 +206,8 @@ int main(void) {
                       anchors[i][3] = (float32_t) locInfo->data[i].precisionRangeMm / 1000.0;
                       i++;
                     }
+
+                    kalman_measurement_update(&z_matrix, anchors, sigmapoints, &weight_m, &weight_c, &r_matrix, &pkmin, &position, &pk);
 
 
                     // Report estimated location

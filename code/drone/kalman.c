@@ -140,7 +140,7 @@ void kalman_update_sigmapoints(position_t* sigmapoints, position_t mkmin, arm_ma
   }
 }
 
-void kalman_measurement_update(arm_matrix_instance_f32* z_matrix, float32_t** anchors, position_t* sigmapoints, arm_matrix_instance_f32* weight_m, arm_matrix_instance_f32* weight_c, arm_matrix_instance_f32* r_matrix, arm_matrix_instance_f32* pkmin, position_t* mk, arm_matrix_instance_f32* pk) {
+void kalman_measurement_update(arm_matrix_instance_f32* z_matrix, float32_t anchors[][4], position_t* sigmapoints, arm_matrix_instance_f32* weight_m, arm_matrix_instance_f32* weight_c, arm_matrix_instance_f32* r_matrix, arm_matrix_instance_f32* pkmin, position_t* mk, arm_matrix_instance_f32* pk) {
   uint8_t i,j;
   arm_matrix_instance_f32 mu;
   arm_matrix_instance_f32 cov, var;
