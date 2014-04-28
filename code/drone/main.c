@@ -94,6 +94,7 @@ int main(void) {
   float32_t pk_data[DIMENSIONS*DIMENSIONS], pkmin_data[DIMENSIONS*DIMENSIONS];
   float32_t var_u_data[DIMENSIONS/2*DIMENSIONS/2];
   float32_t r_matrix_data[NR_ANCHORS];
+  float32_t z_matrix_data[NR_ANCHORS * NR_SIGMAPOINTS];
 
   arm_matrix_instance_f32 weight_m, weight_c;
   position_t position, prev_position;
@@ -102,6 +103,10 @@ int main(void) {
   arm_matrix_instance_f32 f_matrix, g_matrix;
   arm_matrix_instance_f32 pkmin, pk;
   arm_matrix_instance_f32 var_u, r_matrix;
+  arm_matrix_instance_f32 z_matrix;
+
+  // Data of the anchors: x, y, z coordinate plus measured distance from node
+  float32_t anchors[NR_ANCHORS][4];
 
   init_system();
 
@@ -140,6 +145,9 @@ int main(void) {
   kalman_init_variances(var_u_data, r_matrix_data, NR_ANCHORS);
   arm_mat_init_f32(&var_u, DIMENSIONS/2, DIMENSIONS/2, var_u_data);
   arm_mat_init_f32(&r_matrix, NR_ANCHORS, NR_ANCHORS, r_matrix_data);
+
+  // Initialize Z matrix
+  arm_mat_init_f32(&z_matrix, NR_ANCHORS, NR_SIGMAPOINTS, z_matrix_data);
 
   while(true) {
 
@@ -181,20 +189,29 @@ int main(void) {
 
               // perform non-cooperative localization if required
               if(lcmMsg->options & LCMFLAG_ONBOARD_LOCALIZATION) {
-                // Prediction Step
-                kalman_predict(&f_matrix, &g_matrix, &prev_position, &pk, &var_u, &mkmin, &pkmin);
-                // Update new sigmapoints
-                kalman_update_sigmapoints(sigmapoints, mkmin, &pkmin);
-
-                // Measurement update
-
-                // Report estimated location
-                locInfo->estim_x = position.pData[0];
-                locInfo->estim_y = position.pData[1];
-                locInfo->estim_z = position.pData[2];
                 if(!(lcmMsg->options & LCMFLAG_COOP)) {
                   if(lcmMsg->options & LCMFLAG_KALMAN) {
+                    uint8_t i = 0;
                     // perform Kalman Filtering
+                    // Prediction Step
+                    kalman_predict(&f_matrix, &g_matrix, &prev_position, &pk, &var_u, &mkmin, &pkmin);
+                    // Update new sigmapoints
+                    kalman_update_sigmapoints(sigmapoints, mkmin, &pkmin);
+
+                    // Measurement update
+                    while(i < lcmMsg->nAnchors && i < NR_ANCHORS) {
+                      anchors[i][0] = int2float(lcmMsg->data[i*3 + (lcmMsg->nUsers + lcmMsg->nAnchors)]);
+                      anchors[i][1] = int2float(lcmMsg->data[i*3 + 1 + (lcmMsg->nUsers + lcmMsg->nAnchors)]);
+                      anchors[i][2] = int2float(lcmMsg->data[i*3 + 2 + (lcmMsg->nUsers + lcmMsg->nAnchors)]);
+                      anchors[i][3] = (float32_t) locInfo->data[i].precisionRangeMm / 1000.0;
+                      i++;
+                    }
+
+
+                    // Report estimated location
+                    locInfo->estim_x = position.pData[0];
+                    locInfo->estim_y = position.pData[1];
+                    locInfo->estim_z = position.pData[2];
                   }else if(lcmMsg->options & LCMFLAG_3D) {
                     // perform 3D localization
                     // 3D LMS here
