@@ -2,7 +2,8 @@
 \usepackage[english]{babel}             % Stel woordafbrekingen en referentienamen in
 \usepackage{graphicx}                   % Afbeeldingen weergeven
 \usepackage{float}                      % Figuren op plaats waar ze gedefinieerd staan: [H]
-\usepackage{helvet}                     % Lettertype instellen op Helvetica
+\usepackage{lmodern}                     % Lettertype instellen op Helvetica
+\usepackage[T1]{fontenc}
 \usepackage[hidelinks]{hyperref}        % Referenties aanklikbaar in PDF, geen kaders rond weergeven
 \usepackage{siunitx}                    % SI unit symbolen
 \usepackage{amsmath}                    % Matrices en vergelijkingen
@@ -103,9 +104,6 @@
 
 
 
-\section{PCB Design}
-
-
 
 \section{Location Algorithm}
 	A first algorithm that can be used to determine the position of the drone is the \textit{Least Mean Square} algorithm. We will elaborate on this first and then compare the performance to the Unscented Kalman Filter, which will be used in the final system. 
@@ -148,5 +146,14 @@
 
 	% subsection LMS (end)
 
+
+\section{PCB Design}
+  In order to process the measurements and determine the position of the drone, a microcontroller is used. We will use one from the STM32F4-series, which has a 32-bit ARM processor. A PCB is designed to contain the microcontroller, as well as power supply and peripheral connections.
+The controller communicates with the RCM-controller over the UART-protocol, and can use the UWB-antenna for communication purposes as well as for ranging.
+This way the microcontroller can report positioning data to a monitoring station.
+Further connections include multiple means of supplying power to the microcontroller, either the power can be drawn from the drone itself, or it can be powered by an external battery.
+A programming interface is also provided.
+All IO-pins are ESD-protected using Zener diodes.
+  
 \end{document}
 
