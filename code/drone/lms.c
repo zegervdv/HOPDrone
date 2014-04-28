@@ -30,7 +30,7 @@ arm_status Calculate3DPosition(uint8_t nrAnchors, float32_t* currPosEst, float32
 		}
 	}
 
-	if(nrOfValids >= 3){ // LMS can be applied
+	if(nrOfValids >= 4){ // LMS can be applied
 		float32_t b_array[nrOfValids-1];
 		float32_t A_array[3*(nrOfValids-1)];
 		float32_t AT_array[3*(nrOfValids-1)];
@@ -100,22 +100,23 @@ arm_status Calculate3DPosition(uint8_t nrAnchors, float32_t* currPosEst, float32
 		return ARM_MATH_SUCCESS; //if the program reaches here, no errors occurred
 		
 	}else{
-		/*this means: less than 3 valid measurements -> normal LMS impossible!
+		/*this means: less than 4 valid measurements -> normal LMS impossible!
 		 * however: the previous known position is still available in currPosEst!
 		 */
 
-		float32_t intersects[9];
+		float32_t intersects[6];
 		uint32_t d1sq;
 		uint32_t d2sq;
 
-		if(nrOfValids == 0){
+		if(nrOfValids <= 2 ){
 			//do nothing: no valid measurements => currPosEst is not updated
 			return ARM_MATH_SUCCESS;
 		}
-		else if(nrOfValids == 2){
-			uint32_t data[8] = {valid_anchorsX[0], valid_anchorsY[0], valid_anchorsZ[0],
+		else if(nrOfValids == 3){
+			float32_t data[12] = {valid_anchorsX[0], valid_anchorsY[0], valid_anchorsZ[0],
 							valid_anchorsX[1], valid_anchorsY[1], valid_anchorsZ[1], 
-							valid_d[0], valid_d[1]};
+							valid_anchorsX[2], valid_anchorsY[2], valid_anchorsZ[2], 
+							valid_d[0], valid_d[1], valid_d[2]};
 			uint8_t nrOfIntersects = get3DIntersections(data, intersects);
 
 			if(nrOfIntersects==0){ //do not change currPosEst (can still be improved, maybe)
@@ -131,9 +132,9 @@ arm_status Calculate3DPosition(uint8_t nrAnchors, float32_t* currPosEst, float32
 				//this piece of code has been moved, because the 'else' below needs the exact same
 			}
 		}
-		else { // STILL NEEDS TO BE ADAPTED TO 3D !!!!!!!!!!!
+		/*else { // STILL NEEDS TO BE ADAPTED TO 3D !!!!!!!!!!!
 
-			//nrOfValids =1, choose point on circle closest to old position
+			//nrOfValids =2, choose point on circle (intersection of 2 spheres) closest to old position
 			//y = y1 + (y2-y1)/(x2-x1) *(x-x1)
 			float32_t rico = (currPosEst[1]-valid_anchorsY[0])/(currPosEst[0]-valid_anchorsX[0]);
 			//a*x^2 + b*x +c =0
@@ -149,92 +150,98 @@ arm_status Calculate3DPosition(uint8_t nrAnchors, float32_t* currPosEst, float32
 			intersects[1] = valid_anchorsY[0] + rico*(intersects[0]-valid_anchorsX[0]);
 			intersects[2] = (-b - sqrtD)/(2*a);
 			intersects[3] = valid_anchorsY[0] + rico*(intersects[2]-valid_anchorsX[0]);
-		}
+		}*/
 
-		// now compare intersect points, for case "2 valids, 2 intersects" and case "1 valid"
+		// now compare intersect points, for case "3 valids, 2 intersects" and case "2 valids"
 		d1sq = (intersects[0]-currPosEst[0])*(intersects[0]-currPosEst[0])
-						+ (intersects[1]-currPosEst[1])*(intersects[1]-currPosEst[1]);
-		d2sq = (intersects[2]-currPosEst[0])*(intersects[2]-currPosEst[0])
-						+ (intersects[3]-currPosEst[1])*(intersects[3]-currPosEst[1]);
+						+ (intersects[1]-currPosEst[1])*(intersects[1]-currPosEst[1])
+						+ (intersects[2]-currPosEst[2])*(intersects[2]-currPosEst[2]);
+		d2sq = (intersects[3]-currPosEst[0])*(intersects[3]-currPosEst[0])
+						+ (intersects[4]-currPosEst[1])*(intersects[4]-currPosEst[1])
+						+ (intersects[5]-currPosEst[2])*(intersects[5]-currPosEst[2]);
 		if(d1sq <= d2sq){
 			currPosEst[0] = intersects[0];
 			currPosEst[1] = intersects[1];
+			currPosEst[2] = intersects[2];
 		}
 		else{
-			currPosEst[0] = intersects[2];
-			currPosEst[1] = intersects[3];
+			currPosEst[0] = intersects[3];
+			currPosEst[1] = intersects[4];
+			currPosEst[2] = intersects[5];
 		}
 		return ARM_MATH_SUCCESS;
 	}
 }
 
-uint8_t get3DIntersections(uint32_t* data, float32_t* results){
-	uint32_t cx1=data[0]; uint32_t cy1=data[1]; uint32_t cz1=data[2]
-	uint32_t cx2=data[3]; uint32_t cy2=data[4]; uint32_t cz2=data[5]
-	uint32_t R1=data[6]; uint32_t R2=data[7];
-	float32_t cte, B, a, b, c, D, sqrtD;
+uint8_t get3DIntersections(float32_t* data, float32_t* results){
+	float32_t cx1=data[0]; float32_t cy1=data[1]; float32_t cz1=data[2];
+	float32_t cx2=data[3]; float32_t cy2=data[4]; float32_t cz2=data[5];
+	float32_t cx3=data[6]; float32_t cy3=data[7]; float32_t cz3=data[8];
+	float32_t R1=data[9]; float32_t R2=data[10]; float32_t R3=data[11];
+	float32_t e_x[3], e_y[3], e_z[3], i, j, ie_x[3];
 
-	// STILL NEEDS TO BE ADAPTED TO 3D !!!!!!!!!!!!!! 
+	// temp1 = P2 - P1
+	// e_x = temp1/norm(temp1)
+	float32_t temp1[3] = {cx2 - cx1, cy2 - cy1, cz2 - cz1};
+	float32_t norm12 = temp1[0]*temp1[0] + temp1[1]*temp1[1] + temp1[2]*temp1[2];
+	arm_sqrt_f32(norm12,&norm12);
+	arm_scale_f32(temp1,1.0f/norm12,e_x,3);
 
-	if ((cx1 - cx2) >= (cy1 - cy2)){ //more stable to divide by the x-difference
-		//x = cte - B*y
+	// temp2 = P3 - P1
+	float32_t temp2[3] = {cx3 - cx1, cy3 - cy1, cz3 - cz1};
 
-		cte = (R2*R2 - R1*R1 - cx2*cx2 + cx1*cx1 - cy2*cy2 + cy1*cy1)/(-2*cx2 + 2*cx1);
-		B = (-cy2+cy1)/(-cx2+cx1);
+	// i = dot(temp2,e_x)
+	arm_dot_prod_f32(e_x,temp2,3,&i);
 
-		// a*y^2 + b*y + c = 0
-		a = B*B +1;
-		b = -2*B*(cte-cx2)-2*cy2;
-		c = cy2*cy2 + (cte-cx2)*(cte-cx2)-R2*R2;
-		D = b*b-4*a*c;
+	// temp3 = temp2 - i*e_x
+	arm_scale_f32(e_x,i,ie_x,3);
+	float32_t temp3[3];
+	arm_sub_f32(temp2,ie_x,temp3,3);
 
+	// e_y = temp3/norm(temp3)
+	float32_t norm13 = temp3[0]*temp3[0] + temp3[1]*temp3[1] + temp3[2]*temp3[2];
+	arm_sqrt_f32(norm13,&norm13);
+	arm_scale_f32(temp3,1.0f/norm13,e_y,3);
 
-		if(D<0)
-			return 0;
-		else if (D==0){
-			results[1] = -b/(2*a);
-			results[0] = cte-B*results[1];
-			return 1;
-		}
-		else {// D>0, 2 intersections
-			sqrtD=0;
-			arm_sqrt_f32(D, &sqrtD);//returns arm_status, but argument D is always positive anyway
-			results[1] = (-b + sqrtD)/(2*a); //y1
-			results[0] = cte-B*results[1]; //x1
-			results[3] = (-b - sqrtD)/(2*a); //y2
-			results[2] = cte-B*results[3]; //x2
-			return 2;
-		}
-	}
-	else{ //division by y-difference, analoguous
-		//y = cte - B*x
+	// e_z = cross(e_x,e_y)
+	e_z[0] = e_x[1]*e_y[2] - e_x[2]*e_y[1];
+	e_z[1] = e_x[2]*e_y[0] - e_x[0]*e_y[2];
+	e_z[2] = e_x[0]*e_y[1] - e_x[1]*e_y[0];
 
-		cte = (R2*R2 - R1*R1 - cx2*cx2 + cx1*cx1 - cy2*cy2 + cy1*cy1)/(-2*cy2 + 2*cy1);
-		B = (-cx2+cx1)/(-cy2+cy1);
+	// j = dot(e_y, temp2)
+	arm_dot_prod_f32(e_y,temp2,3,&j);
 
-		// a*x^2 + b*x + c = 0
-		a = B*B +1;
-		b = -2*B*(cte-cy2)-2*cx2;
-		c = cx2*cx2 + (cte-cy2)*(cte-cy2)-R2*R2;
-		D = b*b-4*a*c;
+	// d = norm12
+	// x = (r1*r1 - r2*r2 + d*d) / (2*d)                    
+    float32_t x = (R1*R1 - R2*R2 + norm12*norm12) / (2*norm12);
 
-		if(D<0)
-			return 0;
-		else if (D==0){
-			results[0] = -b/(2*a);
-			results[1] = cte-B*results[0];
-			return 1;
-		}
-		else {// D>0, 2 intersections
-			sqrtD=0;
-			arm_sqrt_f32(D, &sqrtD);//returns arm_status, but argument D is always positive anyway
-			results[0] = (-b + sqrtD)/(2*a); //x1
-			results[1] = cte-B*results[0]; //y1
-			results[2] = (-b - sqrtD)/(2*a); //x2
-			results[3] = cte-B*results[2]; //y2
-			return 2;
-		}
-	}
+    // y = (r1*r1 - r3*r3 -2*i*x + i*i + j*j) / (2*j)   
+    float32_t y = (R1*R1 - R3*R3 - 2*i*x + i*i + j*j) / (2*j);    
+    
+    // temp4 = r1*r1 - x*x - y*y  
+    float32_t temp4 = R1*R1 - x*x - y*y;
+
+    if(temp4<0){
+    	return 0;
+    }
+
+    // z = sqrt(temp4)
+    float32_t z;
+    arm_sqrt_f32(temp4,&z);
+
+    arm_scale_f32(e_x,x,e_x,3);
+    arm_scale_f32(e_y,y,e_y,3);
+    arm_scale_f32(e_z,z,e_z,3);
+
+    results[0] = cx1 + e_x[0] + e_y[0] + e_z[0];
+    results[1] = cy1 + e_x[1] + e_y[1] + e_z[1];
+    results[2] = cz1 + e_x[2] + e_y[2] + e_z[2];
+    results[3] = cx1 + e_x[0] + e_y[0] - e_z[0];
+    results[4] = cy1 + e_x[1] + e_y[1] - e_z[1];
+    results[5] = cz1 + e_x[2] + e_y[2] - e_z[2];
+
+    if(results[2] == results[5]) return 1;
+    else return 2;
 }
 
 
