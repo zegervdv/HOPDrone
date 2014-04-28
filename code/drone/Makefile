@@ -9,7 +9,7 @@ SRCS += leds.c
 SRCS += accelerometer.c
 
 # RCM communication
-SRCS += lcm.c rcm.c rcmIf.c
+SRCS += rcm.c rcmIf.c
 
 # Drivers
 SRCS += stm32f4xx_rcc.c\
@@ -24,26 +24,12 @@ SRCS += stm32f4xx_rcc.c\
 
 # ARM math - Matrix functions
 SRCS += arm_mat_add_f32.c\
-				arm_mat_add_q15.c\
-				arm_mat_add_q31.c\
 				arm_mat_init_f32.c\
-				arm_mat_init_q15.c\
-				arm_mat_init_q31.c\
 				arm_mat_inverse_f32.c\
 				arm_mat_mult_f32.c\
-				arm_mat_mult_fast_q15.c\
-				arm_mat_mult_fast_q31.c\
-				arm_mat_mult_q15.c\
-				arm_mat_mult_q31.c\
 				arm_mat_scale_f32.c\
-				arm_mat_scale_q15.c\
-				arm_mat_scale_q31.c\
 				arm_mat_sub_f32.c\
-				arm_mat_sub_q15.c\
-				arm_mat_sub_q31.c\
-				arm_mat_trans_f32.c\
-				arm_mat_trans_q15.c\
-				arm_mat_trans_q31.c
+				arm_mat_trans_f32.c
 
 # Binaries will be generated with this name (.elf, .bin, .hex, etc)
 PROJ_NAME=drone

@@ -29,7 +29,6 @@ void init_system(void) {
     LED_on(LED2);
 
   /* Initialize accelerometer */
-  I2C_init();
   accelerometer_init();
 }
 
