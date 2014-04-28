@@ -140,6 +140,60 @@ void kalman_update_sigmapoints(position_t* sigmapoints, position_t mkmin, arm_ma
   }
 }
 
+void kalman_measurement_update(arm_matrix_instance_f32* z_matrix, float32_t** anchors, position_t* sigmapoints, arm_matrix_instance_f32* weight_m, arm_matrix_instance_f32* weight_c) {
+  uint8_t i,j;
+  arm_matrix_instance_f32 mu;
+  arm_matrix_instance_f32 cov, var;
+  arm_matrix_instance_f32 vector_y, vector_z, vector_output;
+  arm_matrix_instance_f32 temp_cov;
+  float32_t mu_data[NR_ANCHORS];
+  float32_t cov_data[DIMENSIONS * NR_ANCHORS] = {0};
+  float32_t var_data[NR_ANCHORS * NR_ANCHORS] = {0};
+  float32_t vector_y_data[DIMENSIONS];
+  float32_t vector_z_data[NR_ANCHORS];
+  float32_t vector_output_data[NR_ANCHORS];
+  float32_t temp_cov_data[DIMENSIONS * NR_ANCHORS];
+
+  float32_t x_sq, y_sq, z_sq;
+
+  arm_mat_init_f32(&mu, NR_ANCHORS, 1, mu_data);
+  arm_mat_init_f32(&cov, DIMENSIONS, NR_ANCHORS, cov_data);
+  arm_mat_init_f32(&var, NR_ANCHORS, NR_ANCHORS, var_data);
+  arm_mat_init_f32(&vector_y, DIMENSIONS, 1, vector_y_data);
+  arm_mat_init_f32(&vector_z, NR_ANCHORS, 1, vector_z_data);
+  arm_mat_init_f32(&vector_output, 1, NR_ANCHORS, vector_output_data);
+  arm_mat_init_f32(&temp_cov, DIMENSIONS, NR_ANCHORS, temp_cov_data);
+
+  for(i = 0; i < NR_SIGMAPOINTS; i++) {
+    for(j = 0; j < NR_ANCHORS; j++) {
+      x_sq = (sigmapoints[i].pData[0] - anchors[j][0]) * (sigmapoints[i].pData[0] - anchors[j][0]);
+      y_sq = (sigmapoints[i].pData[1] - anchors[j][1]) * (sigmapoints[i].pData[1] - anchors[j][1]);
+      z_sq = (sigmapoints[i].pData[2] - anchors[j][2]) * (sigmapoints[i].pData[2] - anchors[j][2]);
+      z_matrix->pData[j*NR_SIGMAPOINTS + i] = sqrt(x_sq + y_sq + z_sq);
+    }
+  }
+
+  // Calculate mu vector
+  arm_mat_mult_f32(z_matrix, weight_m, &mu);
+
+  // Calculate covariance matrix
+  for(i = 0; i < NR_SIGMAPOINTS; i++) {
+    // Select vector Y
+    for(j = 0; j < DIMENSIONS; j++)
+      vector_y.pData[j] = sigmapoints[i].pData[j];
+    // Select vector Z
+    for(j = 0; j < NR_ANCHORS; j++)
+      vector_z.pData[j] = z_matrix->pData[i + j * NR_SIGMAPOINTS];
+
+    arm_mat_sub_f32(&vector_y, &sigmapoints[0], &vector_y);
+    arm_mat_sub_f32(&vector_z, &mu, &vector_z);
+    arm_mat_trans_f32(&vector_z, &vector_output);
+    arm_mat_mult_f32(&vector_y, &vector_z, &temp_cov);
+    arm_mat_scale_f32(&temp_cov, weight_c->pData[i], &temp_cov);
+    arm_mat_add_f32(&cov, &temp_cov, &cov);
+  }
+}
+
 void cholesky_decomp(arm_matrix_instance_f32* matrix, arm_matrix_instance_f32* output) {
   int8_t i,j,k;
 

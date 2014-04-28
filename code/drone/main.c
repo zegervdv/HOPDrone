@@ -24,7 +24,6 @@
 #include "system.h"
 #include "kalman.h"
 
-#define NR_ANCHORS 4
 #define RCM_ID 102
 #define USED_ANTENNA RCM_ANTENNAMODE_TXA_RXA
 
@@ -112,7 +111,7 @@ int main(void) {
 
   // Initialize weight factors
   kalman_init_weight_factors(weight_m_data, weight_c_data);
-  arm_mat_init_f32(&weight_m, 1, NR_SIGMAPOINTS, weight_m_data);
+  arm_mat_init_f32(&weight_m, NR_SIGMAPOINTS, 1, weight_m_data);
   arm_mat_init_f32(&weight_c, 1, NR_SIGMAPOINTS, weight_c_data);
 
   // Initialize position vectors

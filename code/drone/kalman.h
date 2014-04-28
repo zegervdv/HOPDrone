@@ -7,6 +7,7 @@
 
 #define DIMENSIONS      6
 #define NR_SIGMAPOINTS  2*DIMENSIONS+1
+#define NR_ANCHORS      4
 
 #define ALPHA           0.001
 #define BETA            2
@@ -106,6 +107,14 @@ void kalman_predict(arm_matrix_instance_f32* f_matrix, arm_matrix_instance_f32* 
  * Updates sigmapoints
  */
 void kalman_update_sigmapoints(position_t* sigmapoints, position_t mkmin, arm_matrix_instance_f32* pkmin);
+
+/**
+ * Measurement step for Kalman filter
+ * z_matrix    - arm_matrix_instance_f32* to the z_matrix
+ * anchors     - array with positions and measured distance of each anchor
+ * sigmapoints - array with sigmapoints
+ */
+void kalman_measurement_update(arm_matrix_instance_f32* z_matrix, float32_t** anchors, position_t* sigmapoints, arm_matrix_instance_f32* weight_m, arm_matrix_instance_f32* weight_c);
 
 /**
  * Cholesky decomposition
