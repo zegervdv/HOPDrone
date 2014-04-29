@@ -94,11 +94,21 @@
 		While designing the antenna, simulations in ADS are used to confirm that the antenna's characteristics are as desired. In this section we will discuss the simulation results of the final design, as explained in the previous section \ref{subsec:ant_design}. 
 
 		\begin{figure}[H]
+		\begin{subfigure}{0.5\textwidth}
 		\centering
-			\includegraphics[width=0.7\textwidth]{../presentation/images/S11_ADS_sim.eps}
-			\caption{Simulated $S_{11}$ for designed UWB antenna}
-			\label{fig:S11_design}
+			\includegraphics[width=\textwidth]{../presentation/images/S11_ADS_sim.eps}
+			\caption{Simulated $S_{11}$}
+		\end{subfigure}
+		\begin{subfigure}{0.5\textwidth}
+		\centering
+			\includegraphics[width=\textwidth]{../presentation/images/fase_respons_ADS_sim.eps}
+			\caption{Simulated phase respons}
+		\end{subfigure}
+		\caption{Simulated characteristics for designed UWB antenna}
+		\label{fig:S11_phase_design}
 		\end{figure}
+
+		Figure \ref{fig:S11_phase_design} shows that the $S_{11}$-parameter is below $\SI{-10}{\decibel}$, and relatively flat, in the desired frequency band. 
 
 	\subsection{Measurements}
 
