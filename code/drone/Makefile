@@ -8,7 +8,7 @@ SRCS += system.c
 SRCS += leds.c
 
 # RCM communication
-SRCS += lcm.c rcm.c rcmIf.c
+SRCS += rcm.c rcmIf.c
 
 # Drivers
 SRCS += stm32f4xx_rcc.c stm32f4xx_exti.c stm32f4xx_gpio.c stm32f4xx_it.c stm32f4xx_usart.c misc.c stm32f4xx_rng.c stm32f4xx_syscfg.c
