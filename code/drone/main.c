@@ -5,8 +5,10 @@
  **
  **  Abstract    : main function.
  **
- **  Functions   : main
+ **  Functions   : main, PerformRanging, int2float
  **
+ **  Authors     : Thomas Deckmyn, Zeger Van de Vannet
+ **  
  *****************************************************************************
  */
 

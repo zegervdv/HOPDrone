@@ -1,5 +1,16 @@
-/*this function will calculate the position using the LMS algorithm.
- * This version fixed the "division by 0 in rare cases"-bug
+ /**
+ *****************************************************************************
+ **
+ **  File        : lms.c
+ **
+ **  Abstract    : Calculates 2D and 3D position using LMS. 
+ **
+ **  Functions   : Calculate2DPosition, Calculate3DPosition, 
+ ** 			   GetIntersections, Get3DIntersections
+ **
+ **  Authors     : Thomas Deckmyn (added 3D localization)
+ **  
+ *****************************************************************************
  */
 #include "lms.h"
 
@@ -30,7 +41,7 @@ arm_status Calculate3DPosition(uint8_t nrAnchors, float32_t* currPosEst, float32
 		}
 	}
 
-	if(nrOfValids >= 4){ // LMS can be applied
+	if(nrOfValids >= 4){ // 4 or more valid distance measurements -> LMS can be applied
 		float32_t b_array[nrOfValids-1];
 		float32_t A_array[3*(nrOfValids-1)];
 		float32_t AT_array[3*(nrOfValids-1)];
@@ -77,11 +88,6 @@ arm_status Calculate3DPosition(uint8_t nrAnchors, float32_t* currPosEst, float32
 		ATAinv_array[7] = (ATA_array[1]*ATA_array[6] - ATA_array[7]*ATA_array[0])/det;
 		ATAinv_array[8] = (ATA_array[4]*ATA_array[0] - ATA_array[1]*ATA_array[3])/det;
 		arm_matrix_instance_f32 ATAinv = {3, 3, (float32_t *)ATAinv_array};
-		/*ReusedStatus = arm_mat_inverse_f32(&ATA, &ATAinv);
-
-		if (ReusedStatus != ARM_MATH_SUCCESS){
-			return ReusedStatus;
-		}*/
 
 		float32_t MP_array[3*(nrOfValids-1)];
 		arm_matrix_instance_f32 MoorePenrose = {3, nrOfValids-1, (float32_t *)MP_array};
@@ -97,10 +103,10 @@ arm_status Calculate3DPosition(uint8_t nrAnchors, float32_t* currPosEst, float32
 			return ReusedStatus;
 		}
 
-		return ARM_MATH_SUCCESS; //if the program reaches here, no errors occurred
+		return ARM_MATH_SUCCESS; //no errors occurred
 		
 	}else{
-		/*this means: less than 4 valid measurements -> normal LMS impossible!
+		/* Less than 4 valid measurements -> normal LMS impossible!
 		 * however: the previous known position is still available in currPosEst!
 		 */
 
@@ -119,7 +125,7 @@ arm_status Calculate3DPosition(uint8_t nrAnchors, float32_t* currPosEst, float32
 							valid_d[0], valid_d[1], valid_d[2]};
 			uint8_t nrOfIntersects = get3DIntersections(data, intersects);
 
-			if(nrOfIntersects==0){ //do not change currPosEst (can still be improved, maybe)
+			if(nrOfIntersects==0){ //do not change currPosEst (can still be improved)
 				return ARM_MATH_SUCCESS;
 			}
 			else if(nrOfIntersects==1){
@@ -128,30 +134,7 @@ arm_status Calculate3DPosition(uint8_t nrAnchors, float32_t* currPosEst, float32
 				currPosEst[2]=intersects[2];
 				return ARM_MATH_SUCCESS;
 			}
-			else{//2 intersect points, let's find the one closest to the previous position
-				//this piece of code has been moved, because the 'else' below needs the exact same
-			}
 		}
-		/*else { // STILL NEEDS TO BE ADAPTED TO 3D !!!!!!!!!!!
-
-			//nrOfValids =2, choose point on circle (intersection of 2 spheres) closest to old position
-			//y = y1 + (y2-y1)/(x2-x1) *(x-x1)
-			float32_t rico = (currPosEst[1]-valid_anchorsY[0])/(currPosEst[0]-valid_anchorsX[0]);
-			//a*x^2 + b*x +c =0
-			float32_t ricosqp1 = rico*rico +1; //ricosqp1 means rico squared plus one
-			float32_t a = ricosqp1;
-			float32_t b = -2*valid_anchorsX[0]*ricosqp1;
-			float32_t c = valid_anchorsX[0]*valid_anchorsX[0]*ricosqp1-valid_d[0]*valid_d[0];
-			float32_t D = b*b-4*a*c; //point lies on line between oldPosition and anchorpoint: guaranteed 2 intersections, D>0
-			float32_t sqrtD=0;
-			arm_sqrt_f32 (D, &sqrtD);
-
-			intersects[0] = (-b + sqrtD)/(2*a);
-			intersects[1] = valid_anchorsY[0] + rico*(intersects[0]-valid_anchorsX[0]);
-			intersects[2] = (-b - sqrtD)/(2*a);
-			intersects[3] = valid_anchorsY[0] + rico*(intersects[2]-valid_anchorsX[0]);
-		}*/
-
 		// now compare intersect points, for case "3 valids, 2 intersects" and case "2 valids"
 		d1sq = (intersects[0]-currPosEst[0])*(intersects[0]-currPosEst[0])
 						+ (intersects[1]-currPosEst[1])*(intersects[1]-currPosEst[1])
@@ -179,6 +162,8 @@ uint8_t get3DIntersections(float32_t* data, float32_t* results){
 	float32_t cx3=data[6]; float32_t cy3=data[7]; float32_t cz3=data[8];
 	float32_t R1=data[9]; float32_t R2=data[10]; float32_t R3=data[11];
 	float32_t e_x[3], e_y[3], e_z[3], i, j, ie_x[3];
+
+	// Calculate intersections between 3 spheres using trilateration
 
 	// temp1 = P2 - P1
 	// e_x = temp1/norm(temp1)
@@ -243,7 +228,6 @@ uint8_t get3DIntersections(float32_t* data, float32_t* results){
     if((results[0]==results[3]) && (results[1]==results[4]) && (results[2] == results[5])) return 1;
     else return 2;
 }
-
 
 arm_status Calculate2DPosition(uint8_t nrAnchors, float32_t* currPosEst, float32_t* anchorsX, float32_t* anchorsY, uint32_t* d){
 
