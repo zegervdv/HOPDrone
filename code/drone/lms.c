@@ -240,7 +240,7 @@ uint8_t get3DIntersections(float32_t* data, float32_t* results){
     results[4] = cy1 + e_x[1] + e_y[1] - e_z[1];
     results[5] = cz1 + e_x[2] + e_y[2] - e_z[2];
 
-    if(results[2] == results[5]) return 1;
+    if((results[0]==results[3]) && (results[1]==results[4]) && (results[2] == results[5])) return 1;
     else return 2;
 }
 
