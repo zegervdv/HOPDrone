@@ -21,6 +21,7 @@
 #include <stdint.h>
 #include "stm32f4xx.h"
 #include "system.h"
+#include "lms.h"
 
 #define RCM_ID 102
 #define USED_ANTENNA RCM_ANTENNAMODE_TXA_RXA
