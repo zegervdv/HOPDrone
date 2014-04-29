@@ -155,7 +155,6 @@ int main(void) {
                     locInfo->estim_x = posEstimate[0]/1000.0f;
                     locInfo->estim_y = posEstimate[1]/1000.0f;
                     locInfo->estim_z = posEstimate[2]/1000.0f;
-
                   }else {
                     // perform 2D localization
                     float32_t posEstimate[2] = {0.0f, 0.0f};
