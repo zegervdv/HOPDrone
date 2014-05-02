@@ -1,18 +1,12 @@
- /**
- *****************************************************************************
- **
- **  File        : lms.c
- **
- **  Abstract    : Calculates 2D and 3D position using LMS. 
- **
- **  Functions   : Calculate2DPosition, Calculate3DPosition, 
- ** 			   GetIntersections, Get3DIntersections
- **
- **  Authors     : Thomas Deckmyn (added 3D localization)
- **  
- *****************************************************************************
+/*this function will calculate the position using the LMS algorithm.
+ * This version fixed the "division by 0 in rare cases"-bug
  */
-#include "lms.h"
+//includes
+#include "arm_math.h"
+#include "main.h" //to get the bool-definition
+
+uint8_t getIntersections(uint32_t* data, float32_t* results);
+uint8_t get3DIntersections(float32_t* data, float32_t* results);
 
 arm_status Calculate3DPosition(uint8_t nrAnchors, float32_t* currPosEst, float32_t* anchorsX, float32_t* anchorsY, float32_t* anchorsZ, uint32_t* d){
 
@@ -60,33 +54,34 @@ arm_status Calculate3DPosition(uint8_t nrAnchors, float32_t* currPosEst, float32
 		arm_matrix_instance_f32 b = {nrOfValids-1, 1, (float32_t *)b_array};
 		arm_matrix_instance_f32 A = {nrOfValids-1, 3, (float32_t *)A_array};
 		arm_matrix_instance_f32 AT = {3, nrOfValids-1, (float32_t *)AT_array};
-		
+
 		arm_status TransStatus = arm_mat_trans_f32(&A,&AT);
 		if(TransStatus != ARM_MATH_SUCCESS){
 			return TransStatus;
 		}
 
-		float32_t ATA_array[9];
+		float32_t ATA_array[9]={0};
 		arm_matrix_instance_f32 ATA = {3, 3, (float32_t *)ATA_array};
-		
+
 		arm_status ReusedStatus = arm_mat_mult_f32(&AT, &A, &ATA);
 		if (ReusedStatus != ARM_MATH_SUCCESS){
 			return ReusedStatus;
 		}
 
-		float32_t ATAinv_array[9];
-		float32_t det = ATA_array[0]*ATA_array[4]*ATA_array[8] + ATA_array[1]*ATA_array[5]*ATA_array[6]
-						 + ATA_array[2]*ATA_array[3]*ATA_array[7] - ATA_array[2]*ATA_array[4]*ATA_array[6]
-						 - ATA_array[1]*ATA_array[3]*ATA_array[8] - ATA_array[0]*ATA_array[5]*ATA_array[7];
-		ATAinv_array[0] = (ATA_array[8]*ATA_array[4] - ATA_array[7]*ATA_array[5])/det;
-		ATAinv_array[1] = (ATA_array[7]*ATA_array[2] - ATA_array[1]*ATA_array[8])/det;
-		ATAinv_array[2] = (ATA_array[1]*ATA_array[5] - ATA_array[4]*ATA_array[2])/det;
-		ATAinv_array[3] = (ATA_array[5]*ATA_array[6] - ATA_array[8]*ATA_array[3])/det;
-		ATAinv_array[4] = (ATA_array[0]*ATA_array[8] - ATA_array[6]*ATA_array[2])/det;
-		ATAinv_array[5] = (ATA_array[2]*ATA_array[3] - ATA_array[0]*ATA_array[5])/det;
-		ATAinv_array[6] = (ATA_array[7]*ATA_array[3] - ATA_array[6]*ATA_array[4])/det;
-		ATAinv_array[7] = (ATA_array[1]*ATA_array[6] - ATA_array[7]*ATA_array[0])/det;
-		ATAinv_array[8] = (ATA_array[4]*ATA_array[0] - ATA_array[1]*ATA_array[3])/det;
+		float32_t ATAinv_array[9]={0};
+		float32_t det = (ATA.pData[0]*ATA.pData[4]*ATA.pData[8] + ATA.pData[1]*ATA.pData[5]*ATA.pData[6]
+						 + ATA.pData[2]*ATA.pData[3]*ATA.pData[7] - ATA.pData[2]*ATA.pData[4]*ATA.pData[6]
+						 - ATA.pData[1]*ATA.pData[3]*ATA.pData[8] - ATA.pData[0]*ATA.pData[5]*ATA.pData[7]);
+
+		ATAinv_array[0] = (ATA.pData[8]*ATA.pData[4] - ATA.pData[7]*ATA.pData[5])/det;
+		ATAinv_array[1] = (ATA.pData[7]*ATA.pData[2] - ATA.pData[1]*ATA.pData[8])/det;
+		ATAinv_array[2] = (ATA.pData[1]*ATA.pData[5] - ATA.pData[4]*ATA.pData[2])/det;
+		ATAinv_array[3] = (ATA.pData[5]*ATA.pData[6] - ATA.pData[8]*ATA.pData[3])/det;
+		ATAinv_array[4] = (ATA.pData[0]*ATA.pData[8] - ATA.pData[6]*ATA.pData[2])/det;
+		ATAinv_array[5] = (ATA.pData[2]*ATA.pData[3] - ATA.pData[0]*ATA.pData[5])/det;
+		ATAinv_array[6] = (ATA.pData[7]*ATA.pData[3] - ATA.pData[6]*ATA.pData[4])/det;
+		ATAinv_array[7] = (ATA.pData[1]*ATA.pData[6] - ATA.pData[7]*ATA.pData[0])/det;
+		ATAinv_array[8] = (ATA.pData[4]*ATA.pData[0] - ATA.pData[1]*ATA.pData[3])/det;
 		arm_matrix_instance_f32 ATAinv = {3, 3, (float32_t *)ATAinv_array};
 
 		float32_t MP_array[3*(nrOfValids-1)];
@@ -104,13 +99,13 @@ arm_status Calculate3DPosition(uint8_t nrAnchors, float32_t* currPosEst, float32
 		}
 
 		return ARM_MATH_SUCCESS; //no errors occurred
-		
+
 	}else{
 		/* Less than 4 valid measurements -> normal LMS impossible!
 		 * however: the previous known position is still available in currPosEst!
 		 */
 
-		float32_t intersects[6];
+		float32_t intersects[6]={0};
 		uint32_t d1sq;
 		uint32_t d2sq;
 
@@ -120,8 +115,8 @@ arm_status Calculate3DPosition(uint8_t nrAnchors, float32_t* currPosEst, float32
 		}
 		else if(nrOfValids == 3){
 			float32_t data[12] = {valid_anchorsX[0], valid_anchorsY[0], valid_anchorsZ[0],
-							valid_anchorsX[1], valid_anchorsY[1], valid_anchorsZ[1], 
-							valid_anchorsX[2], valid_anchorsY[2], valid_anchorsZ[2], 
+							valid_anchorsX[1], valid_anchorsY[1], valid_anchorsZ[1],
+							valid_anchorsX[2], valid_anchorsY[2], valid_anchorsZ[2],
 							valid_d[0], valid_d[1], valid_d[2]};
 			uint8_t nrOfIntersects = get3DIntersections(data, intersects);
 
@@ -197,13 +192,13 @@ uint8_t get3DIntersections(float32_t* data, float32_t* results){
 	arm_dot_prod_f32(e_y,temp2,3,&j);
 
 	// d = norm12
-	// x = (r1*r1 - r2*r2 + d*d) / (2*d)                    
+	// x = (r1*r1 - r2*r2 + d*d) / (2*d)
     float32_t x = (R1*R1 - R2*R2 + norm12*norm12) / (2*norm12);
 
-    // y = (r1*r1 - r3*r3 -2*i*x + i*i + j*j) / (2*j)   
-    float32_t y = (R1*R1 - R3*R3 - 2*i*x + i*i + j*j) / (2*j);    
-    
-    // temp4 = r1*r1 - x*x - y*y  
+    // y = (r1*r1 - r3*r3 -2*i*x + i*i + j*j) / (2*j)
+    float32_t y = (R1*R1 - R3*R3 - 2*i*x + i*i + j*j) / (2*j);
+
+    // temp4 = r1*r1 - x*x - y*y
     float32_t temp4 = R1*R1 - x*x - y*y;
 
     if(temp4<0){
@@ -228,8 +223,7 @@ uint8_t get3DIntersections(float32_t* data, float32_t* results){
     if((results[0]==results[3]) && (results[1]==results[4]) && (results[2] == results[5])) return 1;
     else return 2;
 }
-
-arm_status Calculate2DPosition(uint8_t nrAnchors, float32_t* currPosEst, float32_t* anchorsX, float32_t* anchorsY, uint32_t* d){
+arm_status Calculate2DPosition(uint8_t nrAnchors,float32_t* currPosEst, float32_t* anchorsX, float32_t* anchorsY, uint32_t* d){
 
 	uint8_t j;
 	uint8_t nrOfValids =0;
@@ -376,6 +370,8 @@ arm_status Calculate2DPosition(uint8_t nrAnchors, float32_t* currPosEst, float32
 		return ARM_MATH_SUCCESS;
 	}
 }
+
+
 
 uint8_t getIntersections(uint32_t* data, float32_t* results){
 	uint32_t cx1=data[0]; uint32_t cy1=data[1];
