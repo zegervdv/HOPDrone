@@ -6,6 +6,7 @@
 SRCS = main.c system_stm32f4xx.c
 SRCS += system.c
 SRCS += leds.c
+SRCS += lms.c
 
 # RCM communication
 SRCS += rcm.c rcmIf.c
@@ -21,6 +22,9 @@ SRCS += arm_mat_add_f32.c\
 				arm_mat_scale_f32.c\
 				arm_mat_sub_f32.c\
 				arm_mat_trans_f32.c\
+				arm_sub_f32.c \
+				arm_scale_f32.c\
+				arm_dot_prod_f32.c
 
 # Binaries will be generated with this name (.elf, .bin, .hex, etc)
 PROJ_NAME=drone
@@ -42,8 +46,11 @@ CFLAGS += -I.
 
 CFLAGS += -fno-strict-aliasing
 CFLAGS += -DUSE_STDPERIPH_DRIVER
-CFLAGS += -DSTM32D4XX
+CFLAGS += -DSTM32F4XX
+CFLAGS += -DSTM32F405VG
 CFLAGS += -DARM_MATH_CM4
+CFLAGS += -DARM_MATH_ROUNDING
+CFLAGS += -DARM_MATH_MATRIX_CHECK
 CFLAGS += -D__FPU_PRESENT
 CFLAGS += -DDELAY_TIME=100
 
@@ -58,6 +65,7 @@ vpath %.c \
 			$(STM_COMMON)/Libraries/STM32_USB_Device_Library/Core/src \
 			$(STM_COMMON)/Libraries/STM32_USB_Device_Library/Class/cdc/src \
 			$(STM_COMMON)/Libraries/CMSIS/DSP_Lib/Source/MatrixFunctions \
+			$(STM_COMMON)/Libraries/CMSIS/DSP_Lib/Source/BasicMathFunctions \
 			./comm
 
 # Include files from STM libraries
