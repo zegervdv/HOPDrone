@@ -4,7 +4,9 @@
 
 # Put your source files here (or *.c, etc)
 SRCS = main.c system_stm32f4xx.c
-SRCS += system.c
+SRCS += stm32f4xx_it.c
+# SRCS += locAnchors.c
+# SRCS += system.c
 SRCS += leds.c
 SRCS += lms.c
 
