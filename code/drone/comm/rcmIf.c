@@ -5,8 +5,8 @@
 
 #include <string.h>
 #include <stdint.h>
+#include <stdlib.h>
 #include "rcmIf.h"
-#include "stm32f4xx_conf.h"
 
 //
 #define MAX_DATASIZE		1024
@@ -22,19 +22,18 @@
 // static data
 
 // FIFO list with packets (Linked list)
-typedef struct message Message;
-typedef struct{
+typedef struct message{
 	uint8_t *data;				// buffer to raw packet data (without header, packet size or CRC)
 	uint16_t packet_size;		// size of the packet
-	Message *next;				// pointer to next packet
-}message;
+	struct message *next;				// pointer to next packet
+} message;
 
 static message *head = NULL;			// Head of linked list
 static message *last_message = NULL;	// last pointer in linked list
 static uint8_t nPackets = 0;
 static uint16_t crc=0;
 static uint16_t sync = 0;				// field that gives the index of character received
-static uint32_t USARTid = USART2;		// use USART2 by default
+static USART_TypeDef* USARTid = USART2;		// use USART2 by default
 
 
 //_____________________________________________________________________________
@@ -42,7 +41,7 @@ static uint32_t USARTid = USART2;		// use USART2 by default
 // Private function prototypes 
 //_____________________________________________________________________________
 
-static void ResetMessage(void);
+/* static void ResetMessage(void); */
 static void writeUsart(unsigned volatile char*,uint8_t length);
 static unsigned short crc16(void *buf, int len);
 
@@ -52,7 +51,7 @@ static unsigned short crc16(void *buf, int len);
 // rcmIfInit - perform initialization
 //_____________________________________________________________________________
 
-void rcmIfInit(uint32_t usart_id)
+void rcmIfInit(USART_TypeDef* usart_id)
 {
 	USARTid = usart_id;
 
@@ -168,10 +167,10 @@ void rcmIfInit(uint32_t usart_id)
 
 void rcmIfClose(void)
 {
-	if(USARTid == 2){
+	if(USARTid == USART2){
 		GPIO_DeInit(GPIOA);
 		USART_DeInit(USART2);
-	}else if(USARTid == 3){
+	}else if(USARTid == USART3){
 		GPIO_DeInit(GPIOD);
 		USART_DeInit(USART3);
 	}

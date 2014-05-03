@@ -1,14 +1,11 @@
 /**
-*****************************************************************************
-**
-**  File        : stm32f4xx_it.h
-**
-**  Abstract    : Main Interrupt Service Routines.
-**                This file provides template for all exceptions handler and
-**                peripherals interrupt service routine.
-**
-*****************************************************************************
-*/
+  ******************************************************************************
+  * @brief   This file contains the headers of the interrupt handlers.
+  * 			this file also holds the declaration of the delay function in ms.
+  ******************************************************************************
+
+  ******************************************************************************
+  */ 
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM32F4xx_IT_H
@@ -21,10 +18,8 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx.h"
 
-/* Exported types ------------------------------------------------------------*/
-/* Exported constants --------------------------------------------------------*/
-/* Exported macro ------------------------------------------------------------*/
-/* Exported functions ------------------------------------------------------- */
+void Delay(__IO uint32_t nTick);
+
 
 void NMI_Handler(void);
 void HardFault_Handler(void);
@@ -36,10 +31,16 @@ void DebugMon_Handler(void);
 void PendSV_Handler(void);
 void SysTick_Handler(void);
 
-void TIM2_IRQHandler(void);
+
+//Usart IRQ handler added
+void  USART2_IRQHandler(void);
+void  USART3_IRQHandler(void);
+//user button IRQ handler
+void EXTI0_IRQHandler(void);
 
 #ifdef __cplusplus
 }
 #endif
+
 
 #endif /* __STM32F4xx_IT_H */

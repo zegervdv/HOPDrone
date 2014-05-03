@@ -19,7 +19,6 @@
 #include <string.h>
 
 #include "rcm.h"
-#include "rcmif.h"
 
 
 extern void Delay(uint32_t nTick);
@@ -78,9 +77,9 @@ static uint16_t msgIdCount=1;
 // Private function prototypes 
 //_____________________________________________________________________________
 
-bool initConn(uint32_t usart_id){
+bool initConn(USART_TypeDef* usart_id){
 	//initialize interface
-	/* rcmIfInit(usart_id); */
+	rcmIfInit(usart_id);
 	uint8_t i=0;
 	// Make sure RCM is awake
 	while (rcmSleepModeSet(RCM_SLEEP_MODE_ACTIVE) != 0 && i>10)

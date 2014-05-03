@@ -17,20 +17,22 @@ close all;
     
     figure(1)
     plot(C{1}./1e9,C{2});
-    title('Reflectie coëfficient ADS-simulatie');
-    xlabel('Frequentie [GHz]');
+    title('S11 Reflection Parameter ADS-simulation');
+    xlabel('Frequency [GHz]');
     ylabel('S11 [dB]');
+    hold on;
+    plot([min(C{1}./1e9) max(C{1}./1e9)],[-10 -10],'r');
     
     figure(2)
     plot(C2{1}./1e9,C2{2});
-    title('Fase respons ADS-simulatie');
-    xlabel('Frequentie [GHz]');
-    ylabel('Fase [°]');
+    title('Phase Respons ADS-simulation');
+    xlabel('Frequency [GHz]');
+    ylabel('Phase [°]');
     
     figure(3)
     stem(C3{1}./1e9,C3{2});
-    title('Gain ADS-simulatie');
-    xlabel('Frequentie [GHz]');
+    title('Gain ADS-simulation');
+    xlabel('Frequency [GHz]');
     ylabel('Gain [dB]');
     hold on;
     plot([min(C3{1}./1e9) max(C3{1}./1e9)],[3 3],'r');
@@ -38,9 +40,9 @@ close all;
     
     figure(4)
     plot(C4{1}./1e9,C4{2});
-    title('Efficiëntie ADS-simulatie');
-    xlabel('Frequentie [GHz]');
-    ylabel('Efficiëntie [%]');
+    title('Efficiency ADS-simulation');
+    xlabel('Frequency [GHz]');
+    ylabel('Efficiency [%]');
     hold on;
     plot([3.1 3.1],[0 97.7],'r');
     plot([5.3 5.3],[0 50],'r');
