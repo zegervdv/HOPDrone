@@ -5,9 +5,8 @@
 
 #include "stm32f4xx_i2c.h"
 
-#define ACC_I2C_ADDR        0x1C
-#define ACC_I2C_ADDR_W      ACC_I2C_ADDRESS<<0
-#define ACC_I2C_ADDR_R      ACC_I2C_ADDRESS<<1
+#define ACC_I2C_ADDR_BASE   0x1C
+#define ACC_I2C_ADDR        ACC_I2C_ADDR_BASE<<1
 
 #define ACC_CTRLREG1_ADDR   0x20
 #define ACC_XOUT_ADDR       0x29
@@ -43,6 +42,7 @@ void accelerometer_init(void);
 
 /**
  * Read all axis from the accelerometer
- * Returns an array of 3 values [x, y, z]
+ * data - int array of size 3
+ * Updates data with [x, y, z]
  */
-int* accelerometer_read(void);
+int accelerometer_read(int* data);

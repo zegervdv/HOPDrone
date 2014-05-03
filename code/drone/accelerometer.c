@@ -14,9 +14,11 @@
  */
 void I2C_start(I2C_TypeDef* I2Cx, uint8_t address, uint8_t direction) {
   while(I2C_GetFlagStatus(I2Cx, I2C_FLAG_BUSY));
+
   I2C_GenerateSTART(I2Cx, ENABLE);
 
   while(!I2C_CheckEvent(I2Cx, I2C_EVENT_MASTER_MODE_SELECT));
+
   I2C_Send7bitAddress(I2Cx, address, direction);
 
   if(direction == I2C_Direction_Transmitter){
@@ -98,11 +100,40 @@ void I2C_init(void) {
 
 void accelerometer_init(void) {
   I2C_init();
-
   // Write Control Data to register
-  I2C_start(ACC_I2C_PORT, ACC_CTRLREG1_ADDR, I2C_Direction_Transmitter);
+  I2C_start(ACC_I2C_PORT, ACC_I2C_ADDR, I2C_Direction_Transmitter);
+  I2C_write(ACC_I2C_PORT, ACC_CTRLREG1_ADDR);
   I2C_write(ACC_I2C_PORT, ACC_CTRL_100HZ | ACC_CTRL_MODE_ACT | ACC_CTRL_FS_9 | ACC_CTRL_3D);
   I2C_stop(ACC_I2C_PORT);
 }
 
+int accelerometer_read(int* data) {
+  I2C_start(ACC_I2C_PORT, ACC_I2C_ADDR, I2C_Direction_Transmitter);
+  I2C_write(ACC_I2C_PORT, ACC_XOUT_ADDR);
+  I2C_stop(ACC_I2C_PORT);
+  
+  I2C_start(ACC_I2C_PORT, ACC_I2C_ADDR, I2C_Direction_Receiver);
+  
+  // Store x - axis value
+  data[0] = I2C_read_nack(ACC_I2C_PORT);
+
+  I2C_start(ACC_I2C_PORT, ACC_I2C_ADDR, I2C_Direction_Transmitter);
+  I2C_write(ACC_I2C_PORT, ACC_YOUT_ADDR);
+  I2C_stop(ACC_I2C_PORT);
+  
+  I2C_start(ACC_I2C_PORT, ACC_I2C_ADDR, I2C_Direction_Receiver);
+  
+  // Store y - axis value
+  data[1] = I2C_read_nack(ACC_I2C_PORT);
+
+  I2C_start(ACC_I2C_PORT, ACC_I2C_ADDR, I2C_Direction_Transmitter);
+  I2C_write(ACC_I2C_PORT, ACC_ZOUT_ADDR);
+  I2C_stop(ACC_I2C_PORT);
+  
+  I2C_start(ACC_I2C_PORT, ACC_I2C_ADDR, I2C_Direction_Receiver);
+  
+  // Store z - axis value
+  data[2] = I2C_read_nack(ACC_I2C_PORT);
+  return 0;
+}
 
