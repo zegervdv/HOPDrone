@@ -4,7 +4,9 @@
 
 # Put your source files here (or *.c, etc)
 SRCS = main.c system_stm32f4xx.c
-SRCS += system.c
+SRCS += stm32f4xx_it.c
+# SRCS += locAnchors.c
+# SRCS += system.c
 SRCS += leds.c
 SRCS += lms.c
 
@@ -46,8 +48,11 @@ CFLAGS += -I.
 
 CFLAGS += -fno-strict-aliasing
 CFLAGS += -DUSE_STDPERIPH_DRIVER
-CFLAGS += -DSTM32D4XX
+CFLAGS += -DSTM32F4XX
+CFLAGS += -DSTM32F405VG
 CFLAGS += -DARM_MATH_CM4
+CFLAGS += -DARM_MATH_ROUNDING
+CFLAGS += -DARM_MATH_MATRIX_CHECK
 CFLAGS += -D__FPU_PRESENT
 CFLAGS += -DDELAY_TIME=100
 
