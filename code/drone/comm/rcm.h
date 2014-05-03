@@ -23,6 +23,8 @@
 
 // pull in message structure declarations
 #include "hostInterfaceRCM.h"
+#include "main.h"
+#include "rcmIf.h"
 
 //_____________________________________________________________________________
 //
@@ -56,7 +58,7 @@ typedef enum{false,true} bool;
 //  initialise connection and checks if receiver is in wake up mode, then
 //	set opmode to rcm, as needed for ranging, etc
 //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-bool initConn(uint32_t usart_id);
+bool initConn(USART_TypeDef* usart_id);
 
 
 //  CloseConn

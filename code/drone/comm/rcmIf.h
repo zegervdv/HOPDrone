@@ -17,7 +17,7 @@
 // #includes
 //_____________________________________________________________________________
 
-
+#include "stm32f4xx_conf.h"
 
 //_____________________________________________________________________________
 //
@@ -41,7 +41,7 @@
 //  Performs initialization necessary for particular type of interface.
 //
 //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-void rcmIfInit(uint32_t usart_id);
+void rcmIfInit(USART_TypeDef* usart_id);
 
 
 //
