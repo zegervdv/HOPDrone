@@ -25,7 +25,7 @@
 
 \section{Antenna Design}
 	
-	For the indoor localisation of the drones we use the TIME DOMAIN\texttrademark PulsOn 400 UWB module in coöperation with a STM32 microcontroller to run the Unscented Kalman Filter algorithm. The UWB modules are already equipped with a TIME DOMAIN\texttrademark Broadspec UWB Antenna, a dipole that is omnidirectional in the azimuth plane. We will use the specifications of this antenna as design parameters for or own UWB antenna. The criticial design parameters are listed below. 
+	For the indoor localisation of the drones we use the TIME DOMAIN\texttrademark PulsOn 400 UWB module in cooperation with a STM32 microcontroller to run the Unscented Kalman Filter algorithm. The UWB modules are already equipped with a TIME DOMAIN\texttrademark Broadspec UWB Antenna, a dipole that is omnidirectional in the azimuth plane. We will use the specifications of this antenna as design parameters for or own UWB antenna. The critical design parameters are listed below. 
 
 	\begin{itemize}
 		\item Radiate in the $\SI{3.1}{\giga\hertz}$ - $\SI{5.3}{\giga\hertz}$ band
@@ -38,7 +38,7 @@
 	\subsection{Antenna Topology and Design}
 	\label{subsec:ant_design}
 
-	At first we experiment with a few conventional UWB topologies like a bow tie and a bar-bell shape (see Figure \ref{fig:topologies}). After optimalisation and simulation in ADS, we conclude that the simulated S-paramters and gain are not compliant with the design parameters above. Obtaining a linear phase characteristic with these topologies proves to be very hard as well.  
+	At first we experiment with a few conventional UWB topologies like a bow tie and a bar-bell shape (see Figure \ref{fig:topologies}). After optimisation and simulation in ADS, we conclude that the simulated S-paramters and gain are not compliant with the design parameters above. Obtaining a linear phase characteristic with these topologies proves to be very hard as well.  
 
 		\begin{figure}[H]
 		\begin{subfigure}{0.5\textwidth}
@@ -55,7 +55,7 @@
 		\label{fig:topologies}
 		\end{figure} 
 
-	The substrate material that is being used to desing the antenna is \textit{Black Foam} with a low relative permittivity $\epsilon_r = 1.495$. Because of this we encounter a practical problem with respect to the dimension of the antenna, i.e. if the antenna needs to be constructed with this substrate its dimension will be too large to mount on the drone. Thus for the remaining part of the design process we opt for an \textit{Aromated Polyurethane} substrate with a higher $\epsilon_r = 2.55$, which allows us to work with smaller dimensions while radiating in the same frequency band. 
+	The substrate material that is being used to design the antenna is \textit{Black Foam} with a low relative permittivity $\epsilon_r = 1.495$. Because of this we encounter a practical problem with respect to the dimension of the antenna, i.e. if the antenna needs to be constructed with this substrate its dimension will be too large to mount on the drone. Thus for the remaining part of the design process we opt for an \textit{Aromated Polyurethane} substrate with a higher $\epsilon_r = 2.55$, which allows us to work with smaller dimensions while radiating in the same frequency band. 
 
 	After experimenting with the exotic topologies mentioned above, we redo the design starting from a rectangular microstrip patch antenna. The length of the patch determines the resonance frequency of the device, while the width has an influence on the radiated power. A wider patch means less resonance resistance, hence more bandwidth and a higher efficiency. 
 	We want the resonance frequency of the patch to be in the predefined frequency band $\SI{3.1}{\giga\hertz}$ - $\SI{5.3}{\giga\hertz}$ and thus choose $f_0 = \SI{4.2}{\giga\hertz}$. Using equation (\ref{eq:width_patch}) we calculate the desired width of the patch.
@@ -64,7 +64,7 @@
 	\label{eq:width_patch}
 	\end{equation}
 
-	The bandwidth of the antenna needs to be very wide, thus, as explained above, we would be tempted to increase the width of the patch to obtain a bigger bandwidth. Again, we are limited by the dimensions of the drone, because it needs to be fitted onto the drone and we don't want the antenna to interfere too mmuch with the aerodynamics. To increase the bandwidth we apply another technique, i.e. adding stairs to the rectangular patch and optimizing their dimensions to obtain the desired bandwidth. Also, we introduce a partial groundplane, of which we again optimize the dimensions, to realize an approximately flat $S_{11}$ and a linear phase characteristic in the wanted frequency band. The final antenna lay-out is shown in Figure \ref{fig:patch_stairs} and the optimized dimensions are given in Table.
+	The bandwidth of the antenna needs to be very wide, thus, as explained above, we would be tempted to increase the width of the patch to obtain a bigger bandwidth. Again, we are limited by the dimensions of the drone, because it needs to be fitted onto the drone and we don't want the antenna to interfere too much with the aerodynamics. To increase the bandwidth we apply another technique, i.e. adding stairs to the rectangular patch and optimizing their dimensions to obtain the desired bandwidth. Also, we introduce a partial ground plane, of which we again optimize the dimensions, to realize an approximately flat $S_{11}$ and a linear phase characteristic in the wanted frequency band. The final antenna lay-out is shown in Figure \ref{fig:patch_stairs} and the optimized dimensions are given in Table.
 
 	\begin{figure}[H]
 	\centering
@@ -102,7 +102,7 @@
 		\begin{subfigure}{0.5\textwidth}
 		\centering
 			\includegraphics[width=\textwidth]{../presentation/images/fase_respons_ADS_sim.eps}
-			\caption{Simulated phase respons}
+			\caption{Simulated phase response}
 		\end{subfigure}
 		\caption{Simulated characteristics for designed UWB antenna}
 		\label{fig:S11_phase_design}
@@ -128,7 +128,7 @@
 			t_{roundtrip} = 2t_{propagation} + t_{process}
 		\end{equation} 
 
-		Because the time to process the pulse at the anchor is known, we can calculate the time it takes to bridge the distance between the drone and the anchor point. With c the speed of light ($\SI{3e8}{\meter\per\second}$) this results in an expression for the distance to anchor point i:
+		Because the time to process the pulse at the anchor is known, we can calculate the time it takes to bridge the distance between the drone and the anchor point. With $c$ the speed of light ($\SI{3e8}{\meter\per\second}$) this results in an expression for the distance to anchor point $i$:
 
 		\begin{equation}
 		\centering
@@ -143,7 +143,7 @@
 			&= x^2 - 2x_ix + x_i^2 + y^2 - 2y_iy + y_i^2 + z^2 - 2z_iz + z_i^2
 		\end{align*}
 
-		This equation is not linear in x, y and z and therefore it is hard to extract the position vector. With $d_N$ the distance to the $N^{th}$ anchor, the equation can be linearized as follows:
+		This equation is not linear in x, y and z and therefore it is hard to extract the position vector. With $d_N$ the distance to the $N^{th}$ anchor, the equation can be linearised as follows:
 
 		\begin{align*}
 		\centering
