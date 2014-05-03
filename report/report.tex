@@ -25,7 +25,7 @@
 
 \section{Antenna Design}
 	
-	For the indoor localisation of the drones we use the TIME DOMAIN\texttrademark PulsOn 400 UWB module in cooperation with a STM32 microcontroller to run the Unscented Kalman Filter algorithm. The UWB modules are already equipped with a TIME DOMAIN\texttrademark Broadspec UWB Antenna, a dipole that is omnidirectional in the azimuth plane. We will use the specifications of this antenna as design parameters for or own UWB antenna. The critical design parameters are listed below. 
+	For the indoor localisation of the drones we use the TIME DOMAIN\texttrademark PulsOn 400 UWB module in cooperation with a microcontroller to run the Unscented Kalman Filter algorithm. The UWB modules are already equipped with a TIME DOMAIN\texttrademark Broadspec UWB Antenna, a dipole that is omnidirectional in the azimuth plane. We will use the specifications of this antenna as design parameters for or own UWB antenna. The critical design parameters are listed below. 
 
 	\begin{itemize}
 		\item Radiate in the $\SI{3.1}{\giga\hertz}$ - $\SI{5.3}{\giga\hertz}$ band
@@ -158,12 +158,17 @@
 
 
 \section{PCB Design}
-  In order to process the measurements and determine the position of the drone, a microcontroller is used. We will use one from the STM32F4-series, which has a 32-bit ARM processor. A PCB is designed to contain the microcontroller, as well as power supply and peripheral connections.
-The controller communicates with the RCM-controller over the UART-protocol, and can use the UWB-antenna for communication purposes as well as for ranging.
-This way the microcontroller can report positioning data to a monitoring station.
-Further connections include multiple means of supplying power to the microcontroller, either the power can be drawn from the drone itself, or it can be powered by an external battery.
-A programming interface is also provided.
-All IO-pins are ESD-protected using Zener diodes.
+  In order to process the measurements and determine the position of the drone, a microcontroller is attached to one of the RCM modules.
+  These modules can be used both for ranging measurements, as well as for wireless communication. The module with the microcontroller is attached to the drone and several other RCM modules are placed in the room or building to serve as anchor points. An additional RCM is connected to a computer which acts as a central control unit and also allows to visualise the position of the drone in real time.
+
+  As microcontroller we choose one from the STM32F4XX-series. These are powerful 32 bit ARM processors, which are sufficiently fast to process the data.
+  To attach it to the ranging module, we design a PCB to hold the processor and its required decoupling. Communication with the module is provided by a USART interface.
+  A voltage regulator yields a stable $\SI{3.3}{\volt}$ from different sources: either from an external battery or from the drone itself. Switching between both supplies can be done by moving a jumper.
+
+  To improve the results from the Kalman filter, an accelerometer is also added to the design, which provides acceleration data in three dimensions. Communication with the accelerometer is done over the I2C interface.
+
+  To protect the microcontroller from ESD damage, we add Zener diodes to every IO pin, which will safely dispose of the harmful power injected into the system.
+
   
 \end{document}
 
