@@ -107,7 +107,7 @@ void accelerometer_init(void) {
   I2C_stop(ACC_I2C_PORT);
 }
 
-int accelerometer_read(int* data) {
+int accelerometer_read(uint8_t* data) {
   I2C_start(ACC_I2C_PORT, ACC_I2C_ADDR, I2C_Direction_Transmitter);
   I2C_write(ACC_I2C_PORT, ACC_XOUT_ADDR);
   I2C_stop(ACC_I2C_PORT);

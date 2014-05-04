@@ -28,6 +28,7 @@
 
 #define ACC_I2C_PORT        I2C1
 
+#define ACC_1G              0x90
 /**
  * Initialize I2C communication for accelerometer
  * On PB6: SCL and PB7 SDA
@@ -45,4 +46,4 @@ void accelerometer_init(void);
  * data - int array of size 3
  * Updates data with [x, y, z]
  */
-int accelerometer_read(int* data);
+int accelerometer_read(uint8_t* data);

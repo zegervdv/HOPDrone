@@ -60,7 +60,7 @@ static bool bConnected = false;				// boolean if the node is connected to the ce
 int main(void)
 {
 
-  accelerometer_init();
+
   //configure delay in ms via systick:
   if (SysTick_Config(SystemCoreClock / 1000))
   {
