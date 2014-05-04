@@ -13,6 +13,8 @@
 #define ACC_YOUT_ADDR       0x2B
 #define ACC_ZOUT_ADDR       0x2D
 
+#define ACC_AUTO_INC_ADDR   ACC_XOUT_ADDR | 0x80
+
 #define ACC_CTRL_100HZ      0x00  // Set I2C Data Rate to 100Hz
 #define ACC_CTRL_400HZ      0x80  // Set I2C Data Rate to 400Hz
 #define ACC_CTRL_MODE_ACT   0x40  // Disable Power Down mode

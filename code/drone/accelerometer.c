@@ -41,9 +41,10 @@ void I2C_write(I2C_TypeDef* I2Cx, uint8_t data) {
  * Asks slave to send next byte
  */
 uint8_t I2C_read_ack(I2C_TypeDef* I2Cx) {
+  uint8_t data;
   I2C_AcknowledgeConfig(I2Cx, ENABLE);
   while(!I2C_CheckEvent(I2Cx, I2C_EVENT_MASTER_BYTE_RECEIVED));
-  uint8_t data = I2C_ReceiveData(I2Cx);
+  data = I2C_ReceiveData(I2Cx);
   return data;
 }
 
@@ -108,32 +109,25 @@ void accelerometer_init(void) {
 }
 
 int accelerometer_read(uint8_t* data) {
+  // Read data from 3 axes in one request using auto increment
   I2C_start(ACC_I2C_PORT, ACC_I2C_ADDR, I2C_Direction_Transmitter);
-  I2C_write(ACC_I2C_PORT, ACC_XOUT_ADDR);
+  I2C_write(ACC_I2C_PORT, ACC_AUTO_INC_ADDR);
   I2C_stop(ACC_I2C_PORT);
   
   I2C_start(ACC_I2C_PORT, ACC_I2C_ADDR, I2C_Direction_Receiver);
   
   // Store x - axis value
-  data[0] = I2C_read_nack(ACC_I2C_PORT);
-
-  I2C_start(ACC_I2C_PORT, ACC_I2C_ADDR, I2C_Direction_Transmitter);
-  I2C_write(ACC_I2C_PORT, ACC_YOUT_ADDR);
-  I2C_stop(ACC_I2C_PORT);
-  
-  I2C_start(ACC_I2C_PORT, ACC_I2C_ADDR, I2C_Direction_Receiver);
-  
+  data[0] = I2C_read_ack(ACC_I2C_PORT);
+  // Empty register
+  I2C_read_ack(ACC_I2C_PORT);
   // Store y - axis value
-  data[1] = I2C_read_nack(ACC_I2C_PORT);
-
-  I2C_start(ACC_I2C_PORT, ACC_I2C_ADDR, I2C_Direction_Transmitter);
-  I2C_write(ACC_I2C_PORT, ACC_ZOUT_ADDR);
-  I2C_stop(ACC_I2C_PORT);
-  
-  I2C_start(ACC_I2C_PORT, ACC_I2C_ADDR, I2C_Direction_Receiver);
-  
+  data[1] = I2C_read_ack(ACC_I2C_PORT);
+  // Empty register
+  I2C_read_ack(ACC_I2C_PORT);
   // Store z - axis value
+  // And send NACK to terminate transfer
   data[2] = I2C_read_nack(ACC_I2C_PORT);
+
   return 0;
 }
 
