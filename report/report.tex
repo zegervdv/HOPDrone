@@ -38,7 +38,7 @@
 	\subsection{Antenna Topology and Design}
 	\label{subsec:ant_design}
 
-	At first we experiment with a few conventional UWB topologies like a bow tie and a bar-bell shape (see Figure \ref{fig:topologies}). After optimisation and simulation in ADS, we conclude that the simulated S-paramters and gain are not compliant with the design parameters above. Obtaining a linear phase characteristic with these topologies proves to be very hard as well.  
+	At first we experiment with a few conventional UWB topologies like a bow tie and a barbell shape (see Figure \ref{fig:topologies}). After optimisation and simulation in ADS, we conclude that the simulated S-parameters and gain are not compliant with the design parameters above. Obtaining a linear phase characteristic with these topologies proves to be very hard as well.  
 
 		\begin{figure}[H]
 		\begin{subfigure}{0.5\textwidth}
@@ -49,7 +49,7 @@
 		\begin{subfigure}{0.5\textwidth}
 			\centering
 			\includegraphics[width=0.5\textwidth]{images/antenna/bar_bell.png}
-			\caption{Bar-Bell Topology}
+			\caption{Barbell Topology}
 		\end{subfigure}
 		\caption{UWB Antenna Topologies}
 		\label{fig:topologies}
@@ -89,6 +89,21 @@
 	\caption{Optimized dimensions for antenna and partial ground plane}
 	\label{tab:dimensions}
 	\end{table}
+
+	\begin{figure}[H]
+	\centering
+	\begin{subfigure}[b]{0.52\textwidth}
+                \includegraphics[width=\textwidth]{images/patch_proto_front}
+                \caption{Front side prototype antenna}
+                \label{fig:front_prototype}
+        \end{subfigure}%
+  ~      
+        \begin{subfigure}[b]{0.5\textwidth}
+                \includegraphics[width=\textwidth]{images/patch_proto_back}
+                \caption{Back side prototype antenna}
+                \label{fig:back_prototype}
+        \end{subfigure}
+	\end{figure}
 
 	\subsection{Simulation}
 		While designing the antenna, simulations in ADS are used to confirm that the antenna's characteristics are as desired. In this section we will discuss the simulation results of the final design, as explained in the previous section \ref{subsec:ant_design}. 
