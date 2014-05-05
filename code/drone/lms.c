@@ -7,11 +7,9 @@
 #include "lms.h"
 
 arm_status Calculate3DPosition(uint8_t nrAnchors, float32_t* currPosEst, float32_t* anchorsX, float32_t* anchorsY, float32_t* anchorsZ, uint32_t* d){
-
-  uint8_t i;
-  uint8_t nrOfValids=0;
-
   // Extract valid (nonzero) measurements to avoid division by zero (in very rare cases)
+  uint8_t i;
+  uint32_t nrOfValids=0;
 
   for(i=0; i<nrAnchors;i++){
     if(d[i] != 0) nrOfValids++;
@@ -28,75 +26,155 @@ arm_status Calculate3DPosition(uint8_t nrAnchors, float32_t* currPosEst, float32
       valid_anchorsX[vi] = anchorsX[i];
       valid_anchorsY[vi] = anchorsY[i];
       valid_anchorsZ[vi] = anchorsZ[i];
-      valid_d[vi] = d[i];
+      valid_d[vi] = d[i]*d[i];
       vi++;
     }
   }
 
   if(nrOfValids >= 4){ // 4 or more valid distance measurements -> LMS can be applied
-    float32_t b_array[nrOfValids-1];
-    float32_t A_array[3*(nrOfValids-1)];
-    float32_t AT_array[3*(nrOfValids-1)];
 
-    uint8_t i;
-    for(i=0; i<nrOfValids-1; i++){
-      b_array[i] = (valid_d[i]*valid_d[i] - valid_d[nrOfValids-1]*valid_d[nrOfValids-1])
-        - (valid_anchorsX[i]*valid_anchorsX[i]) + (valid_anchorsX[nrOfValids-1]*valid_anchorsX[nrOfValids-1])
-        - (valid_anchorsY[i]*valid_anchorsY[i]) + (valid_anchorsY[nrOfValids-1]*valid_anchorsY[nrOfValids-1])
-        - (valid_anchorsZ[i]*valid_anchorsZ[i]) + (valid_anchorsZ[nrOfValids-1]*valid_anchorsZ[nrOfValids-1]);
-      A_array[i*2] = -2*valid_anchorsX[i] + 2*valid_anchorsX[nrOfValids-1];
-      A_array[i*2 + 1] = -2*valid_anchorsY[i] + 2*valid_anchorsY[nrOfValids-1];
-      A_array[i*2 + 2] = -2*valid_anchorsZ[i] + 2*valid_anchorsZ[nrOfValids-1];
+    float32_t anchorsArray[3*nrOfValids];
+    
+
+    for(i=0; i<3*nrOfValids-3;i++){
+      anchorsArray[3*i] = valid_anchorsX[i];
+      anchorsArray[3*i+1] = valid_anchorsY[i];
+      anchorsArray[3*i+2] = valid_anchorsZ[i];
     }
 
-    arm_matrix_instance_f32 b = {nrOfValids-1, 1, (float32_t *)b_array};
-    arm_matrix_instance_f32 A = {nrOfValids-1, 3, (float32_t *)A_array};
-    arm_matrix_instance_f32 AT = {3, nrOfValids-1, (float32_t *)AT_array};
+    arm_matrix_instance_f32 anchorsMat;
+    arm_matrix_instance_f32 x_N;
+    float32_t x_N_array[(nrAnchors-1)*3];
 
-    arm_status TransStatus = arm_mat_trans_f32(&A,&AT);
-    if(TransStatus != ARM_MATH_SUCCESS){
-      return TransStatus;
+    arm_mat_init_f32(&anchorsMat,nrOfValids,3,anchorsArray);
+
+    for(i=0;i<nrOfValids-1;i++){
+        x_N_array[3*i] = valid_anchorsX[3*nrOfValids-3];
+        x_N_array[3*i+1] = valid_anchorsY[3*nrOfValids-2];
+        x_N_array[3*i+2] = valid_anchorsZ[3*nrOfValids-1];
     }
 
-    float32_t ATA_array[9]={0};
-    arm_matrix_instance_f32 ATA = {3, 3, (float32_t *)ATA_array};
+    arm_mat_init_f32(&x_N,nrOfValids-1,3,x_N_array);
 
-    arm_status ReusedStatus = arm_mat_mult_f32(&AT, &A, &ATA);
-    if (ReusedStatus != ARM_MATH_SUCCESS){
-      return ReusedStatus;
+    arm_mat_scale_f32(&x_N,-2.0f,&x_N);
+    arm_mat_scale_f32(&anchorsMat,-2.0f,&anchorsMat);
+
+    arm_matrix_instance_f32 A;
+    arm_matrix_instance_f32 Ainv;
+    arm_matrix_instance_f32 x;
+
+    arm_mat_sub_f32(&x_N,&anchorsMat,&A);
+
+    arm_matrix_instance_f32 B;
+    float32_t B_array[3];
+
+    for(i=0; i<3;i++){
+      B_array[i] = valid_d[nrOfValids-1] - valid_d[i] 
+             - (x_N.pData[3*i]*x_N.pData[3*i] + x_N.pData[3*i+1]*x_N.pData[3*i+1] + x_N.pData[3*i+2]*x_N.pData[3*i+2])
+             + (anchorsMat.pData[3*i]*anchorsMat.pData[3*i] + anchorsMat.pData[3*i+1]*anchorsMat.pData[3*i+1] + anchorsMat.pData[3*i+2]*anchorsMat.pData[3*i+2]);
     }
 
-    float32_t ATAinv_array[9]={0};
-    float32_t det = (ATA.pData[0]*ATA.pData[4]*ATA.pData[8] + ATA.pData[1]*ATA.pData[5]*ATA.pData[6]
-        + ATA.pData[2]*ATA.pData[3]*ATA.pData[7] - ATA.pData[2]*ATA.pData[4]*ATA.pData[6]
-        - ATA.pData[1]*ATA.pData[3]*ATA.pData[8] - ATA.pData[0]*ATA.pData[5]*ATA.pData[7]);
+    arm_mat_init_f32(&B,3,1,B_array);
 
-    ATAinv_array[0] = (ATA.pData[8]*ATA.pData[4] - ATA.pData[7]*ATA.pData[5])/det;
-    ATAinv_array[1] = (ATA.pData[7]*ATA.pData[2] - ATA.pData[1]*ATA.pData[8])/det;
-    ATAinv_array[2] = (ATA.pData[1]*ATA.pData[5] - ATA.pData[4]*ATA.pData[2])/det;
-    ATAinv_array[3] = (ATA.pData[5]*ATA.pData[6] - ATA.pData[8]*ATA.pData[3])/det;
-    ATAinv_array[4] = (ATA.pData[0]*ATA.pData[8] - ATA.pData[6]*ATA.pData[2])/det;
-    ATAinv_array[5] = (ATA.pData[2]*ATA.pData[3] - ATA.pData[0]*ATA.pData[5])/det;
-    ATAinv_array[6] = (ATA.pData[7]*ATA.pData[3] - ATA.pData[6]*ATA.pData[4])/det;
-    ATAinv_array[7] = (ATA.pData[1]*ATA.pData[6] - ATA.pData[7]*ATA.pData[0])/det;
-    ATAinv_array[8] = (ATA.pData[4]*ATA.pData[0] - ATA.pData[1]*ATA.pData[3])/det;
-    arm_matrix_instance_f32 ATAinv = {3, 3, (float32_t *)ATAinv_array};
+    arm_mat_inverse_f32(&A,&Ainv);
+    arm_status ReusedStatus=arm_mat_mult_f32(&Ainv,&B,&x);
 
-    float32_t MP_array[3*(nrOfValids-1)];
-    arm_matrix_instance_f32 MoorePenrose = {3, nrOfValids-1, (float32_t *)MP_array};
-    ReusedStatus = arm_mat_mult_f32(&ATAinv, &AT, &MoorePenrose);
+    currPosEst[0] = x.pData[0];
+    currPosEst[1] = x.pData[1];
+    currPosEst[2] = x.pData[2];
 
-    if (ReusedStatus != ARM_MATH_SUCCESS){
-      return ReusedStatus;
-    }
-    arm_matrix_instance_f32 currPosEstMatrix = {3, 1, (float32_t *)currPosEst};
-    ReusedStatus = arm_mat_mult_f32(&MoorePenrose, &b, &currPosEstMatrix);
+    return ReusedStatus;
+    
 
-    if (ReusedStatus != ARM_MATH_SUCCESS){
-      return ReusedStatus;
-    }
 
-    return ARM_MATH_SUCCESS; //no errors occurred
+  // uint8_t nrOfValids=0;
+
+  // // Extract valid (nonzero) measurements to avoid division by zero (in very rare cases)
+
+  // for(i=0; i<nrAnchors;i++){
+  //   if(d[i] != 0) nrOfValids++;
+  // }
+
+  // float32_t valid_anchorsX[nrOfValids];
+  // float32_t valid_anchorsY[nrOfValids];
+  // float32_t valid_anchorsZ[nrOfValids];
+  // float32_t valid_d[nrOfValids];
+
+  // uint8_t vi=0; //validity-index
+  // for(i=0; i<nrAnchors; i++){
+  //   if(d[i] != 0){
+  //     valid_anchorsX[vi] = anchorsX[i];
+  //     valid_anchorsY[vi] = anchorsY[i];
+  //     valid_anchorsZ[vi] = anchorsZ[i];
+  //     valid_d[vi] = d[i];
+  //     vi++;
+  //   }
+  // }
+
+  // if(nrOfValids >= 4){ // 4 or more valid distance measurements -> LMS can be applied
+  //   float32_t b_array[nrOfValids-1];
+  //   float32_t A_array[3*(nrOfValids-1)];
+  //   float32_t AT_array[3*(nrOfValids-1)];
+
+  //   uint8_t i;
+  //   for(i=0; i<nrOfValids-1; i++){
+  //     b_array[i] = (valid_d[i]*valid_d[i] - valid_d[nrOfValids-1]*valid_d[nrOfValids-1])
+  //       - (valid_anchorsX[i]*valid_anchorsX[i]) + (valid_anchorsX[nrOfValids-1]*valid_anchorsX[nrOfValids-1])
+  //       - (valid_anchorsY[i]*valid_anchorsY[i]) + (valid_anchorsY[nrOfValids-1]*valid_anchorsY[nrOfValids-1])
+  //       - (valid_anchorsZ[i]*valid_anchorsZ[i]) + (valid_anchorsZ[nrOfValids-1]*valid_anchorsZ[nrOfValids-1]);
+  //     A_array[i*2] = -2*valid_anchorsX[i] + 2*valid_anchorsX[nrOfValids-1];
+  //     A_array[i*2 + 1] = -2*valid_anchorsY[i] + 2*valid_anchorsY[nrOfValids-1];
+  //     A_array[i*2 + 2] = -2*valid_anchorsZ[i] + 2*valid_anchorsZ[nrOfValids-1];
+  //   }
+
+  //   arm_matrix_instance_f32 b = {nrOfValids-1, 1, (float32_t *)b_array};
+  //   arm_matrix_instance_f32 A = {nrOfValids-1, 3, (float32_t *)A_array};
+  //   arm_matrix_instance_f32 AT = {3, nrOfValids-1, (float32_t *)AT_array};
+
+  //   arm_status TransStatus = arm_mat_trans_f32(&A,&AT);
+  //   if(TransStatus != ARM_MATH_SUCCESS){
+  //     return TransStatus;
+  //   }
+
+  //   float32_t ATA_array[9]={0};
+  //   arm_matrix_instance_f32 ATA = {3, 3, (float32_t *)ATA_array};
+
+  //   arm_status ReusedStatus = arm_mat_mult_f32(&AT, &A, &ATA);
+  //   if (ReusedStatus != ARM_MATH_SUCCESS){
+  //     return ReusedStatus;
+  //   }
+
+  //   float32_t ATAinv_array[9]={0};
+  //   float32_t det = (ATA.pData[0]*ATA.pData[4]*ATA.pData[8] + ATA.pData[1]*ATA.pData[5]*ATA.pData[6]
+  //       + ATA.pData[2]*ATA.pData[3]*ATA.pData[7] - ATA.pData[2]*ATA.pData[4]*ATA.pData[6]
+  //       - ATA.pData[1]*ATA.pData[3]*ATA.pData[8] - ATA.pData[0]*ATA.pData[5]*ATA.pData[7]);
+
+  //   ATAinv_array[0] = (ATA.pData[8]*ATA.pData[4] - ATA.pData[7]*ATA.pData[5])/det;
+  //   ATAinv_array[1] = (ATA.pData[7]*ATA.pData[2] - ATA.pData[1]*ATA.pData[8])/det;
+  //   ATAinv_array[2] = (ATA.pData[1]*ATA.pData[5] - ATA.pData[4]*ATA.pData[2])/det;
+  //   ATAinv_array[3] = (ATA.pData[5]*ATA.pData[6] - ATA.pData[8]*ATA.pData[3])/det;
+  //   ATAinv_array[4] = (ATA.pData[0]*ATA.pData[8] - ATA.pData[6]*ATA.pData[2])/det;
+  //   ATAinv_array[5] = (ATA.pData[2]*ATA.pData[3] - ATA.pData[0]*ATA.pData[5])/det;
+  //   ATAinv_array[6] = (ATA.pData[7]*ATA.pData[3] - ATA.pData[6]*ATA.pData[4])/det;
+  //   ATAinv_array[7] = (ATA.pData[1]*ATA.pData[6] - ATA.pData[7]*ATA.pData[0])/det;
+  //   ATAinv_array[8] = (ATA.pData[4]*ATA.pData[0] - ATA.pData[1]*ATA.pData[3])/det;
+  //   arm_matrix_instance_f32 ATAinv = {3, 3, (float32_t *)ATAinv_array};
+
+  //   float32_t MP_array[3*(nrOfValids-1)];
+  //   arm_matrix_instance_f32 MoorePenrose = {3, nrOfValids-1, (float32_t *)MP_array};
+  //   ReusedStatus = arm_mat_mult_f32(&ATAinv, &AT, &MoorePenrose);
+
+  //   if (ReusedStatus != ARM_MATH_SUCCESS){
+  //     return ReusedStatus;
+  //   }
+  //   arm_matrix_instance_f32 currPosEstMatrix = {3, 1, (float32_t *)currPosEst};
+  //   ReusedStatus = arm_mat_mult_f32(&MoorePenrose, &b, &currPosEstMatrix);
+
+  //   if (ReusedStatus != ARM_MATH_SUCCESS){
+  //     return ReusedStatus;
+  //   }
+
+  //   return ARM_MATH_SUCCESS; //no errors occurred
 
   }else{
     /* Less than 4 valid measurements -> normal LMS impossible!
