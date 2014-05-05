@@ -104,7 +104,7 @@ void accelerometer_init(void) {
   // Write Control Data to register
   I2C_start(ACC_I2C_PORT, ACC_I2C_ADDR, I2C_Direction_Transmitter);
   I2C_write(ACC_I2C_PORT, ACC_CTRLREG1_ADDR);
-  I2C_write(ACC_I2C_PORT, ACC_CTRL_100KHZ | ACC_CTRL_MODE_ACT | ACC_CTRL_FS_9 | ACC_CTRL_3D);
+  I2C_write(ACC_I2C_PORT, ACC_CTRL_100HZ | ACC_CTRL_MODE_ACT | ACC_CTRL_FS_9 | ACC_CTRL_3D);
   I2C_stop(ACC_I2C_PORT);
 }
 
