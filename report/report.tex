@@ -123,10 +123,22 @@
 		\label{fig:S11_phase_design}
 		\end{figure}
 
-		Figure \ref{fig:S11_phase_design} shows that the $S_{11}$-parameter is below $\SI{-10}{\decibel}$, and relatively flat, in the desired frequency band. 
+		Figure \ref{fig:S11_phase_design} shows that the $S_{11}$-parameter is below $\SI{-10}{\decibel}$, and relatively flat, in the desired frequency band. The phase characteristic proves to be approximately linear as well, which is in line with the design parameters. The gain is ca. $\SI{3}{\decibel}$ and the antenna efficiency is between 50\% and 96\% in the lower half of the frequency band, according to the simulation. 
 
 	\subsection{Measurements}
+		After the positive simulation results, we continue with the construction of the designed antenna. Due to a small misalignment between partial ground plane and antenna we need to construct a second version of the UWB antenna to obtain optimal results. Between these two versions, some minor adjustments are made to the design to further improve flatness of the $S_{11}$ and linearity of the phase. The measured reflection coefficient of the two versions\footnote{The initial measurements of the S-parameters of both versions suffered from noise due to common-mode current, which was solved by addition of a ferrite clamp.} of the antenna is compared to the reference antenna and to the respective simulation in Figure \ref{fig:antenna_comp}. 
 
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=\textwidth]{images/antenna/antenna_comparison}
+			\caption{Version 1 and 2 of constructed antenna compared to simulation and reference}
+			\label{fig:antenna_comp}
+		\end{figure}
+
+		As seen on Figure \ref{fig:antenna_comp}, the first version of the antenna doesn't meet the pre-imposed design criteria, i.e. the $S_{11}$ is not smaller than $\SI{-10}{\decibel}$ over the entire frequency range.
+		The $S_{11}$ characteristic is improved by the better alignment in version 2 and the minor adjustments to the design.
+
+		
 
 
 
