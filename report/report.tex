@@ -23,9 +23,15 @@
   \tableofcontents
 \newpage
 
+\section{Introduction}
+
+The goal for this project is to make it possible to accurately localize drones indoor. This is for example needed if we want to make sure that the drone can fly autonomously. GPS could be used outdoor but even then is GPS not ideal since it isn't accurate enough (approximately $\SI{3}{\meter}$ accuracy in the azimuth plane and it yields even worse results in terms of determining the height of the drone). \\
+That is why we will use UWB signals and thus send short pulses to determine the distances to several known anchor points. Next to this UWB antenna we need an algorithm which can determine the position of the drone accurate enough. \\
+A final part of this project consists of making a board on which we can implement the algorithms.
+
 \section{Antenna Design}
 	
-	For the indoor localisation of the drones we use the TIME DOMAIN\texttrademark PulsOn 400 UWB module in cooperation with a microcontroller to run the Unscented Kalman Filter algorithm. The UWB modules are already equipped with a TIME DOMAIN\texttrademark Broadspec UWB Antenna, a dipole that is omnidirectional in the azimuth plane. We will use the specifications of this antenna as design parameters for or own UWB antenna. The critical design parameters are listed below. 
+	For the indoor localisation of the drones we use the TIME DOMAIN\texttrademark PulsOn 400 UWB module in cooperation with a microcontroller to run the Unscented Kalman Filter algorithm. The UWB modules are already equipped with a TIME DOMAIN\texttrademark Broadspec UWB Antenna, a dipole that is omnidirectional in the azimuth plane. We will use the specifications of this antenna as design parameters for our own UWB antenna. The critical design parameters are listed below. 
 
 	\begin{itemize}
 		\item Radiate in the $\SI{3.1}{\giga\hertz}$ - $\SI{5.3}{\giga\hertz}$ band
