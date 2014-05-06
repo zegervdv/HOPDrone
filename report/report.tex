@@ -188,7 +188,13 @@ A final part of this project consists of making a board on which we can implemen
 
 
 	% subsection LMS (end)
-
+	\subsection{Kalman Filtering}
+	The second algorithm that is implemented is the Kalman Filter. This algorithm makes use of ``sensor'' fusion which in principle means that we try to combine data from several sensors to track the drone more accurately.
+	Examples from sensors that we can use to improve the result are an accelerometer, a gyroscope, an altitude meter, etc.\\
+	The iterative process of a Kalman filter consists of 2 distinct steps. First of all we will try to predict the next location by using results of the past (i.e. Kalman filtering is a method with a memory). 
+	The second step of Kalman filtering consists of using the real measured data (distances and possibly also extra data) to update the memory of the filter by changing the matrices in the Kalman filter system.\\
+	However, the matrix computations used in the implementation of the Kalman filter are based on Gaussian distributions. Hence, in real life (when we don't have Gaussian distributed data) we won't get as good performances as we get when simulating the Kalman filter.
+	%CONCEPTUAL SOLUTION FOR THIS PROBLEM?
 
 \section{PCB Design}
   In order to process the measurements and determine the position of the drone, a microcontroller is attached to one of the RCM modules.
