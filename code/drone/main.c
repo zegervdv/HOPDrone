@@ -80,6 +80,8 @@ int main(void)
     LED_off(LED2);
   }
 
+  accelerometer_init();
+
   // register this device with the main host
   char data2[1];
   data2[0] = LCM_MSG_REGISTER_NODE;			// message id for registration
@@ -129,6 +131,11 @@ int main(void)
 
               // perform non-cooperative localization if required
               if(lcmMsg->options & LCMFLAG_ONBOARD_LOCALIZATION){
+                int8_t acc_data[3];
+                accelerometer_read(acc_data);
+                locInfo->acc_x_axis = (float32_t) acc_data[0];
+                locInfo->acc_y_axis = (float32_t) acc_data[1];
+                locInfo->acc_z_axis = (float32_t) acc_data[2];
 
                 if(!(lcmMsg->options & LCMFLAG_COOP)){
                   if(lcmMsg->options & LCMFLAG_KALMAN) {

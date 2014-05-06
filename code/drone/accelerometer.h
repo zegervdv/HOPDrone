@@ -48,4 +48,4 @@ void accelerometer_init(void);
  * data - int array of size 3
  * Updates data with [x, y, z]
  */
-int accelerometer_read(uint8_t* data);
+int accelerometer_read(int8_t* data);
