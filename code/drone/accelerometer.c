@@ -108,25 +108,25 @@ void accelerometer_init(void) {
   I2C_stop(ACC_I2C_PORT);
 }
 
-int accelerometer_read(int8_t* data) {
+int accelerometer_read(int32_t* data) {
   // Read data from 3 axes in one request using auto increment
   I2C_start(ACC_I2C_PORT, ACC_I2C_ADDR, I2C_Direction_Transmitter);
   I2C_write(ACC_I2C_PORT, ACC_AUTO_INC_ADDR);
   I2C_stop(ACC_I2C_PORT);
-  
+
   I2C_start(ACC_I2C_PORT, ACC_I2C_ADDR, I2C_Direction_Receiver);
-  
+
   // Store x - axis value
-  data[0] = I2C_read_ack(ACC_I2C_PORT);
+  data[0] = (int32_t) (ACC_SENSITIVITY_9 * (int8_t) I2C_read_ack(ACC_I2C_PORT));
   // Empty register
   I2C_read_ack(ACC_I2C_PORT);
   // Store y - axis value
-  data[1] = I2C_read_ack(ACC_I2C_PORT);
+  data[1] = (int32_t) (ACC_SENSITIVITY_9 * (int8_t) I2C_read_ack(ACC_I2C_PORT));
   // Empty register
   I2C_read_ack(ACC_I2C_PORT);
   // Store z - axis value
   // And send NACK to terminate transfer
-  data[2] = I2C_read_nack(ACC_I2C_PORT);
+  data[2] = (int32_t) (ACC_SENSITIVITY_9 * (int8_t) I2C_read_nack(ACC_I2C_PORT));
 
   return 0;
 }
