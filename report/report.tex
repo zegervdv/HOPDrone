@@ -195,6 +195,22 @@ A final part of this project consists of making a board on which we can implemen
 	The second step of Kalman filtering consists of using the real measured data (distances and possibly also extra data) to update the memory of the filter by changing the matrices in the Kalman filter system.\\
 	However, the matrix computations used in the implementation of the Kalman filter are based on Gaussian distributions. Hence, in real life (when we don't have Gaussian distributed data) we won't get as good performances as we get when simulating the Kalman filter.
 	%CONCEPTUAL SOLUTION FOR THIS PROBLEM?
+	
+\subsection{Comparison between LMS and Kalman}
+	
+			\begin{figure}[H]
+				\centering
+				\includegraphics[width=\textwidth]{images/tracking_algorithms.eps}
+				\caption{Travelled paths according to the different algorithms}
+				\label{fig:paths}
+			\end{figure}
+			
+						\begin{figure}[H]
+				\centering
+				\includegraphics[width=\textwidth]{images/cdf_algorithms.eps}
+				\caption{Cumulative distribution function for the different algorithms}
+				\label{fig:cdf}
+			\end{figure}
 
 \section{PCB Design}
   In order to process the measurements and determine the position of the drone, a microcontroller is attached to one of the RCM modules.
