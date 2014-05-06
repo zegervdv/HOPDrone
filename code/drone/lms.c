@@ -5,14 +5,17 @@
 #include "arm_math.h"
 #include "main.h" //to get the bool-definition
 #include "lms.h"
+#include "leds.h"
 
 arm_status Calculate3DPosition(uint8_t nrAnchors, float32_t* currPosEst, float32_t* anchorsX, float32_t* anchorsY, float32_t* anchorsZ, uint32_t* d){
+  LED_init(LED2);
+
   // Extract valid (nonzero) measurements to avoid division by zero (in very rare cases)
   uint8_t i;
   uint32_t nrOfValids=0;
 
   for(i=0; i<nrAnchors;i++){
-    if(d[i] != 0) nrOfValids++;
+    if(d[i] > 0.0001) nrOfValids++;
   }
 
   float32_t valid_anchorsX[nrOfValids];
@@ -22,7 +25,7 @@ arm_status Calculate3DPosition(uint8_t nrAnchors, float32_t* currPosEst, float32
 
   uint8_t vi=0; //validity-index
   for(i=0; i<nrAnchors; i++){
-    if(d[i] != 0){
+    if(d[i] > 0.0001){
       valid_anchorsX[vi] = anchorsX[i];
       valid_anchorsY[vi] = anchorsY[i];
       valid_anchorsZ[vi] = anchorsZ[i];
@@ -32,8 +35,7 @@ arm_status Calculate3DPosition(uint8_t nrAnchors, float32_t* currPosEst, float32
   }
 
   if(nrOfValids >= 4){ // 4 or more valid distance measurements -> LMS can be applied
-
-    float32_t anchorsArray[3*nrOfValids];
+    float32_t anchorsArray[3*(nrOfValids-1)];
     
 
     for(i=0; i<3*nrOfValids-3;i++){
@@ -44,9 +46,9 @@ arm_status Calculate3DPosition(uint8_t nrAnchors, float32_t* currPosEst, float32
 
     arm_matrix_instance_f32 anchorsMat;
     arm_matrix_instance_f32 x_N;
-    float32_t x_N_array[(nrAnchors-1)*3];
+    float32_t x_N_array[(nrOfValids-1)*3];
 
-    arm_mat_init_f32(&anchorsMat,nrOfValids,3,anchorsArray);
+    arm_mat_init_f32(&anchorsMat,nrOfValids-1,3,anchorsArray);
 
     for(i=0;i<nrOfValids-1;i++){
         x_N_array[3*i] = valid_anchorsX[3*nrOfValids-3];
@@ -56,14 +58,19 @@ arm_status Calculate3DPosition(uint8_t nrAnchors, float32_t* currPosEst, float32
 
     arm_mat_init_f32(&x_N,nrOfValids-1,3,x_N_array);
 
-    arm_mat_scale_f32(&x_N,-2.0f,&x_N);
-    arm_mat_scale_f32(&anchorsMat,-2.0f,&anchorsMat);
-
     arm_matrix_instance_f32 A;
     arm_matrix_instance_f32 Ainv;
     arm_matrix_instance_f32 x;
+    float32_t A_array[3*(nrOfValids-1)];
+    float32_t Ainv_array[3*(nrOfValids-1)];
+    float32_t x_array[3*1];
+
+    arm_mat_init_f32(&A,nrOfValids-1,3,A_array);
+    arm_mat_init_f32(&Ainv,nrOfValids-1,3,Ainv_array);
+    arm_mat_init_f32(&x,3,1,x_array);
 
     arm_mat_sub_f32(&x_N,&anchorsMat,&A);
+    arm_mat_scale_f32(&A,-2.0f,&A);
 
     arm_matrix_instance_f32 B;
     float32_t B_array[3];
@@ -75,9 +82,15 @@ arm_status Calculate3DPosition(uint8_t nrAnchors, float32_t* currPosEst, float32
     }
 
     arm_mat_init_f32(&B,3,1,B_array);
+    
+    arm_status ReusedStatus;
 
-    arm_mat_inverse_f32(&A,&Ainv);
-    arm_status ReusedStatus=arm_mat_mult_f32(&Ainv,&B,&x);
+    ReusedStatus = arm_mat_inverse_f32(&A,&Ainv);
+
+    if(ReusedStatus != ARM_MATH_SUCCESS)
+      return ReusedStatus;
+
+    ReusedStatus=arm_mat_mult_f32(&Ainv,&B,&x);
 
     currPosEst[0] = x.pData[0];
     currPosEst[1] = x.pData[1];

@@ -140,6 +140,8 @@ int main(void)
                     // Calculate 3D positions and store in locInfo 
                     arm_status errorStatus;
                     errorStatus = Calculate3DPosition(lcmMsg->nAnchors, posEstimate, anchorsX, anchorsY, anchorsZ, d);
+                    if(errorStatus != ARM_MATH_SUCCESS)
+                      LED_on(LED2);
                     locInfo->estim_x = posEstimate[0]/1000.0f;
                     locInfo->estim_y = posEstimate[1]/1000.0f;
                     locInfo->estim_z = posEstimate[2]/1000.0f;
@@ -160,6 +162,7 @@ int main(void)
 
                     arm_status errorStatus;
                     errorStatus = Calculate2DPosition(lcmMsg->nAnchors, posEstimate, anchorsX, anchorsY, d);
+
                     locInfo->estim_x = posEstimate[0]/1000.0f;
                     locInfo->estim_y = posEstimate[1]/1000.0f;
                     locInfo->estim_z = 0;
