@@ -6,6 +6,7 @@
 #include "kalman.h"
 #include <stdlib.h>
 #include <math.h>
+#include "leds.h"
 
 void kalman_init_weight_factors(float32_t* weight_m, float32_t* weight_c) {
   uint8_t i;
@@ -98,7 +99,7 @@ void kalman_predict(arm_matrix_instance_f32* f_matrix, arm_matrix_instance_f32* 
 
   // Calculate first intermediate results
   arm_mat_mult_f32(f_matrix, variance, &interm_f);
-  /* arm_mat_mult_f32(g_matrix, var_u, &interm_g); */
+  arm_mat_mult_f32(g_matrix, var_u, &interm_g);
 
   // Transpose F and G
   arm_mat_trans_f32(f_matrix, &f_matrix_transposed);
@@ -121,6 +122,13 @@ void kalman_update_sigmapoints(position_t* sigmapoints, position_t mkmin, arm_ma
 
   // Calculate the root of the variance matrix using Cholesky Decomposition
   cholesky_decomp(pkmin, &root);
+
+  for(i=0; i<DIMENSIONS*DIMENSIONS; i++) {
+    if(isnan(root.pData[i])){
+      LED_init(LED2);
+      LED_on(LED2);
+    } 
+  }
 
   arm_mat_scale_f32(&root, DIMENSIONS + KAPPA, &root);
 
@@ -145,8 +153,9 @@ void kalman_measurement_update(arm_matrix_instance_f32* z_matrix, float32_t anch
   arm_matrix_instance_f32 mu;
   arm_matrix_instance_f32 cov, var;
   arm_matrix_instance_f32 vector_y, vector_z, vector_output;
-  arm_matrix_instance_f32 temp_cov, temp_var;
+  arm_matrix_instance_f32 temp_cov, temp_var, temp_dim_anch;
   arm_matrix_instance_f32 distance_anchors;
+  arm_matrix_instance_f32 pkmin_trans;
 
   float32_t mu_data[NR_ANCHORS];
   float32_t cov_data[DIMENSIONS * NR_ANCHORS] = {0};
@@ -155,10 +164,14 @@ void kalman_measurement_update(arm_matrix_instance_f32* z_matrix, float32_t anch
   float32_t vector_z_data[NR_ANCHORS];
   float32_t vector_output_data[NR_ANCHORS];
   float32_t temp_cov_data[DIMENSIONS * NR_ANCHORS];
+  float32_t temp_dim_anch_data[DIMENSIONS * NR_ANCHORS];
   float32_t temp_var_data[NR_ANCHORS * NR_ANCHORS];
   float32_t distance_anchors_data[NR_ANCHORS];
+  float32_t pkmin_trans_data[DIMENSIONS*DIMENSIONS];
 
   float32_t x_sq, y_sq, z_sq;
+
+  arm_status status;
 
   arm_mat_init_f32(&mu, NR_ANCHORS, 1, mu_data);
   arm_mat_init_f32(&cov, DIMENSIONS, NR_ANCHORS, cov_data);
@@ -167,15 +180,19 @@ void kalman_measurement_update(arm_matrix_instance_f32* z_matrix, float32_t anch
   arm_mat_init_f32(&vector_z, NR_ANCHORS, 1, vector_z_data);
   arm_mat_init_f32(&vector_output, 1, NR_ANCHORS, vector_output_data);
   arm_mat_init_f32(&temp_cov, DIMENSIONS, NR_ANCHORS, temp_cov_data);
+  arm_mat_init_f32(&temp_dim_anch, DIMENSIONS, NR_ANCHORS, temp_dim_anch_data);
   arm_mat_init_f32(&temp_var, NR_ANCHORS, NR_ANCHORS, temp_var_data);
   arm_mat_init_f32(&distance_anchors, NR_ANCHORS, 1, distance_anchors_data);
+  arm_mat_init_f32(&pkmin_trans, DIMENSIONS, DIMENSIONS, pkmin_trans_data);
 
   for(i = 0; i < NR_SIGMAPOINTS; i++) {
     for(j = 0; j < NR_ANCHORS; j++) {
+      float32_t result;
       x_sq = (sigmapoints[i].pData[0] - anchors[j][0]) * (sigmapoints[i].pData[0] - anchors[j][0]);
       y_sq = (sigmapoints[i].pData[1] - anchors[j][1]) * (sigmapoints[i].pData[1] - anchors[j][1]);
       z_sq = (sigmapoints[i].pData[2] - anchors[j][2]) * (sigmapoints[i].pData[2] - anchors[j][2]);
-      z_matrix->pData[j*NR_SIGMAPOINTS + i] = sqrt(x_sq + y_sq + z_sq);
+      arm_sqrt_f32(x_sq + y_sq + z_sq, &result);
+      z_matrix->pData[j*NR_SIGMAPOINTS + i] = result; 
     }
   }
 
@@ -212,7 +229,12 @@ void kalman_measurement_update(arm_matrix_instance_f32* z_matrix, float32_t anch
 
   arm_mat_add_f32(&var, r_matrix, &temp_var);
   // Reuse var to store the inverse
-  arm_mat_inverse_f32(&temp_var, &var);
+  status = arm_mat_inverse_f32(&temp_var, &var);
+
+  if(status != ARM_MATH_SUCCESS) {
+    LED_init(LED2);
+    LED_on(LED2);
+  }
 
   // temp_cov is used to store K matrix
   arm_mat_mult_f32(&cov, &var, &temp_cov);
@@ -227,11 +249,15 @@ void kalman_measurement_update(arm_matrix_instance_f32* z_matrix, float32_t anch
 
   // cov holds result of K * (var + R)
   arm_mat_mult_f32(&temp_cov, &temp_var, &cov);
-  arm_mat_trans_f32(&temp_cov, &temp_cov);
-  arm_mat_mult_f32(&cov, &temp_cov, &cov);
+  arm_mat_trans_f32(&temp_cov, &temp_dim_anch);
+  arm_mat_mult_f32(&cov, &temp_dim_anch, &temp_cov);
 
   // Result for Pk
-  arm_mat_sub_f32(pkmin, &cov, pk);
+  arm_mat_sub_f32(pkmin, &temp_cov, pk);
+  arm_mat_inverse_f32(pk, &pkmin_trans);
+  arm_mat_add_f32(pk, &pkmin_trans, pk);
+  arm_mat_scale_f32(pk, 0.5, pk);
+
 }
 
 void cholesky_decomp(arm_matrix_instance_f32* matrix, arm_matrix_instance_f32* output) {
