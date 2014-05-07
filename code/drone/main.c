@@ -36,7 +36,7 @@ float32_t int2float(uint32_t in);
 //
 // static data
 //_____________________________________________________________________________
-static uint32_t RCM_id = 104;				// id of the node (given on the RCM device)
+static uint32_t RCM_id = 107;				// id of the node (given on the RCM device)
 static bool bConnected = false;				// boolean if the node is connected to the central hub.
 
 //_____________________________________________________________________________

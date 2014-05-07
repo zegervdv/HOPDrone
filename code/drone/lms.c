@@ -38,7 +38,7 @@ arm_status Calculate3DPosition(uint8_t nrAnchors, float32_t* currPosEst, float32
     float32_t anchorsArray[3*(nrOfValids-1)];
     
 
-    for(i=0; i<3*nrOfValids-3;i++){
+    for(i=0; i<nrOfValids-1;i++){
       anchorsArray[3*i] = valid_anchorsX[i];
       anchorsArray[3*i+1] = valid_anchorsY[i];
       anchorsArray[3*i+2] = valid_anchorsZ[i];
@@ -51,9 +51,9 @@ arm_status Calculate3DPosition(uint8_t nrAnchors, float32_t* currPosEst, float32
     arm_mat_init_f32(&anchorsMat,nrOfValids-1,3,(float32_t *)anchorsArray);
 
     for(i=0;i<nrOfValids-1;i++){
-        x_N_array[3*i] = valid_anchorsX[3*nrOfValids-3];
-        x_N_array[3*i+1] = valid_anchorsY[3*nrOfValids-2];
-        x_N_array[3*i+2] = valid_anchorsZ[3*nrOfValids-1];
+        x_N_array[3*i] = valid_anchorsX[nrOfValids-3];
+        x_N_array[3*i+1] = valid_anchorsY[nrOfValids-2];
+        x_N_array[3*i+2] = valid_anchorsZ[nrOfValids-1];
     }
 
     arm_mat_init_f32(&x_N,nrOfValids-1,3,(float32_t *)x_N_array);
@@ -67,8 +67,7 @@ arm_status Calculate3DPosition(uint8_t nrAnchors, float32_t* currPosEst, float32
 
     arm_mat_init_f32(&A,nrOfValids-1,3,(float32_t *)A_array);
     arm_mat_init_f32(&Ainv,nrOfValids-1,3,(float32_t *)Ainv_array);
-    arm_mat_init_f32(&x,3,1(float32_t *),x_array);
-
+    
     arm_mat_sub_f32(&x_N,&anchorsMat,&A);
     arm_mat_scale_f32(&A,-2.0f,&A);
 
@@ -87,8 +86,10 @@ arm_status Calculate3DPosition(uint8_t nrAnchors, float32_t* currPosEst, float32
 
     ReusedStatus = arm_mat_inverse_f32(&A,&Ainv);
 
-    if(ReusedStatus != ARM_MATH_SUCCESS)
-      return ReusedStatus;
+   // if(ReusedStatus != ARM_MATH_SUCCESS)
+     // return ReusedStatus;
+
+    arm_mat_init_f32(&x,3,1,x_array);
 
     ReusedStatus=arm_mat_mult_f32(&Ainv,&B,&x);
 
