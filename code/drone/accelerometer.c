@@ -99,6 +99,18 @@ void I2C_init(void) {
 
 }
 
+int8_t uint2int(uint8_t in){
+  union{
+    uint8_t 	here_write_float;
+    int8_t   here_read_float;
+  }convert;
+
+  convert.here_write_float = in;
+
+  return convert.here_read_float;
+}
+
+
 void accelerometer_init(void) {
   I2C_init();
   // Write Control Data to register
@@ -117,16 +129,16 @@ int accelerometer_read(int32_t* data) {
   I2C_start(ACC_I2C_PORT, ACC_I2C_ADDR, I2C_Direction_Receiver);
 
   // Store x - axis value
-  data[0] = (int32_t) (ACC_SENSITIVITY_9 * (int8_t) I2C_read_ack(ACC_I2C_PORT));
+  data[0] = (int32_t) (ACC_SENSITIVITY_9 * uint2int(I2C_read_ack(ACC_I2C_PORT)));
   // Empty register
   I2C_read_ack(ACC_I2C_PORT);
   // Store y - axis value
-  data[1] = (int32_t) (ACC_SENSITIVITY_9 * (int8_t) I2C_read_ack(ACC_I2C_PORT));
+  data[1] = (int32_t) (ACC_SENSITIVITY_9 * uint2int(I2C_read_ack(ACC_I2C_PORT)));
   // Empty register
   I2C_read_ack(ACC_I2C_PORT);
   // Store z - axis value
   // And send NACK to terminate transfer
-  data[2] = (int32_t) (ACC_SENSITIVITY_9 * (int8_t) I2C_read_nack(ACC_I2C_PORT));
+  data[2] = (int32_t) (ACC_SENSITIVITY_9 * uint2int(I2C_read_nack(ACC_I2C_PORT)));
 
   return 0;
 }

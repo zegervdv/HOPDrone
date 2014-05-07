@@ -131,11 +131,11 @@ int main(void)
 
               // perform non-cooperative localization if required
               if(lcmMsg->options & LCMFLAG_ONBOARD_LOCALIZATION){
-                int8_t acc_data[3];
+                int32_t acc_data[3];
                 accelerometer_read(acc_data);
-                locInfo->acc_x_axis = (float32_t) acc_data[0];
-                locInfo->acc_y_axis = (float32_t) acc_data[1];
-                locInfo->acc_z_axis = (float32_t) acc_data[2];
+                locInfo->acc_x_axis = acc_data[0];
+                locInfo->acc_y_axis = acc_data[1];
+                locInfo->acc_z_axis = acc_data[2];
 
                 if(!(lcmMsg->options & LCMFLAG_COOP)){
                   if(lcmMsg->options & LCMFLAG_KALMAN) {
