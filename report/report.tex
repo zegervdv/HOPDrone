@@ -153,14 +153,14 @@ Therefore we will use a custom setup using the TIME DOMAIN\texttrademark PulsOn 
 	\subsection{Least Mean Square}
 	\label{subsec:LMS}
 
-		The LMS algorithm uses the distances between the drone and a number of well-known anchor points to determine the position. The UWB antenna mounted on the drone broadcasts a very short pulse to the anchors, which will return the same pulse when it is received. The board on the drone measures the time between sending the pulse and receiving it back. Because the propagation speed of the pulse through air and the time it takes to process the pulse at the anchors are known, the distance to the anchor points can be determined as follows:
+		The LMS algorithm uses the distances between the drone and a number of well-known anchor points to determine the position. The UWB antenna mounted on the drone broadcasts a very short pulse to the anchors, which will return the same pulse when it is received. The board on the drone measures the time between sending the pulse and receiving the response. As the propagation speed in air of the pulse and the time it takes to process it at the anchors are known, the distance to the anchor points can be determined as follows:
 
 		\begin{equation}
 		\centering
 			t_{roundtrip} = 2t_{propagation} + t_{process}
 		\end{equation} 
 
-		Because the time to process the pulse at the anchor is known, we can calculate the time it takes to bridge the distance between the drone and the anchor point. With $c$ the speed of light ($\SI{3e8}{\meter\per\second}$) this results in an expression for the distance to anchor point $i$:
+		Because the time to process the pulse at the anchor is known, we are able to calculate the time it takes to bridge the distance from the drone to the anchor point or vice versa. With $c$ the speed of light ($\SI{3e8}{\meter\per\second}$) this results in an expression for the distance to anchor point $i$:
 
 		\begin{equation}
 		\centering
@@ -197,9 +197,9 @@ Therefore we will use a custom setup using the TIME DOMAIN\texttrademark PulsOn 
 	
 \subsection{Comparison between LMS and Kalman}
 
-To compare both algorithms we generate a Gaussian movement and calculate the distance to each of the anchors in a noiseless channel. Then we generate the input distances for the algorithm by adding Gaussian noise to the ideal distances.
-When we display the generated movement on a plot which also consists of the output locations of the Kalman filter and LMS algorithm we get figure \ref{fig:paths}.
-We notice on this figure that the path is followed quite accurately, but to make a real comparison between the 2 algorithms we will have to zoom in on a part of the followed route. This is what is done in figure \ref{fig:paths_zoom}.	
+To compare both algorithms we generate a Gaussian movement and calculate the distance to each of the anchors in a noiseless channel. We generate the input distances for the algorithm by adding Gaussian noise to the ideal distances.
+When we display the generated movement on a plot which also consists of the output locations of the Kalman filter and LMS algorithm we get \autoref{fig:paths}.
+We notice on this Figure that the path is followed quite accurately, but to make a real comparison between the 2 algorithms we will have to zoom in on a part of the followed route. This is what is done in \autoref{fig:paths_zoom}.	
 
 			\begin{figure}[H]
 				\centering
@@ -217,8 +217,8 @@ We notice on this figure that the path is followed quite accurately, but to make
 				\label{fig:paths_zoom}
 			\end{figure}
 
-On figure \ref{fig:paths_zoom} it can be seen that LMS is somewhat worse than the Kalman Filter. Next to this, it has to be mentioned that the Kalman path is way smoother than the path followed according to LMS. This is because the Kalman uses a memory and states that big jumps in the followed direction are very unlikely and thus Kalman locally follows a path that resembles a straight line. Hence, Kalman will only be useful if we use our algorithm to try to track a drone which doesn't change its course too abruptly.
-Now, we want to quantize the error made by adopting both algorithms. We choose as a distortion measure the mean squared error per dimension and let Matlab plot the cumulative distribution function of this mean squared error (figure \ref{fig:cdf}). This cdf learns us that the LMS indeed yields worse performances than the Kalman when a Gaussian-based path is followed and we don't introduce too much measure noise.
+On \autoref{fig:paths_zoom} it can be seen that LMS is somewhat worse than the Kalman Filter. Note that the Kalman path is way smoother than the path followed according to LMS. This is because the Kalman uses memory and states that sudden discontinuities in the followed direction are very unlikely and thus the Kalman will follow a path that resembles a straight line locally. Hence, Kalman will only be useful if we use our algorithm to try to track a drone which doesn't change its course too abruptly.
+Now, we want to quantize the error made by adopting both algorithms. We choose as a distortion measure the mean squared error per dimension and let Matlab plot the cumulative distribution function of this mean squared error (\autoref{fig:cdf}). This cdf shows that the LMS indeed yields worse performances than the Kalman when a Gaussian-based path is followed and we don't introduce too much measure noise.
 			
 			\begin{figure}[H]
 				\centering
@@ -233,7 +233,7 @@ The mean squared error per dimension that was mentioned before is computed as fo
 MSE = \dfrac{1}{3}((x_{real}-x_{est})^2+(y_{real}-y_{est})^2+(z_{real}-z_{est})^2)
 \end{equation}
 
-On figure \ref{fig:cdf}, a purple line is included which gives us the 90th percentile:
+On \autoref{fig:cdf}, a purple line is included which gives us the 90th percentile:
 
 \begin{table}[H]
 \begin{center}
@@ -250,7 +250,7 @@ On figure \ref{fig:cdf}, a purple line is included which gives us the 90th perce
 \end{table}
 
 \section{PCB Design}
-  In order to process the measurements and determine the position of the drone, a microcontroller is attached to one of the RCM modules.
+  In order to process the measurements and determine the position of the drone, a microcontroller is attached to one of the P410 RCM modules.
   These modules can be used both for ranging measurements, as well as for wireless communication. The module with the microcontroller is attached to the drone and several other RCM modules are placed in the room or building to serve as anchor points. An additional RCM is connected to a computer which acts as a central control unit and also allows to visualise the position of the drone in real time.
 
   As microcontroller we choose one from the STM32F4XX-series. These are powerful 32 bit ARM processors, which are sufficiently fast to process the data.
