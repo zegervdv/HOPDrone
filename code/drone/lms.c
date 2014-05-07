@@ -48,7 +48,7 @@ arm_status Calculate3DPosition(uint8_t nrAnchors, float32_t* currPosEst, float32
     arm_matrix_instance_f32 x_N;
     float32_t x_N_array[(nrOfValids-1)*3];
 
-    arm_mat_init_f32(&anchorsMat,nrOfValids-1,3,anchorsArray);
+    arm_mat_init_f32(&anchorsMat,nrOfValids-1,3,(float32_t *)anchorsArray);
 
     for(i=0;i<nrOfValids-1;i++){
         x_N_array[3*i] = valid_anchorsX[3*nrOfValids-3];
@@ -56,7 +56,7 @@ arm_status Calculate3DPosition(uint8_t nrAnchors, float32_t* currPosEst, float32
         x_N_array[3*i+2] = valid_anchorsZ[3*nrOfValids-1];
     }
 
-    arm_mat_init_f32(&x_N,nrOfValids-1,3,x_N_array);
+    arm_mat_init_f32(&x_N,nrOfValids-1,3,(float32_t *)x_N_array);
 
     arm_matrix_instance_f32 A;
     arm_matrix_instance_f32 Ainv;
@@ -65,9 +65,9 @@ arm_status Calculate3DPosition(uint8_t nrAnchors, float32_t* currPosEst, float32
     float32_t Ainv_array[3*(nrOfValids-1)];
     float32_t x_array[3*1];
 
-    arm_mat_init_f32(&A,nrOfValids-1,3,A_array);
-    arm_mat_init_f32(&Ainv,nrOfValids-1,3,Ainv_array);
-    arm_mat_init_f32(&x,3,1,x_array);
+    arm_mat_init_f32(&A,nrOfValids-1,3,(float32_t *)A_array);
+    arm_mat_init_f32(&Ainv,nrOfValids-1,3,(float32_t *)Ainv_array);
+    arm_mat_init_f32(&x,3,1(float32_t *),x_array);
 
     arm_mat_sub_f32(&x_N,&anchorsMat,&A);
     arm_mat_scale_f32(&A,-2.0f,&A);
@@ -81,7 +81,7 @@ arm_status Calculate3DPosition(uint8_t nrAnchors, float32_t* currPosEst, float32
              + (anchorsMat.pData[3*i]*anchorsMat.pData[3*i] + anchorsMat.pData[3*i+1]*anchorsMat.pData[3*i+1] + anchorsMat.pData[3*i+2]*anchorsMat.pData[3*i+2]);
     }
 
-    arm_mat_init_f32(&B,3,1,B_array);
+    arm_mat_init_f32(&B,3,1,(float32_t *)B_array);
     
     arm_status ReusedStatus;
 
