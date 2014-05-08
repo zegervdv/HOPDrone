@@ -10,12 +10,12 @@
 #define NR_ANCHORS      4
 
 #define ALPHA           0.001
-#define BETA            2
-#define KAPPA           ALPHA*ALPHA*DIMENSIONS - DIMENSIONS
+#define BETA            2.0
+#define KAPPA           ALPHA*ALPHA*DIMENSIONS - 1.0*DIMENSIONS
 
-#define WEIGHTS         1/(2*(DIMENSIONS + KAPPA))  // Weight factors i > 0
-#define WEIGHT_M0       KAPPA/(DIMENSIONS + KAPPA)  // Weight factor W_m for i = 0
-#define WEIGHT_C0       KAPPA/(DIMENSIONS + KAPPA) - (1 - ALPHA*ALPHA + BETA) // Weight factor W_c for i = 0
+#define WEIGHTS         (float32_t) 1.0/(2.0*(1.0*DIMENSIONS + KAPPA))  // Weight factors i > 0
+#define WEIGHT_M0       KAPPA/(1.0*DIMENSIONS + KAPPA)  // Weight factor W_m for i = 0
+#define WEIGHT_C0       KAPPA/(1.0*DIMENSIONS + KAPPA) - (1.0 - ALPHA*ALPHA + BETA) // Weight factor W_c for i = 0
 
 #define PREDICTION_VAR  0.025
 #define STD_MEASUREMENT 0.010

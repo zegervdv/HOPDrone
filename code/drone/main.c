@@ -48,7 +48,7 @@ float32_t int2float(uint32_t in);
 //
 // static data
 //_____________________________________________________________________________
-static uint32_t RCM_id = 104;				// id of the node (given on the RCM device)
+static uint32_t RCM_id = 107;				// id of the node (given on the RCM device)
 static bool bConnected = false;				// boolean if the node is connected to the central hub.
 
 //_____________________________________________________________________________
@@ -65,7 +65,7 @@ int main(void)
   float32_t position_data[DIMENSIONS], prev_position_data[DIMENSIONS], mkmin_data[DIMENSIONS];
   float32_t sigmapoints_data[NR_SIGMAPOINTS][DIMENSIONS];
   float32_t f_matrix_data[DIMENSIONS*DIMENSIONS];
-  float32_t g_matrix_data[DIMENSIONS*DIMENSIONS];
+  float32_t g_matrix_data[DIMENSIONS*DIMENSIONS/2];
   float32_t pk_data[DIMENSIONS*DIMENSIONS], pkmin_data[DIMENSIONS*DIMENSIONS];
   float32_t var_u_data[DIMENSIONS/2*DIMENSIONS/2];
   float32_t r_matrix_data[NR_ANCHORS];
@@ -106,7 +106,7 @@ int main(void)
   kalman_init_f_matrix(f_matrix_data);
   kalman_init_g_matrix(g_matrix_data);
   arm_mat_init_f32(&f_matrix, DIMENSIONS, DIMENSIONS, f_matrix_data);
-  arm_mat_init_f32(&g_matrix, DIMENSIONS, DIMENSIONS, g_matrix_data);
+  arm_mat_init_f32(&g_matrix, DIMENSIONS, DIMENSIONS/2, g_matrix_data);
 
   // Initialize Pk and Pkmin
   kalman_init_dimensional_matrix(pk_data);

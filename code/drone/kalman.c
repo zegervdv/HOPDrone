@@ -69,10 +69,7 @@ void kalman_init_g_matrix(float32_t* g_matrix) {
 }
 
 void kalman_init_dimensional_matrix(float32_t* matrix) {
-  uint8_t i;
-
-  for (i = 0; i < DIMENSIONS*DIMENSIONS; i++)
-    matrix[i] = 0;
+  kalman_eye_matrix(matrix, DIMENSIONS, 1);
 }
 
 void kalman_init_variances(float32_t* variance_u, float32_t* r_matrix, uint8_t nr_of_anchors) {
@@ -81,18 +78,19 @@ void kalman_init_variances(float32_t* variance_u, float32_t* r_matrix, uint8_t n
 }
 
 void kalman_predict(arm_matrix_instance_f32* f_matrix, arm_matrix_instance_f32* g_matrix, position_t* prev_position, arm_matrix_instance_f32* variance, arm_matrix_instance_f32* var_u, arm_matrix_instance_f32* mkmin, arm_matrix_instance_f32* pkmin) {
-  float32_t interm_f_data[DIMENSIONS*DIMENSIONS], interm_g_data[DIMENSIONS*DIMENSIONS];
-  float32_t interm_f_data2[DIMENSIONS*DIMENSIONS], interm_g_data2[DIMENSIONS*DIMENSIONS];
+  int i;
+  float32_t interm_f_data[DIMENSIONS*DIMENSIONS], interm_g_data[DIMENSIONS*DIMENSIONS/2];
+  float32_t interm_f_data2[DIMENSIONS*DIMENSIONS], interm_g_data2[DIMENSIONS*DIMENSIONS/2];
   float32_t f_matrix_transposed_data[DIMENSIONS*DIMENSIONS], g_matrix_transposed_data[DIMENSIONS*DIMENSIONS];
   arm_matrix_instance_f32 interm_f, interm_g, interm_f2, interm_g2, f_matrix_transposed, g_matrix_transposed;
 
   // Initialize temporary matrices
   arm_mat_init_f32(&interm_f, DIMENSIONS, DIMENSIONS, interm_f_data);
-  arm_mat_init_f32(&interm_g, DIMENSIONS, DIMENSIONS, interm_g_data);
+  arm_mat_init_f32(&interm_g, DIMENSIONS, DIMENSIONS/2, interm_g_data);
   arm_mat_init_f32(&interm_f2, DIMENSIONS, DIMENSIONS, interm_f_data2);
-  arm_mat_init_f32(&interm_g2, DIMENSIONS, DIMENSIONS, interm_g_data2);
+  arm_mat_init_f32(&interm_g2, DIMENSIONS, DIMENSIONS/2, interm_g_data2);
   arm_mat_init_f32(&f_matrix_transposed, DIMENSIONS, DIMENSIONS, f_matrix_transposed_data);
-  arm_mat_init_f32(&g_matrix_transposed, DIMENSIONS, DIMENSIONS, g_matrix_transposed_data);
+  arm_mat_init_f32(&g_matrix_transposed, DIMENSIONS/2, DIMENSIONS, g_matrix_transposed_data);
 
   // Calculate mkmin
   arm_mat_mult_f32(f_matrix, prev_position, mkmin);
@@ -123,13 +121,6 @@ void kalman_update_sigmapoints(position_t* sigmapoints, position_t mkmin, arm_ma
   // Calculate the root of the variance matrix using Cholesky Decomposition
   cholesky_decomp(pkmin, &root);
 
-  for(i=0; i<DIMENSIONS*DIMENSIONS; i++) {
-    if(isnan(root.pData[i])){
-      LED_init(LED2);
-      LED_on(LED2);
-    } 
-  }
-
   arm_mat_scale_f32(&root, DIMENSIONS + KAPPA, &root);
 
   // First sigmapoint is mkmin
@@ -157,7 +148,7 @@ void kalman_measurement_update(arm_matrix_instance_f32* z_matrix, float32_t anch
   arm_matrix_instance_f32 distance_anchors;
   arm_matrix_instance_f32 pkmin_trans;
 
-  float32_t mu_data[NR_ANCHORS];
+  float32_t mu_data[NR_ANCHORS] = {0};
   float32_t cov_data[DIMENSIONS * NR_ANCHORS] = {0};
   float32_t var_data[NR_ANCHORS * NR_ANCHORS] = {0};
   float32_t vector_y_data[DIMENSIONS];
@@ -195,14 +186,26 @@ void kalman_measurement_update(arm_matrix_instance_f32* z_matrix, float32_t anch
       z_matrix->pData[j*NR_SIGMAPOINTS + i] = result; 
     }
   }
-
   // Collect distances measured
-  for(i = 0; i < NR_ANCHORS; i++)
+  for(i = 0; i < NR_ANCHORS; i++) {
     distance_anchors.pData[i] = anchors[i][3];
+  }
 
   // Calculate mu vector
-  arm_mat_mult_f32(z_matrix, weight_m, &mu);
+  status = arm_mat_mult_f32(z_matrix, weight_m, &mu);
 
+  if(status != ARM_MATH_SUCCESS) {
+    LED_init(LED1);
+    LED_on(LED1);
+  }
+
+  for(i=0; i<NR_ANCHORS; i++) {
+    if(isnan(mu.pData[i])){
+      LED_init(LED2);
+      LED_on(LED2);
+    } 
+  }
+  
   // Calculate covariance matrix
   for(i = 0; i < NR_SIGMAPOINTS; i++) {
     // Select vector Y
@@ -211,7 +214,6 @@ void kalman_measurement_update(arm_matrix_instance_f32* z_matrix, float32_t anch
     // Select vector Z
     for(j = 0; j < NR_ANCHORS; j++)
       vector_z.pData[j] = z_matrix->pData[i + j * NR_SIGMAPOINTS];
-
     arm_mat_sub_f32(&vector_y, &sigmapoints[0], &vector_y);
     arm_mat_sub_f32(&vector_z, &mu, &vector_z);
 
@@ -227,14 +229,15 @@ void kalman_measurement_update(arm_matrix_instance_f32* z_matrix, float32_t anch
     arm_mat_add_f32(&var, &temp_var, &var);
   }
 
+  
   arm_mat_add_f32(&var, r_matrix, &temp_var);
   // Reuse var to store the inverse
   status = arm_mat_inverse_f32(&temp_var, &var);
 
-  if(status != ARM_MATH_SUCCESS) {
-    LED_init(LED2);
-    LED_on(LED2);
-  }
+  /* if(status != ARM_MATH_SUCCESS) { */
+  /*   LED_init(LED2); */
+  /*   LED_on(LED2); */
+  /* } */
 
   // temp_cov is used to store K matrix
   arm_mat_mult_f32(&cov, &var, &temp_cov);
@@ -254,7 +257,7 @@ void kalman_measurement_update(arm_matrix_instance_f32* z_matrix, float32_t anch
 
   // Result for Pk
   arm_mat_sub_f32(pkmin, &temp_cov, pk);
-  arm_mat_inverse_f32(pk, &pkmin_trans);
+  arm_mat_trans_f32(pk, &pkmin_trans);
   arm_mat_add_f32(pk, &pkmin_trans, pk);
   arm_mat_scale_f32(pk, 0.5, pk);
 
