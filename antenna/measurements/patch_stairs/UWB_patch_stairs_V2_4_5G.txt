@@ -1,8 +1,8 @@
 File Name:	UWB_patch_stairs_V2.rff		
 			
-		Phase	
+Polarizat.	0.000	Phase	
 Frequency	4.500 G	 [GHz]	
-Polarizat.	0.00000	[deg]	
+Roll  	0.00000	[deg]		
 Ch.	Channel1		
 Beam			
 Switch			
@@ -93,9 +93,9 @@ No.	Rel Ampl	Azimuth  [deg]	Absolute Ampl
 		 	
 File Name:	UWB_patch_stairs_V2.rff		
 			
-		Phase	
+Polarizat.	90.000	Phase	
 Frequency	4.500 G	 [GHz]	
-Polarizat.	90.00000	[deg]	
+Roll  	0.00000	[deg]	
 Ch.	Channel1		
 Beam			
 Switch			
