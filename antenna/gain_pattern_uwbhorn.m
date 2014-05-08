@@ -224,8 +224,8 @@ for k=1:length(frequency_unique)
     end
     
     % Calculate the efficiency by integrating the gain
-    eff(k) = pi*2*pi*sum(sum(sin_theta.*Gr(1:size(sin_theta,1),1:size(sin_theta,2))))/size(sin_theta,1)/size(sin_theta,2)/4/pi; 
-%  eff(k)=-1;
+    %eff(k) = pi*2*pi*sum(sum(sin_theta.*Gr(1:size(sin_theta,1),1:size(sin_theta,2))))/size(sin_theta,1)/size(sin_theta,2)/4/pi; 
+  eff(k)=-1;
 end
 
 % Write the remaining results in the outputstruct
