@@ -189,7 +189,7 @@ Therefore we will use a custom setup using the TIME DOMAIN\texttrademark PulsOn 
 	% subsection LMS (end)
 	\subsection{Kalman Filtering}
 	The second algorithm that is implemented is the Kalman Filter. This algorithm makes use of ``sensor'' fusion which in principle means that we try to combine data from several sensors to track the drone more accurately.
-	Examples from sensors that we can use to improve the result are an accelerometer, a gyroscope, an altitude meter, etc.\\
+	Examples of sensors that we can use to improve the result are an accelerometer, a gyroscope, an altitude meter, etc.\\
 	The iterative process of a Kalman filter consists of 2 distinct steps. First of all we will try to predict the next location by using results of the past (i.e. Kalman filtering is a method with a memory). 
 	The second step of Kalman filtering consists of using the real measured data (distances and possibly also extra data) to update the memory of the filter by changing the matrices in the Kalman filter system.\\
 	However, the matrix computations used in the implementation of the Kalman filter are based on Gaussian distributions. Hence, in real life (when we don't have Gaussian distributed data) we won't get as good performances as we get when simulating the Kalman filter.
@@ -233,7 +233,7 @@ The mean squared error per dimension that was mentioned before is computed as fo
 MSE = \dfrac{1}{3}((x_{real}-x_{est})^2+(y_{real}-y_{est})^2+(z_{real}-z_{est})^2)
 \end{equation}
 
-On \autoref{fig:cdf}, a purple line is included which gives us the 90th percentile:
+On \autoref{fig:cdf}, a purple line is included which gives us the 90th percentile of the MSE:
 
 \begin{table}[H]
 \begin{center}
@@ -259,7 +259,7 @@ On \autoref{fig:cdf}, a purple line is included which gives us the 90th percenti
 
   To improve the results from the Kalman filter, an accelerometer is also added to the design, which provides acceleration data in three dimensions. Communication with the accelerometer is done over the I2C interface.
 
-  To protect the microcontroller from ESD damage, we add Zener diodes to every IO pin, which will safely dispose of the harmful power injected into the system.
+  To protect the microcontroller from ESD damage, we add Zener diodes to every I/O pin, which will safely dispose of the harmful power injected into the system.
 
   
 \end{document}
