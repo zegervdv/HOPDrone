@@ -25,8 +25,8 @@
 
 \section{Introduction}
 
-The goal for this project is to make it possible to accurately localize drones indoors. This is for example needed when we want to make sure that the drone can fly autonomously. GPS could be used outdoors but even then is GPS not ideal since it isn't accurate enough (approximately $\SI{3}{\meter}$ accuracy in the azimuth plane and it yields even worse results in terms of determining the height of the drone). \\
-Therefore we will use a custom setup using the TIME DOMAIN\texttrademark PulsOn 410 UWB module\footnote{\url{http://www.timedomain.com/p400.php}}, which relies on UWB pulses to determine the distance between two modules. Several of these P410 (or RCM) modules are placed at known locations in the room and act as anchors to determine the current location of the drone. In this project we will develop a custom UWB antenna that will be mounted on the drone and will be streamlined in order to reduce possible drag. We will also design a PCB for a microcontroller and implement different localisation algorithms.
+The goal for this project is to make it possible to accurately localize drones indoors. This is a necessity when we, for example, want the drone to fly autonomously. GPS can be used outdoors but even then GPS is not ideal because of its limited accuracy (approximately $\SI{3}{\meter}$ in the azimuth plane and even worse in terms of determining the height of the drone). \\\\
+To perform the indoor localiztion we will use a custom setup comprising the TIME DOMAIN\texttrademark PulsOn 410 UWB module\footnote{\url{http://www.timedomain.com/p400.php}}, which relies on UWB pulses to  obtain distance measurements between two modules. Several of these P410 (or RCM) modules are placed at known locations in the room and act as anchors to determine the current location of the drone. In this project we will develop a custom UWB antenna that will be mounted on the drone and will be streamlined in order to reduce possible drag. Also, an extra circuit board will be designed to connect a microcontroller to the RCM modules. This microcontroller will perform all calculations needed to determine the position of the drone based on different localization algorithms.
 
 \section{Antenna Design}
 	
@@ -39,6 +39,9 @@ Therefore we will use a custom setup using the TIME DOMAIN\texttrademark PulsOn 
 		\item Efficiency $\approx$ 90\%	
 
 	\end{itemize}
+
+	In an indoor environment reflective surfaces are omnipresent, e.g. walls, metal cabinets etc. Hence multipath can be a severe problem if not taken into account. The ranging done by the RCM modules is performed by measuring the roundtrip time of a pulse travelling to an achor point (with a well known location) and back. When multipath occurs the module mounted on the drone will receive multiple signals from an anchor point, i.e. reflected and direct waves. The reflected waves will have an added time delay because of which the module will not be able to obtain the correct distance. 
+	The P410 modules used for this project already account for multipath, thus it will be no issue for the developement of the indoor localization system.  
 
 	\subsection{Antenna Topology and Design}
 	\label{subsec:ant_design}
@@ -111,7 +114,7 @@ Therefore we will use a custom setup using the TIME DOMAIN\texttrademark PulsOn 
 	\end{figure}
 
 	\subsection{Simulation}
-		While designing the antenna, simulations in ADS are used to confirm that the antenna's characteristics are as desired. In this section we will discuss the simulation results of the final design, as explained in the previous \autoref{subsec:ant_design}. 
+		While designing the antenna, simulations in ADS Momentum\footnote{http://www.home.agilent.com/en/pc-1297113/advanced-design-system-ads} are used to confirm that the antenna's characteristics are as desired. In this section we will discuss the simulation results of the final design, as explained in the previous \autoref{subsec:ant_design}. 
 
 		\begin{figure}[H]
 		\begin{subfigure}{0.5\textwidth}
@@ -132,7 +135,7 @@ Therefore we will use a custom setup using the TIME DOMAIN\texttrademark PulsOn 
 		\autoref{fig:S11_phase_design} shows that the $S_{11}$-parameter is below $\SI{-10}{\decibel}$, and relatively flat, in the desired frequency band. The phase characteristic proves to be approximately linear as well, which is in line with the design parameters. The gain is ca. $\SI{3}{\decibel}$ and the antenna efficiency is according to the simulation between 50\% and 96\%, with the latter occurring in the lower half of the frequency band. 
 
 	\subsection{Measurements}
-		After the positive simulation results, we continue with the construction of the designed antenna. Due to a small misalignment between partial ground plane and antenna we need to construct a second version of the UWB antenna to obtain optimal results. Between these two versions, some minor adjustments are made to the design to further improve flatness of the $S_{11}$ and linearity of the phase, and to make it more robust to small alignment errors. The measured reflection coefficients of the two versions\footnote{The initial measurements of the S-parameters of both versions suffered from noise due to common-mode current, which was solved by addition of a ferrite clamp.} of the antenna are compared to the reference antenna and to the respective simulation in \autoref{fig:antenna_comp}. 
+		After the positive simulation results, we continue with the construction of the designed antenna. Due to a small misalignment between partial ground plane and antenna we need to construct a second version of the UWB antenna to obtain optimal results. Between these two versions, some minor adjustments are made to the design to further improve flatness of the $S_{11}$ and linearity of the phase, and to make it more robust to small alignment errors. The measured reflection coefficients of the two versions of the antenna are compared to the reference antenna and to the respective simulation in \autoref{fig:antenna_comp}. The initial measurements of the S-parameters of both versions suffered from noise due to common-mode current, which was solved by addition of a ferrite clamp.
 
 		\begin{figure}[H]
 			\centering
@@ -141,10 +144,33 @@ Therefore we will use a custom setup using the TIME DOMAIN\texttrademark PulsOn 
 			\label{fig:antenna_comp}
 		\end{figure}
 
-		As seen in \autoref{fig:antenna_comp}, the first version of the antenna doesn't meet the pre-imposed design criteria, i.e.\ the $S_{11}$ is not less than $\SI{-10}{\decibel}$ over the entire frequency range.
-		The $S_{11}$ characteristic is improved by the better alignment in version 2 and the minor adjustments to the design.
+		As seen in \autoref{fig:antenna_comp}, the first version of the antenna doesn't meet the pre-imposed design criteria, i.e.\ the $S_{11}$ is not less than $\SI{-10}{\decibel}$ over the entire frequency range of $\SI{3.1}{\giga\hertz}$ - $\SI{5.3}{\giga\hertz}$.
+		The $S_{11}$ characteristic is improved by the better alignment in version 2 and the minor adjustments to the design.\\\\
+		If we compare the measured $S_{11}$ to the simulation in Figure \ref{fig:S11_phase_design} we notice that the measured $S_{11}$ is below $\SI{-10}{\decibel}$ in the exact same frequency band that was predicted by the simulation. The main difference is the flatness of the characteristic and the resonance peak at approximately $\SI{5.2}{\giga\hertz}$. These deviations can be attributed to the manual fabrication of the antenna, the dimensions are not perfectly equal to the design and some slight misalignment is inevitable, or the fact that ADS Momentum assumes an infinite substrate to perform its simulations.\\\\
+		The radiation pattern in the azimuth plane of the designed UWB antenna is shown in Figure \ref{fig:ant_radpat}. 
 
-		
+		\begin{figure}[H]
+		\begin{subfigure}{0.5\textwidth}
+			\includegraphics[width=\textwidth]{images/antenna/radpat_azi_3G}
+			\caption{$\SI{3.1}{\giga\hertz}$}
+		\end{subfigure}
+		\begin{subfigure}{0.5\textwidth}
+			\includegraphics[width=\textwidth]{images/antenna/radpat_azi_4_3G}
+			\caption{$\SI{3.7}{\giga\hertz}$}
+		\end{subfigure}
+		\begin{subfigure}{0.5\textwidth}
+			\includegraphics[width=\textwidth]{images/antenna/radpat_azi_4_8G}
+			\caption{$\SI{4.8}{\giga\hertz}$}
+		\end{subfigure}
+		\begin{subfigure}{0.5\textwidth}
+			\includegraphics[width=\textwidth]{images/antenna/radpat_azi_5G}
+			\caption{$\SI{5}{\giga\hertz}$}
+		\end{subfigure}
+		\caption{Radiation pattern in azimuth plane at different frequencies}
+		\label{fig:ant_radpat}
+		\end{figure}
+
+
 
 
 
