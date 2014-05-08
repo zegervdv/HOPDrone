@@ -2,13 +2,20 @@
 \usetheme[faculty=tw,language=dutch,framenumber,totalframenumber]{UniversiteitGent}
 \usepackage{siunitx}
 \usepackage{multicol}
+\usepackage[]{hyperref}
+
+\addtobeamertemplate{navigation symbols}{}{%
+    \usebeamerfont{footline}%
+    \usebeamercolor[fg]{footline}%
+    \hspace{1em}%
+    \insertframenumber/\inserttotalframenumber
+}
 
 \title{\textbf{Hardware Ontwerpproject}}
 \subtitle{Indoor lokalisatie voor drones}
 \author{Laurens Bogaert, Thomas Deckmyn \& Zeger Van de Vannet\\Groep 5}
 
-\AtBeginSection[]
-{
+\AtBeginSection[]{
   \begin{frame}
     \begin{multicols}{2}
     \frametitle{Inhoudstafel}
@@ -373,7 +380,7 @@
     \end{columns}
   \end{frame}
 \section{Demonstratie}
-\begin{frame}[plain,c]
+\begin{frame}[c]
   \begin{center}
     \Huge Demonstratie
   \end{center}
@@ -381,7 +388,7 @@
 
 
 
-\begin{frame}
+\begin{frame}[label=FINAL_TOC]
   \begin{multicols}{2}
     \frametitle{Inhoudstafel}
     \tableofcontents[]
