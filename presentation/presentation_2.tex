@@ -1,0 +1,390 @@
+\documentclass{beamer}
+\usetheme[faculty=tw,language=dutch,framenumber,totalframenumber]{UniversiteitGent}
+\usepackage{siunitx}
+\usepackage{multicol}
+
+\title{\textbf{Hardware Ontwerpproject}}
+\subtitle{Indoor lokalisatie voor drones}
+\author{Laurens Bogaert, Thomas Deckmyn \& Zeger Van de Vannet\\Groep 5}
+
+\AtBeginSection[]
+{
+  \begin{frame}
+    \begin{multicols}{2}
+    \frametitle{Inhoudstafel}
+    \tableofcontents[currentsection]
+  \end{multicols}
+  \end{frame}
+}
+
+\usepackage{pifont}
+
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\section{Inleiding}
+\subsection{Situering}
+  \begin{frame}
+    \frametitle{Situering}
+    GPS:
+    \begin{itemize}
+        \item Niet voor binnen
+        \item Onnauwkeurig (3 m)
+        \item Hoogtemeting beperkt
+    \end{itemize}
+  \end{frame}
+  \begin{frame}
+    \frametitle{Situering}
+    3 onderdelen:
+    \begin{itemize}
+      \item Algoritmes
+      \item Antenne
+      \item PCB + Controller
+    \end{itemize}
+  \end{frame}
+\subsection{Planning}
+  \begin{frame}
+    \frametitle{Planning}
+    \begin{tabular}{|l | l | l|}
+      \hline
+      Week & Titel & Status\\
+      \hline
+      1 & Toekenning onderwerp & \checkmark\\
+      2 & Literatuurstudie \& $1^{ste}$ algoritme & \checkmark\\
+      3 & Kennismaking ADS \& $2^{de}$ algoritme & \checkmark\\
+      4 - 6 & Antenne design (L \& T) \& PCB-ontwerp (Z) & \checkmark \\
+      7 & Afwerking $2^{de}$ algoritme \& Fabricage Antenne (T) & \checkmark \\
+       & Vergelijking Algoritmes & \checkmark\\
+      8 & Uitmeten Antenne  & \ldots \\
+      & Implementatie Microcontroller & \ding{55} \\
+      \hline
+    \end{tabular}
+  \end{frame}
+  \begin{frame}
+    \frametitle{Planning}
+    \begin{verse}
+       "Failure is always an option"
+    \end{verse}
+    \pause
+    \begin{itemize}
+      \item Redesign Antenne
+    \end{itemize}
+  \end{frame}
+  \begin{frame}
+    \frametitle{TODO}
+    \begin{itemize}
+      \item Solderen PCB
+      \item Testen PCB
+      \item Implementatie van algoritmes op microcontroller
+      \item Integratie
+    \end{itemize}
+  \end{frame}
+\section{PCB Design}
+\subsection{Onderdelen}
+  \begin{frame}
+    \frametitle{Onderdelen}
+    \begin{itemize}
+      \item Microcontroller: STM32F4
+      \item Accelerometer
+    \end{itemize}
+  \end{frame}
+  \begin{frame}
+    \begin{figure}
+      \begin{center}
+        \includegraphics[width=\textwidth]{images/layout.pdf}
+      \end{center}
+    \end{figure}
+  \end{frame}
+\section{Algoritmes}
+\subsection{Ankers}
+  \begin{frame}
+    \frametitle{Opstelling}
+    \begin{figure}
+      \begin{center}
+        \includegraphics[width=.8\textwidth]{images/opstelling.pdf}
+      \end{center}
+    \end{figure}
+  \end{frame}
+  \begin{frame}
+    \frametitle{Ankers}
+    \begin{itemize}
+      \item Gekende positie
+      \item Afstand via pulsen $\Rightarrow$ UWB
+      \item Meetruis
+    \end{itemize}
+    \begin{figure}
+      \begin{center}
+        \includegraphics[width=.8\textwidth]{images/DME.jpg}
+      \end{center}
+    \end{figure}
+  \end{frame}
+\subsection{Lokalisatie Algoritme}
+  \begin{frame}
+    \frametitle{Algoritmes}
+    \begin{itemize}
+      \item LMS: Least Mean Square
+      \item Kalman 
+    \end{itemize}
+  \end{frame}
+  \begin{frame}
+    \frametitle{Least Mean Square}
+    \begin{itemize}
+      \item Geen geheugen
+        \begin{itemize}
+          \item Geen invloed van het verleden
+        \end{itemize}
+      \item Wat indien er meer vergelijkingen dan onbekenden zijn?
+        \begin{itemize}
+          \item \# ankers $>$ \# dimensies + 1
+        \end{itemize}
+    \end{itemize}
+    \begin{figure}
+      \centering
+        \includegraphics[width=.5\textwidth]{images/LMS.jpg}
+    \end{figure}
+  \end{frame}
+  \begin{frame}
+    \frametitle{Kalman Filter}
+    \begin{itemize}
+      \item Geheugen $\Rightarrow$ matrices
+      \item Bewegingsvrijheid van de drone is beperkt
+      \item 2 onderdelen:
+        \begin{itemize}
+          \item Voorspellen
+          \item Meten en updaten
+        \end{itemize}
+    \end{itemize}
+  \end{frame}
+  \begin{frame}
+    \frametitle{Uitbreiden Kalman Filter}
+    \begin{itemize}
+      \item Extra Sensoren (Sensor Fusion)
+        \begin{itemize}
+          \item Accelerometer
+          \item Gyroscoop
+          \item Hoogtemeter
+          \item \ldots
+        \end{itemize}
+      \item Doel: nauwkeuriger volgen
+    \end{itemize}
+  \end{frame}
+\subsection{Resultaten}
+  \begin{frame}
+    \frametitle{Resultaten: Simulaties}
+    \begin{columns}[c]
+      \begin{column}{.5\textwidth}
+        \begin{figure}
+          \begin{center}
+            \includegraphics[width=\linewidth]{images/simulatie_pad.eps}
+          \end{center}
+        \end{figure}
+      \end{column}
+      \begin{column}{.5\textwidth}
+        \begin{figure}
+          \begin{center}
+            \includegraphics[width=\linewidth]{images/simulatie_pad_zoom.eps}
+          \end{center}
+        \end{figure}
+      \end{column}
+    \end{columns}
+  \end{frame}
+  \begin{frame}
+    \frametitle{Resultaten: Simulaties}
+    \begin{figure}
+      \begin{center}
+        \includegraphics[width=.6\linewidth]{images/simulatie_cumulatief.eps}
+      \end{center}
+    \end{figure}
+  \end{frame}
+  \begin{frame}
+    \frametitle{LMS vs. Kalman Filter}
+    \begin{center}
+    \begin{tabular}{|l|l|}
+      \hline
+      LMS & Kalman Filter \\
+      \hline
+      (+) Eenvoudiger & (-) Complexer \\
+      (-) Ruwere schatting & (+) Nauwkeuriger \\
+      \hline
+    \end{tabular}
+    \end{center}
+  \end{frame}
+  \addtocontents{toc}{\newpage}
+  \section{UWB Antenne}
+\subsection{Referentie}
+  \begin{frame}
+  \frametitle{Referentie}
+  \begin{columns}[c]
+  \begin{column}{0.5\textwidth}
+    \begin{itemize}
+      \item BroadSpec\texttrademark  UWB Antenne 
+      \item Dipool: omni in azimuth
+      \item Ontwerpsparameters:
+      \begin{itemize}
+        \item $\SI{3.1}{\giga\hertz}$ - $\SI{5.3}{\giga\hertz}$
+        \item Gain nominaal $\approx \SI{3}{\decibel}$ 
+        \item Lineaire fase respons
+        \item Effici\"entie $\approx$ 90\%
+      \end{itemize}
+    \end{itemize}
+    \end{column}
+
+    \begin{column}{0.5\textwidth}
+    \centering
+      \includegraphics[width=0.7\textwidth]{images/Pulson400UWB.jpg}
+    \end{column}
+    \end{columns}
+
+  \end{frame}
+
+\subsection{Ontwerp}
+  \begin{frame}
+  \frametitle{Ontwerp UWB Antenne}
+  \begin{columns}[c]
+  \begin{column}{0.5\textwidth}
+  \begin{itemize}
+        \item UWB topologie
+         \begin{itemize}
+            \item Bow Tie
+            \item Halter 
+           \end{itemize}
+        \item $S_{11}$ niet vlak, fase niet lineair
+        \begin{itemize}
+          \item ADS: optimaliseren
+        \end{itemize}
+        \item Black foam: $\epsilon_r = 1.495 \implies$ \\ Aromatisch poly: $\epsilon_r = 2.55$ 
+      \end{itemize}
+    \begin{figure}[H]
+    \includegraphics[width=0.7\textwidth]{images/halter.pdf}
+    \end{figure}
+  \end{column}
+
+  \begin{column}{0.5\textwidth}
+    \centering
+    \begin{figure}[H]
+    \includegraphics[width=0.7\textwidth]{images/bowtie.pdf}
+    \end{figure}
+  \end{column}
+  \end{columns}
+  \end{frame}
+
+  \begin{frame}
+  \frametitle{Ontwerp UWB Antenne}
+  \begin{itemize}
+    \item Start: Rechthoekige Patch Antenne
+      \begin{itemize}
+        \item Lengte: Resonantie frequentie $f_0 = \SI{4.2}{\giga\hertz}$
+              \begin{align}  L = \frac{c}{2 f_r \sqrt{\epsilon_r}}  \nonumber \end{align}
+        \item Breedte: \begin{align} \text{Uitgestraald vermogen} \nonumber & \implies \text{Resonantie weerstand} \downarrow \\ & \implies \text{Bandbreedte} \uparrow, \text{Effici\"entie} \uparrow \nonumber \end{align}
+
+      \end{itemize}
+    \item Dimensies drone! $\implies$ Andere manier BW $\uparrow$ 
+    \end{itemize}
+  \end{frame}
+
+  \begin{frame}
+  \frametitle{Ontwerp UWB Antenne}
+  
+  \begin{columns}[c]
+  \begin{column}{0.5\textwidth}
+    \begin{itemize}
+      \item Toevoegen \textit{Trap} $\implies$ BW $\uparrow$
+      \item Partieel grondvlak
+      \begin{itemize}
+        \item Optimaliseren dimensies \begin{align} & \implies \text{Vlakke } S_{11} \nonumber \\ & \implies \text{Lineaire fase} \nonumber \end{align}
+      \end{itemize}
+
+    \end{itemize}
+  \end{column}
+
+  \begin{column}{0.5\textwidth}
+  \centering
+    \includegraphics[width=0.7\textwidth]{images/patch_stairs.pdf}
+  \end{column}
+  \end{columns}
+  \end{frame}
+
+\subsection{Simulatie}
+  \begin{frame}
+  \frametitle{ADS Simulatie}
+    \begin{columns}[c]
+      \begin{column}{0.5\textwidth}
+      \begin{itemize}
+        \item $S_{11} < \SI{-10}{\decibel}$: \\ $\SI{3.1}{\giga\hertz}$ - $\SI{6.7}{\giga\hertz}$
+      \end{itemize}
+        \begin{figure}
+          \includegraphics[width=\textwidth]{images/S11_ADS_sim.eps}
+        \end{figure}
+
+      \end{column}
+
+      \begin{column}{0.5\textwidth}
+      \begin{itemize}
+        \item Lineaire fase respons: \\ OK
+      \end{itemize}
+        \begin{figure}
+          \includegraphics[width=\textwidth]{images/fase_respons_ADS_sim.eps}
+        \end{figure}
+      \end{column}
+    \end{columns}
+  \end{frame}
+
+  \begin{frame}
+  \frametitle{ADS Simulatie}
+    \begin{columns}[c]
+      \begin{column}{0.5\textwidth}
+      \begin{itemize}
+        \item Effici\"entie 50\% - 96\% in gewenste band
+      \end{itemize}
+        \begin{figure}
+          \includegraphics[width=\textwidth]{images/eff_ADS_sim.eps}
+        \end{figure}
+
+      \end{column}
+
+      \begin{column}{0.5\textwidth}
+      \begin{itemize}
+        \item Gain $\approx \SI{3}{\decibel}$ in gewenste band 
+      \end{itemize}
+        \begin{figure}
+          \includegraphics[width=\textwidth]{images/gain_ADS_sim.eps}
+        \end{figure}
+      \end{column}
+    \end{columns}
+  \end{frame}
+
+\subsection{Prototype}
+  \begin{frame}
+  \frametitle{Prototype}
+    \begin{itemize}
+      \item Metingen worden verwerkt
+    \end{itemize}
+    \begin{columns}[c]
+    \begin{column}{0.5\textwidth}
+      \includegraphics[width=\textwidth, height=0.75\textwidth]{images/patch_proto_front.jpg}
+    \end{column}%
+    \begin{column}{0.5\textwidth}
+      \includegraphics[width=\textwidth, height=0.75\textwidth]{images/patch_proto_back.jpg}
+    \end{column}
+    \end{columns}
+  \end{frame}
+\section{Demonstratie}
+\begin{frame}[plain,c]
+  \begin{center}
+    \Huge Demonstratie
+  \end{center}
+\end{frame}
+
+
+
+\begin{frame}
+  \begin{multicols}{2}
+    \frametitle{Inhoudstafel}
+    \tableofcontents[]
+  \end{multicols}
+\end{frame}
+\end{document}
