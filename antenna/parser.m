@@ -1,12 +1,14 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                       Parses the output from the              %
-%                         Midas system into Matlab              %
-%                                Matrices                       %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
 % Author: Wouter Dullaert
-% Date: 27/11/2007
-% Last Modified: 20/12/2007
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Created: 27 nov 2007
+% Last Modified: 11 may 2010
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Description: Parses the output from the MIDAS system into Matlab
+% matrices
+%
 % The script is constructed in such a way that the reference 
 % scenario requires no additional input option. The further you
 % move away from the reference scenario, the more additional
@@ -18,7 +20,19 @@
 % The names used in this script are those of the MIDAS position
 % system. This keeps it as general as possible (The script
 % cannot possibly know which axes the user will have)
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  
+% Input
+%  varargin: see the dedicated parser page on gitorious
+% 
+% Output
+%  data: The F vector as a complex number
+%  azimuth: The azimuth angles at which the data is sampled in degrees
+%  roll: The roll angles at which the data is sampled in degrees
+%  frequency: The frequency points at which the data is sampled in GHz
+%  polarization: The polarization angles at which the data is sampled in degrees
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 function [data,azimuth,roll,frequency, polarization] = parser(varargin);
 
 % Check if a filename is supplied
@@ -92,10 +106,6 @@ end
 % Calculate the length of a table of data
 start = strfind(datastring,'Azimuth');
 start2 = strfind(datastring,'Roll');
-if length(start2)==0
-    start2=-1;
-end
-
 
 % See if the list iterates over azimuth or roll and set flag accordingly
 flag = 0;
@@ -104,10 +114,31 @@ if(start2(1)>start(1))
     start = start2;
 end
 eind = start(1)+strfind(datastring(start(1):start(2)),'		');
-lengte = length(strfind(datastring(start(1):eind(1)-1),char([10])))-1;
+lengte = length(strfind(datastring(start(1):eind(1)-1),char([13 10])))-1;
+% Check if a valid table length was aquired
+if lengte<1
+    % No EOL's found, try with different EOL encoding
+    %display('No windows End of Line chars found, trying UNIX EOL...');
+    lengte = length(strfind(datastring(start(1):eind(1)-1),char(10)))-1;
+    % Check if a valid table length was aquired
+    if lengte>1
+        %display('Success (Hopefully)');
+    else
+        % Couldn't determine the length of the table, useless to continue
+        display('No EOL found');
+        error('Could not determine length of table');
+    end
+end
 
 % Data in header of a section
+
+% Check for a statistics table (which also contains the string 'filename'
+% and influences the number of lists found
+if isempty(strfind(datastring,'[Statistics Table]'))
+    start_positions = [start_positions length(datastring)];
+end
 number_of_lists = length(start_positions)-1;
+
 frequency = zeros(1,number_of_lists);
 polarization = zeros(1,number_of_lists);
 if flag
@@ -141,19 +172,21 @@ for k=1:number_of_lists
     polarization(k) = temp{1};
 
     % Extract the frequency value for this section
-    temp = textscan(datastring_temp(frequency_index:end),'Frequency %f %*s\n',1,'Delimiter','\t');
+    temp = textscan(datastring_temp(frequency_index:end),'Frequency %f %s\n',1,'Delimiter','\t');
     frequency(k) = temp{1};
+    % Get the unit in which frequency is expressed
+    testtemp = temp{2}{:};
+    % If in MHz, convert to GHz
+    if(testtemp(1)=='M') frequency(k) = frequency(k)/1e3; end
 
     if flag
         % Extract the roll value for this section
         temp = textscan(datastring_temp(azimuth_index:end),'%*s %f %*s\n',1,'Delimiter','\t');
         azimuth(k) = temp{1};
     else
-        if start2~=-1
-            % Extract the roll value for this section
-            temp = textscan(datastring_temp(roll_index:end),'%*s %f %*s\n',1,'Delimiter','\t');
-            roll(k) = temp{1};
-        end
+        % Extract the roll value for this section
+        temp = textscan(datastring_temp(roll_index:end),'%*s %f %*s\n',1,'Delimiter','\t');
+        roll(k) = temp{1};
     end
 
     % Read the table for this section
