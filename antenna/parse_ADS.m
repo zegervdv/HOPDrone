@@ -17,17 +17,19 @@ close all;
     
     figure(1)
     plot(C{1}./1e9,C{2});
-    title('S11 Reflection Parameter ADS-simulation');
+%     title('S11 Reflection Parameter ADS-simulation');
     xlabel('Frequency [GHz]');
     ylabel('S11 [dB]');
     hold on;
     plot([min(C{1}./1e9) max(C{1}./1e9)],[-10 -10],'r');
+    print('-depsc','S11_ADS_sim.eps');
     
     figure(2)
     plot(C2{1}./1e9,C2{2});
-    title('Phase Respons ADS-simulation');
+%     title('Phase Respons ADS-simulation');
     xlabel('Frequency [GHz]');
-    ylabel('Phase [°]');
+    ylabel('Phase [°]'); 
+    print('-depsc','fase_response_ADS_sim.eps');
     
     figure(3)
     stem(C3{1}./1e9,C3{2});
