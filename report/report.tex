@@ -26,7 +26,9 @@
 \section{Introduction}
 
 The goal for this project is to make it possible to accurately localize drones indoors. This is a necessity when we, for example, want the drone to fly autonomously. GPS can be used outdoors but even then GPS is not ideal because of its limited accuracy (approximately $\SI{3}{\meter}$ in the azimuth plane and even worse in terms of determining the height of the drone). \\\\
-To perform the indoor localiztion we will use a custom setup comprising the TIME DOMAIN\texttrademark PulsOn 410 UWB module\footnote{\url{http://www.timedomain.com/p400.php}}, which relies on UWB pulses to  obtain distance measurements between two modules. Several of these P410 (or RCM) modules are placed at known locations in the room and act as anchors to determine the current location of the drone. In this project we will develop a custom UWB antenna that will be mounted on the drone and will be streamlined in order to reduce possible drag. Also, an extra circuit board will be designed to connect a microcontroller to the RCM modules. This microcontroller will perform all calculations needed to determine the position of the drone based on different localization algorithms.
+To perform the indoor localiztion we will use a custom setup comprising of the TIME DOMAIN\texttrademark PulsOn 410 UWB module\footnote{\url{http://www.timedomain.com/p400.php}}, that relies on pulses, which have an UWB spectrum, to  obtain distance measurements between two modules. Several of these P410 (or RCM) modules are placed at known locations in the room and act as anchors to determine the current location of the drone based on triangulation.
+
+ In this project we will develop a custom UWB antenna that will be mounted on the drone and will be streamlined in order to reduce possible drag. Also, an extra circuit board will be designed to connect a microcontroller to one of the RCM P410 modules in order to process the measurements and determine the position. These modules can be used both for ranging measurements, as well as for wireless communication. The module with the microcontroller is attached to the drone and several other RCM modules are placed in the room or building to serve as anchor points. The microcontroller will perform all calculations needed to determine its position based on different localization algorithms. An additional RCM is connected to a computer which acts as a central control unit and also allows to visualise the position of the drone in a GUI in real time. 
 
 \section{Antenna Design}
 	
@@ -133,6 +135,14 @@ To perform the indoor localiztion we will use a custom setup comprising the TIME
 		\end{figure}
 
 		\autoref{fig:S11_phase_design} shows that the $S_{11}$-parameter is below $\SI{-10}{\decibel}$, and relatively flat, in the desired frequency band. The phase characteristic proves to be approximately linear as well, which is in line with the design parameters. The gain is ca. $\SI{3}{\decibel}$ and the antenna efficiency is according to the simulation between 50\% and 96\%, with the latter occurring in the lower half of the frequency band. 
+		Figure \ref{fig:ant_radpat_sim} shows the simulated radiation pattern of the designed UWB antenna.
+
+		\begin{figure}[H]
+		\centering
+			\includegraphics[width=0.5\textwidth]{images/antenna/rad_pat_ADS_sim.png}
+			\caption{Simulated radiation pattern at $\SI{4.5}{\giga\hertz}$}
+			\label{fig:ant_radpat_sim}
+		\end{figure}
 
 	\subsection{Measurements}
 		After the positive simulation results, we continue with the construction of the designed antenna. Due to a small misalignment between partial ground plane and antenna we need to construct a second version of the UWB antenna to obtain optimal results. Between these two versions, some minor adjustments are made to the design to further improve flatness of the $S_{11}$ and linearity of the phase, and to make it more robust to small alignment errors. The measured reflection coefficients of the two versions of the antenna are compared to the reference antenna and to the respective simulation in \autoref{fig:antenna_comp}. The initial measurements of the S-parameters of both versions suffered from noise due to common-mode current, which was solved by addition of a ferrite clamp.
@@ -145,9 +155,9 @@ To perform the indoor localiztion we will use a custom setup comprising the TIME
 		\end{figure}
 
 		As seen in \autoref{fig:antenna_comp}, the first version of the antenna doesn't meet the pre-imposed design criteria, i.e.\ the $S_{11}$ is not less than $\SI{-10}{\decibel}$ over the entire frequency range of $\SI{3.1}{\giga\hertz}$ - $\SI{5.3}{\giga\hertz}$.
-		The $S_{11}$ characteristic is improved by the better alignment in version 2 and the minor adjustments to the design.\\\\
+		The $S_{11}$ characteristic is improved by the better alignment in version 2 and the minor adjustments to the design.
 		If we compare the measured $S_{11}$ to the simulation in Figure \ref{fig:S11_phase_design} we notice that the measured $S_{11}$ is below $\SI{-10}{\decibel}$ in the exact same frequency band that was predicted by the simulation. The main difference is the flatness of the characteristic and the resonance peak at approximately $\SI{5.2}{\giga\hertz}$. These deviations can be attributed to the manual fabrication of the antenna, the dimensions are not perfectly equal to the design and some slight misalignment is inevitable, or the fact that ADS Momentum assumes an infinite substrate to perform its simulations.\\\\
-		The radiation pattern in the azimuth plane of the designed UWB antenna is shown in Figure \ref{fig:ant_radpat}. 
+		
 
 		\begin{figure}[H]
 		\begin{subfigure}{0.5\textwidth}
@@ -166,13 +176,44 @@ To perform the indoor localiztion we will use a custom setup comprising the TIME
 			\includegraphics[width=\textwidth]{images/antenna/radpat_azi_5G}
 			\caption{$\SI{5}{\giga\hertz}$}
 		\end{subfigure}
+		\begin{subfigure}{\textwidth}
+		\centering
+			\includegraphics[width=0.5\textwidth]{images/antenna/radpat_azi_5_3G}
+			\caption{$\SI{5.3}{\giga\hertz}$}
+		\end{subfigure}
 		\caption{Radiation pattern in azimuth plane at different frequencies}
 		\label{fig:ant_radpat}
 		\end{figure}
 
+		The radiation pattern in the azimuth plane of the designed UWB antenna at different frequencies is shown in Figure \ref{fig:ant_radpat}. We can state that the designed antenna is approximately omnidirectional in the azimuth plane up to $\SI{5}{\giga\hertz}$, which corresponds to the Broadspec UWB antenna used as a reference. It can also be seen that the radiation pattern starts to deviate from omnidirectional at $\SI{5}{\giga\hertz}$. Due to the resonance peak seen in Figure \ref{fig:antenna_comp} at approximately $\SI{5.2}{\giga\hertz}$ the antenna has a gain at $\SI{5.3}{\giga\hertz}$ that is larger than the pre-imposed $\SI{3}{\decibel}$. The transmit power of the RCM modules in standard mode can be adjusted within $[\SI{-31.6}{\decibel}m , \SI{-12.46}{\decibel}m]$ if needed, to comply with FCC regulations.\\\\
+		
+		\begin{figure}[H]
+			\begin{subfigure}{0.5\textwidth}
+			\centering
+				\includegraphics[width=\textwidth]{images/antenna/3D_radpat_3_4G}
+				\caption{$\SI{3.4}{\giga\hertz}$}
+			\end{subfigure}
+			\begin{subfigure}{0.5\textwidth}
+			\centering
+				\includegraphics[width=\textwidth]{images/antenna/3D_radpat_4_5G}
+				\caption{$\SI{4.5}{\giga\hertz}$}
+			\end{subfigure}
+			\begin{subfigure}{\textwidth}
+			\centering
+				\includegraphics[width=0.5\textwidth]{images/antenna/3D_radpat_5G}
+				\caption{$\SI{5}{\giga\hertz}$}
+			\end{subfigure}
+		\caption{Cross section of radiation pattern in elevation plane}
+		\label{fig:ant_radpat_elev}
+		\end{figure}
+			Figure \ref{fig:ant_radpat_elev} shows a cross section of the radiation pattern in the elevation plane at different frequencies. There is a zero in the radiation pattern for $\theta=0$ and $\theta=\pi$. The antenna will be mounted on the drone "upside down", i.e. with its $\theta$-axis along the negative z-axis. As the drone will only pass directly over an anchor in very rare cases, the zero at $\theta=0$ will not cause problems for the localization system. Figure \ref{fig:mount_antenna} shows how the antenna will be mounted on the drone, thus the zero at $\theta=\pi$ is even benificial as it minimizes the chance of interference and EMC problems inside the circuits of the drone. 
 
-
-
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=0.6\textwidth]{images/antenna/mount_antenna}
+			\caption{Mounting antenna on bottom of drone}
+			\label{fig:mount_antenna}
+		\end{figure}
 
 \section{Location Algorithm}
 	A first algorithm that can be used to determine the position of the drone is the \textit{Least Mean Square} algorithm. We will elaborate on this first and then compare the performance to the Unscented Kalman Filter, which will be used in the final system. 
@@ -226,11 +267,12 @@ To perform the indoor localiztion we will use a custom setup comprising the TIME
 
 To compare both algorithms we generate a Gaussian movement and calculate the distance to each of the anchors in a noiseless channel. We generate the input distances for the algorithm by adding Gaussian noise to the ideal distances.
 When we display the generated movement on a plot which also consists of the output locations of the Kalman filter and LMS algorithm we get \autoref{fig:paths}.
-We notice on this Figure that the path is followed quite accurately, but to make a real comparison between the 2 algorithms we will have to zoom in on a part of the followed route. This is what is done in \autoref{fig:paths_zoom}.	
+We notice on this Figure that the path is followed quite accurately, but to make a real comparison between the 2 algorithms we will have to zoom in on a part of the followed route. This is what is done in \autoref{fig:paths_zoom}.	\\\\
+On \autoref{fig:paths_zoom} it can be seen that LMS is somewhat worse than the Kalman Filter. Note that the Kalman path is way smoother than the path followed according to LMS. This is because the Kalman uses memory and states that sudden discontinuities in the followed direction are very unlikely and thus the Kalman will follow a path that resembles a straight line locally. Hence, Kalman will only be useful if we use our algorithm to try to track a drone which doesn't change its course too abruptly.
 
 			\begin{figure}[H]
 				\centering
-				\includegraphics[width=\textwidth]{images/tracking_algorithms.eps}
+				\includegraphics[width=0.7\textwidth]{images/tracking_algorithms.eps}
 				\caption{Travelled paths according to the different algorithms}
 				\label{fig:paths}
 			\end{figure}
@@ -239,17 +281,17 @@ We notice on this Figure that the path is followed quite accurately, but to make
 			
 			\begin{figure}[H]
 				\centering
-				\includegraphics[width=\textwidth]{images/tracking_algorithms_zoom.eps}
+				\includegraphics[width=0.7\textwidth]{images/tracking_algorithms_zoom.eps}
 				\caption{Travelled paths according to the different algorithms (zoom)}
 				\label{fig:paths_zoom}
 			\end{figure}
 
-On \autoref{fig:paths_zoom} it can be seen that LMS is somewhat worse than the Kalman Filter. Note that the Kalman path is way smoother than the path followed according to LMS. This is because the Kalman uses memory and states that sudden discontinuities in the followed direction are very unlikely and thus the Kalman will follow a path that resembles a straight line locally. Hence, Kalman will only be useful if we use our algorithm to try to track a drone which doesn't change its course too abruptly.
+
 Now, we want to quantize the error made by adopting both algorithms. We choose as a distortion measure the mean squared error per dimension and let Matlab plot the cumulative distribution function of this mean squared error (\autoref{fig:cdf}). This cdf shows that the LMS indeed yields worse performances than the Kalman when a Gaussian-based path is followed and we don't introduce too much measure noise.
 			
 			\begin{figure}[H]
 				\centering
-				\includegraphics[width=\textwidth]{images/cdf_algorithms.eps}
+				\includegraphics[width=0.7\textwidth]{images/cdf_algorithms.eps}
 				\caption{Cumulative distribution function for the different algorithms}
 				\label{fig:cdf}
 			\end{figure}
@@ -277,8 +319,7 @@ On \autoref{fig:cdf}, a purple line is included which gives us the 90th percenti
 \end{table}
 
 \section{PCB Design}
-  In order to process the measurements and determine the position of the drone, a microcontroller is attached to one of the P410 RCM modules.
-  These modules can be used both for ranging measurements, as well as for wireless communication. The module with the microcontroller is attached to the drone and several other RCM modules are placed in the room or building to serve as anchor points. An additional RCM is connected to a computer which acts as a central control unit and also allows to visualise the position of the drone in real time.
+
 
   As microcontroller we choose one from the STM32F4XX-series. These are powerful 32 bit ARM processors, which are sufficiently fast to process the data.
   To attach it to the ranging module, we design a PCB to hold the processor and its required decoupling. Communication with the module is provided by a USART interface.
@@ -288,7 +329,7 @@ On \autoref{fig:cdf}, a purple line is included which gives us the 90th percenti
 
   To protect the microcontroller from ESD damage, we add Zener diodes to every I/O pin, which will safely dispose of the harmful power injected into the system.
 
-  \begin{figure}
+  \begin{figure}[H]
     \begin{center}
       \includegraphics[width=\textwidth]{images/final_pcb_result.eps}
       \caption{Assembled PCB without pin headers and connectors}
