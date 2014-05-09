@@ -328,7 +328,8 @@ On \autoref{fig:cdf}, a purple line is included which gives us the 90th percenti
   To improve the results from the Kalman filter, an accelerometer is also added to the design, which provides acceleration data in three dimensions. Communication with the accelerometer is done over the I2C interface.
 
   To protect the microcontroller from ESD damage, we add Zener diodes to every I/O pin, which will safely dispose of the harmful power injected into the system.
-
+  We also use a full reference plane instead of strips to provide a low impedance path for return currents and to avoid big current loops, which may act as magnetic dipoles and thus radiate causing interference and crosstalk.  
+  
   \begin{figure}[H]
     \begin{center}
       \includegraphics[width=\textwidth]{images/final_pcb_result.eps}
