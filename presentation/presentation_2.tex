@@ -3,6 +3,17 @@
 \usepackage{siunitx}
 \usepackage{multicol}
 \usepackage[]{hyperref}
+\usepackage{soul}
+\usepackage{tikz}
+
+
+\newcommand{\hcancel}[1]{%
+    \tikz[baseline=(tocancel.base)]{
+        \node[inner sep=0pt,outer sep=0pt] (tocancel) {#1};
+        \draw[red] (tocancel.south west) -- (tocancel.north east);
+        \draw[red]  (tocancel.north west) -- (tocancel.south east);
+    }%
+}%
 
 \addtobeamertemplate{navigation symbols}{}{%
     \usebeamerfont{footline}%
@@ -405,6 +416,65 @@
   		\includegraphics[width=0.8\textwidth]{images/ant_rad_pat.png}
   	\end{column}
   	\end{columns}
+  \end{frame}
+
+  \begin{frame}
+  \frametitle{Metingen}
+    \begin{columns}[c]
+    \begin{column}{0.5\textwidth}
+      \begin{itemize}
+        \item Radiatiepatroon elevatie
+        \begin{itemize}
+          \item Twee nullen: \\ $\theta=0$ en $\theta=\pi$
+          \item Drone recht boven anker: zeldzaam $\implies$ \hcancel{$\theta = 0$}
+        \end{itemize}
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \includegraphics[width=\textwidth]{images/3D_rad_pat_ant.png}
+    \end{column}
+    \end{columns}
+  \end{frame}
+
+  \begin{frame}
+  \frametitle{Metingen}
+    \begin{columns}
+    \begin{column}{0.5\textwidth}
+      \begin{itemize}
+        \item Plaatsing: Drone in nul 
+        \begin{itemize}
+          \item \hcancel{$\theta=\pi$}
+          \item Risico EMC-problemen $\downarrow$
+        \end{itemize}
+      \end{itemize}
+      \includegraphics[width=0.9\textwidth]{images/mount_ant_drone.png}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \begin{itemize}
+        \item Antenne effici\"entie
+        \begin{itemize}
+          \item Simulatie: $\frac{1}{exp(f)}$
+          \item Tussen 10\% en 50\%
+        \end{itemize}
+      \end{itemize}
+      \includegraphics[width=\textwidth]{images/ant_eff}
+    \end{column}
+    \end{columns}
+  \end{frame}
+
+\subsection{Conclusie}
+  \begin{frame}
+  \frametitle{Conclusie Ontwerp Antenne}
+    \begin{itemize}
+      \item Antenne functioneert correct in systeem
+      \item Openstaande problemen:
+      \begin{itemize}
+        \item Resonantie piek @ $\SI{5.2}{\giga\hertz}$ \\ $\implies$ Verbeter omnidirectionaliteit
+        \item Antenne effici\"entie
+        \item Aerodynamica
+      \end{itemize}
+    \end{itemize}
+
   \end{frame}
 
 
