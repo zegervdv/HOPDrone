@@ -303,20 +303,19 @@ MSE = \dfrac{1}{3}((x_{real}-x_{est})^2+\\(y_{real}-y_{est})^2+\\(z_{real}-z_{es
 \end{itemize}
 \end{frame}
 \begin{frame}
-\frametitle{LOS vs. NLOS}
+\frametitle{LOS vs. NLOS: Rise Time}
  \begin{figure}
       \begin{center}
         \includegraphics[width=0.7\linewidth]{images/NLOS.png}
       \end{center}
     \end{figure}
-    Rise time
 \end{frame}
 
 
 
 \subsection{Problemen}
 \begin{frame}
-\frametitle{3D nauwkeurigheid}
+\frametitle{Problemen: 3D nauwkeurigheid}
 \begin{itemize}
 \item Matlab: goede spreiding in de 3D ruimte
 \item Praktijk: kleinere z-spreiding ankers
@@ -326,7 +325,7 @@ MSE = \dfrac{1}{3}((x_{real}-x_{est})^2+\\(y_{real}-y_{est})^2+\\(z_{real}-z_{es
 \end{itemize}
 \end{frame}
 \begin{frame}
-\frametitle{Kalman}
+\frametitle{Problemen: Gaussiaanse beweging}
 \begin{itemize}
 \item Kalman is gebaseerd op Gaussiaanse bewegings- en ruismodellen
 \begin{itemize}
@@ -353,7 +352,9 @@ Model afhankelijk van type beweging\\
 
 \begin{frame}
 \frametitle{Kalman Filterbank}
+Parallelle filterbank:
 \begin{itemize}
+
 \item Stilstaan
 \item Traag bewegen
 \item Snel bewegen
