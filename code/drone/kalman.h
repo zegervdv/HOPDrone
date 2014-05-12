@@ -79,9 +79,8 @@ void kalman_init_dimensional_matrix(float32_t* matrix);
  * Initialize the variance matrices
  * variance_u    - array for the prediction variance
  * r_matrix      - array for the R matrix
- * nr_of_anchors - number of anchors used
  */
-void kalman_init_variances(float32_t* variance_u, float32_t* r_matrix, uint8_t nr_of_anchors);
+void kalman_init_variances(float32_t* variance_u, float32_t* r_matrix);
 
 /**
  * Prediction step for Kalman filter
@@ -129,6 +128,7 @@ void kalman_measurement_update(arm_matrix_instance_f32* z_matrix, float32_t anch
  * output - arm_matrix_instance_f32 pointer to the decomposed matrix
  */
 void cholesky_decomp(arm_matrix_instance_f32* matrix, arm_matrix_instance_f32* output);
+void cholesky2(arm_matrix_instance_f32* matrix, arm_matrix_instance_f32* output);
 
 /**
  * Initialize an array in for matrix in eye format

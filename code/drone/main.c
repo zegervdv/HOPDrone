@@ -65,10 +65,10 @@ int main(void)
   float32_t position_data[DIMENSIONS], prev_position_data[DIMENSIONS], mkmin_data[DIMENSIONS];
   float32_t sigmapoints_data[NR_SIGMAPOINTS][DIMENSIONS];
   float32_t f_matrix_data[DIMENSIONS*DIMENSIONS];
-  float32_t g_matrix_data[DIMENSIONS*DIMENSIONS/2];
+  float32_t g_matrix_data[DIMENSIONS*(DIMENSIONS/2)];
   float32_t pk_data[DIMENSIONS*DIMENSIONS], pkmin_data[DIMENSIONS*DIMENSIONS];
-  float32_t var_u_data[DIMENSIONS/2*DIMENSIONS/2];
-  float32_t r_matrix_data[NR_ANCHORS];
+  float32_t var_u_data[(DIMENSIONS/2)*(DIMENSIONS/2)];
+  float32_t r_matrix_data[NR_ANCHORS*NR_ANCHORS];
   float32_t z_matrix_data[NR_ANCHORS * NR_SIGMAPOINTS];
 
   arm_matrix_instance_f32 weight_m, weight_c;
@@ -115,7 +115,7 @@ int main(void)
   arm_mat_init_f32(&pkmin, DIMENSIONS, DIMENSIONS, pkmin_data);
 
   // Initialize variance matrices
-  kalman_init_variances(var_u_data, r_matrix_data, NR_ANCHORS);
+  kalman_init_variances(var_u_data, r_matrix_data);
   arm_mat_init_f32(&var_u, DIMENSIONS/2, DIMENSIONS/2, var_u_data);
   arm_mat_init_f32(&r_matrix, NR_ANCHORS, NR_ANCHORS, r_matrix_data);
 
@@ -203,9 +203,9 @@ int main(void)
 
                     // Measurement update
                     while(i < lcmMsg->nAnchors && i < NR_ANCHORS) {
-                      anchors[i][0] = int2float(lcmMsg->data[i*3 + (lcmMsg->nUsers + lcmMsg->nAnchors)]);
-                      anchors[i][1] = int2float(lcmMsg->data[i*3 + 1 + (lcmMsg->nUsers + lcmMsg->nAnchors)]);
-                      anchors[i][2] = int2float(lcmMsg->data[i*3 + 2 + (lcmMsg->nUsers + lcmMsg->nAnchors)]);
+                      anchors[i][0] = int2float(lcmMsg->data[i*3 + (lcmMsg->nUsers + lcmMsg->nAnchors)]) / 1000.0;
+                      anchors[i][1] = int2float(lcmMsg->data[i*3 + 1 + (lcmMsg->nUsers + lcmMsg->nAnchors)]) / 1000.0;
+                      anchors[i][2] = int2float(lcmMsg->data[i*3 + 2 + (lcmMsg->nUsers + lcmMsg->nAnchors)]) / 1000.0;
                       anchors[i][3] = (float32_t) locInfo->data[i].precisionRangeMm / 1000.0;
                       i++;
                     }

@@ -25,7 +25,7 @@ void kalman_init_position(float32_t* position) {
   uint8_t i;
 
   for(i = 0; i < DIMENSIONS; i++) {
-    position[0] = 0;
+    position[i] = 0.0;
   }
 }
 
@@ -56,14 +56,16 @@ void kalman_init_f_matrix(float32_t* f_matrix) {
 
 void kalman_init_g_matrix(float32_t* g_matrix) {
   uint8_t i,j;
+  float32_t g_up[(DIMENSIONS/2)*(DIMENSIONS/2)];
+  float32_t g_low[(DIMENSIONS/2)*(DIMENSIONS/2)];
+  
+  kalman_eye_matrix(g_up, DIMENSIONS/2, (DELTAT*DELTAT)/2);
+  kalman_eye_matrix(g_low, DIMENSIONS/2, DELTAT);
 
-  for (i = 0; i < DIMENSIONS/2; i++) {
-    for (j = 0; j < DIMENSIONS/2; j++) {
-      if (i == j) {
-        g_matrix[i*DIMENSIONS/2 + j] = (DELTAT*DELTAT)/2.0;
-        g_matrix[(i + DIMENSIONS/2)*DIMENSIONS/2 + j] = DELTAT;
-      } else
-        g_matrix[i*DIMENSIONS + j] = 0;
+  for(i = 0; i < DIMENSIONS/2; i++) {
+    for(j = 0; j < DIMENSIONS/2; j++) {
+      g_matrix[i*(DIMENSIONS/2) + j] = g_up[i*(DIMENSIONS/2) + j];
+      g_matrix[(DIMENSIONS/2)*(DIMENSIONS/2) + i*(DIMENSIONS/2) + j] = g_low[i*(DIMENSIONS/2) + j];
     }
   }
 }
@@ -72,9 +74,9 @@ void kalman_init_dimensional_matrix(float32_t* matrix) {
   kalman_eye_matrix(matrix, DIMENSIONS, 1);
 }
 
-void kalman_init_variances(float32_t* variance_u, float32_t* r_matrix, uint8_t nr_of_anchors) {
+void kalman_init_variances(float32_t* variance_u, float32_t* r_matrix) {
   kalman_eye_matrix(variance_u, DIMENSIONS/2, PREDICTION_VAR);
-  kalman_eye_matrix(r_matrix, nr_of_anchors, STD_MEASUREMENT);
+  kalman_eye_matrix(r_matrix, NR_ANCHORS, STD_MEASUREMENT);
 }
 
 void kalman_predict(arm_matrix_instance_f32* f_matrix, arm_matrix_instance_f32* g_matrix, position_t* prev_position, arm_matrix_instance_f32* variance, arm_matrix_instance_f32* var_u, arm_matrix_instance_f32* mkmin, arm_matrix_instance_f32* pkmin) {
@@ -88,7 +90,7 @@ void kalman_predict(arm_matrix_instance_f32* f_matrix, arm_matrix_instance_f32* 
   arm_mat_init_f32(&interm_f, DIMENSIONS, DIMENSIONS, interm_f_data);
   arm_mat_init_f32(&interm_g, DIMENSIONS, DIMENSIONS/2, interm_g_data);
   arm_mat_init_f32(&interm_f2, DIMENSIONS, DIMENSIONS, interm_f_data2);
-  arm_mat_init_f32(&interm_g2, DIMENSIONS, DIMENSIONS/2, interm_g_data2);
+  arm_mat_init_f32(&interm_g2, DIMENSIONS, DIMENSIONS, interm_g_data2);
   arm_mat_init_f32(&f_matrix_transposed, DIMENSIONS, DIMENSIONS, f_matrix_transposed_data);
   arm_mat_init_f32(&g_matrix_transposed, DIMENSIONS/2, DIMENSIONS, g_matrix_transposed_data);
 
@@ -101,7 +103,7 @@ void kalman_predict(arm_matrix_instance_f32* f_matrix, arm_matrix_instance_f32* 
 
   // Transpose F and G
   arm_mat_trans_f32(f_matrix, &f_matrix_transposed);
-  arm_mat_trans_f32(f_matrix, &f_matrix_transposed);
+  arm_mat_trans_f32(g_matrix, &g_matrix_transposed);
 
   // Calculate second intermediate results
   arm_mat_mult_f32(&interm_f, &f_matrix_transposed, &interm_f2);
@@ -114,12 +116,13 @@ void kalman_predict(arm_matrix_instance_f32* f_matrix, arm_matrix_instance_f32* 
 void kalman_update_sigmapoints(position_t* sigmapoints, position_t mkmin, arm_matrix_instance_f32* pkmin) {
   uint8_t i,j;
   arm_matrix_instance_f32 root;
-  float32_t root_data[DIMENSIONS * DIMENSIONS];
+  float32_t root_data[DIMENSIONS * DIMENSIONS] = {0};
 
   arm_mat_init_f32(&root, DIMENSIONS, DIMENSIONS, root_data);
 
   // Calculate the root of the variance matrix using Cholesky Decomposition
-  cholesky_decomp(pkmin, &root);
+  /* cholesky_decomp(pkmin, &root); */
+  cholesky2(pkmin, &root);
 
   arm_mat_scale_f32(&root, DIMENSIONS + KAPPA, &root);
 
@@ -194,15 +197,10 @@ void kalman_measurement_update(arm_matrix_instance_f32* z_matrix, float32_t anch
   // Calculate mu vector
   status = arm_mat_mult_f32(z_matrix, weight_m, &mu);
 
-  if(status != ARM_MATH_SUCCESS) {
-    LED_init(LED1);
-    LED_on(LED1);
-  }
-
   for(i=0; i<NR_ANCHORS; i++) {
     if(isnan(mu.pData[i])){
-      LED_init(LED2);
-      LED_on(LED2);
+      /* LED_init(LED2); */
+      /* LED_on(LED2); */
     } 
   }
   
@@ -234,10 +232,10 @@ void kalman_measurement_update(arm_matrix_instance_f32* z_matrix, float32_t anch
   // Reuse var to store the inverse
   status = arm_mat_inverse_f32(&temp_var, &var);
 
-  /* if(status != ARM_MATH_SUCCESS) { */
-  /*   LED_init(LED2); */
-  /*   LED_on(LED2); */
-  /* } */
+  if(status != ARM_MATH_SUCCESS) {
+    LED_init(LED1);
+    LED_on(LED1);
+  }
 
   // temp_cov is used to store K matrix
   arm_mat_mult_f32(&cov, &var, &temp_cov);
@@ -273,7 +271,12 @@ void cholesky_decomp(arm_matrix_instance_f32* matrix, arm_matrix_instance_f32* o
         s+= output->pData[i * matrix->numRows + k] * output->pData[j * matrix->numRows + k];
         if (i==j) {
           float32_t root;
-          arm_sqrt_f32(matrix->pData[i * matrix->numRows + i] - s, &root);
+          arm_status stat;
+          stat = arm_sqrt_f32(matrix->pData[i * matrix->numRows + i] - s, &root);
+          if(stat == ARM_MATH_ARGUMENT_ERROR) {
+            LED_init(LED2);
+            LED_on(LED2);
+          }
           output->pData[i * matrix->numRows + j] = root;
         }else {
           output->pData[i * matrix->numRows + j] = (1.0 / output->pData[j * matrix->numRows + j] * (matrix->pData[i * matrix->numRows + j] - s));
@@ -283,6 +286,39 @@ void cholesky_decomp(arm_matrix_instance_f32* matrix, arm_matrix_instance_f32* o
   }
 
   return;
+}
+
+void cholesky2(arm_matrix_instance_f32* matrix, arm_matrix_instance_f32* output) {
+  int8_t i,j,k;
+  float32_t diag[DIMENSIONS]; 
+
+  for(i = 0; i < DIMENSIONS*DIMENSIONS; i++)
+    output->pData[i] = matrix->pData[i];
+
+  for(j=0;j<matrix->numRows;j++) {
+    diag[j] = output->pData[matrix->numRows*j + j];
+  }
+
+  for(j=0;j<matrix->numRows;j++) {
+    for(k=0;k<j;k++) {
+      diag[j] -= output->pData[matrix->numRows*k + j] * output->pData[matrix->numRows*k + j];
+    }
+    float32_t root;
+    arm_status stat;
+    stat = arm_sqrt_f32(diag[j], &root);
+    if(stat == ARM_MATH_ARGUMENT_ERROR) {
+      LED_init(LED2);
+      LED_on(LED2);
+    }
+    diag[j] = root;
+
+    for (i=j+1; i<matrix->numRows; i++) {
+      for (k=0; k<j; k++) {
+        output->pData[matrix->numRows*j + i] -= output->pData[matrix->numRows*k + i] * output->pData[matrix->numRows * k + j];
+      }
+      output->pData[matrix->numRows*j + i] /= diag[j];
+    }
+  }
 }
 
 void kalman_eye_matrix(float32_t* array, uint8_t size, float32_t value) {
