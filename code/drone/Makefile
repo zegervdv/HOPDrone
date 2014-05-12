@@ -34,9 +34,9 @@ SRCS += arm_mat_add_f32.c\
 				arm_mat_scale_f32.c\
 				arm_mat_sub_f32.c\
 				arm_mat_trans_f32.c\
-				arm_sub_f32.c \
 				arm_scale_f32.c\
-				arm_dot_prod_f32.c
+				arm_dot_prod_f32.c\
+				arm_sub_f32.c
 
 # Binaries will be generated with this name (.elf, .bin, .hex, etc)
 PROJ_NAME=drone

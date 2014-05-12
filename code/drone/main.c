@@ -1,26 +1,15 @@
-/*
- * This program is for the user nodes in a network that consists of:
- * users nodes, anchors and a central hub.
- * The central hub will coordinate all communication (TDMA).
- * Once a user node makes connection with the central hub,  it must wait for clearance from the hub
- * to initiate ranging with the anchors (specified by the hub). After ranging is complete the
- * position can be calculated and the result is transmitted to the hub.
- *
- * This program will register with the main hub and then wait for instructions. Instructions are sent using LCM packets
- *
- * when making a new project make sure in startup_stm32f4xx.c the systemInit method is uncommented
- * then add this method in the default reset handler method before the main method.
- *
- * also make sure PLL_M in system_stm32f4xx.c is equal to 8
- * and HSE_VALUE is equal to 8000000 in stm32f4xx.h
- *
- * lighting up of the leds: red led means handler error (LED5)
- * 							orange led means communication error (LED 3)
- *							blue led means flash error with pc communication (LED 6)
- *							green means ParticleFilter found NAN values (LED4)
- *							red + green means Delay() is in progress (LED4 + LED5)
- *
- * when using rcm methods check if correct output with OK and ERR field. not with bool values.
+/**
+ *****************************************************************************
+ **
+ **  File        : main.c
+ **
+ **  Abstract    : main function.
+ **
+ **  Functions   : main, PerformRanging, int2float
+ **
+ **  Authors     : Thomas Deckmyn, Zeger Van de Vannet
+ **
+ *****************************************************************************
  */
 
 #include "stm32f4xx_conf.h"
@@ -50,7 +39,7 @@ float32_t int2float(uint32_t in);
 //
 // static data
 //_____________________________________________________________________________
-static uint32_t RCM_id = 104;				// id of the node (given on the RCM device)
+static uint32_t RCM_id = 107;				// id of the node (given on the RCM device)
 static bool bConnected = false;				// boolean if the node is connected to the central hub.
 
 //_____________________________________________________________________________
@@ -234,7 +223,32 @@ int main(void)
                     locInfo->variance[3] = pk.pData[7];
                   }else if(lcmMsg->options & LCMFLAG_3D){
                     // perform 3D localization
-                  }else{
+                    float32_t posEstimate[3] = {0.0f, 0.0f, 0.0f};
+                    float32_t anchorsX[lcmMsg->nAnchors];
+                    float32_t anchorsY[lcmMsg->nAnchors];
+                    float32_t anchorsZ[lcmMsg->nAnchors];
+                    uint32_t d[lcmMsg->nAnchors];
+
+                    i=0;
+
+                    // Fill in positions of anchor nodes in anchorsX,Y,Z and range measurement in d
+                    while(i<lcmMsg->nAnchors){
+                      anchorsX[i] = int2float(lcmMsg->data[i*3 + (lcmMsg->nUsers+lcmMsg->nAnchors)]);
+                      anchorsY[i] = int2float(lcmMsg->data[i*3 + 1 + (lcmMsg->nUsers+lcmMsg->nAnchors)]);
+                      anchorsZ[i] = int2float(lcmMsg->data[i*3 + 2 + (lcmMsg->nUsers+lcmMsg->nAnchors)]);
+                      d[i] = (float)locInfo->data[i].precisionRangeMm;
+                      i++;
+                    }
+
+                    // Calculate 3D positions and store in locInfo 
+                    arm_status errorStatus;
+                    errorStatus = Calculate3DPosition(lcmMsg->nAnchors, posEstimate, anchorsX, anchorsY, anchorsZ, d);
+                    if(errorStatus != ARM_MATH_SUCCESS)
+                      LED_on(LED2);
+                    locInfo->estim_x = posEstimate[0]/1000.0f;
+                    locInfo->estim_y = posEstimate[1]/1000.0f;
+                    locInfo->estim_z = posEstimate[2]/1000.0f;
+                  }else {
                     // perform 2D localization
                     float32_t posEstimate[2] = {0.0f, 0.0f};
                     float32_t anchorsX[lcmMsg->nAnchors];
@@ -251,6 +265,7 @@ int main(void)
 
                     arm_status errorStatus;
                     errorStatus = Calculate2DPosition(lcmMsg->nAnchors, posEstimate, anchorsX, anchorsY, d);
+
                     locInfo->estim_x = posEstimate[0]/1000.0f;
                     locInfo->estim_y = posEstimate[1]/1000.0f;
                     locInfo->estim_z = 0;
