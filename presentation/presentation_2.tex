@@ -220,8 +220,10 @@
     \end{tabular}
     \end{center}
   \end{frame}
+
   \addtocontents{toc}{\newpage}
-  \section{UWB Antenne}
+
+\section{UWB Antenne}
 \subsection{Referentie}
   \begin{frame}
   \frametitle{Referentie}
@@ -245,39 +247,8 @@
       \includegraphics[width=0.7\textwidth]{images/Pulson400UWB.jpg}
     \end{column}
     \end{columns}
-
   \end{frame}
 
-\subsection{Ontwerp}
-  \begin{frame}
-  \frametitle{Ontwerp UWB Antenne}
-  \begin{columns}[c]
-  \begin{column}{0.5\textwidth}
-  \begin{itemize}
-        \item UWB topologie
-         \begin{itemize}
-            \item Bow Tie
-            \item Halter 
-           \end{itemize}
-        \item $S_{11}$ niet vlak, fase niet lineair
-        \begin{itemize}
-          \item ADS: optimaliseren
-        \end{itemize}
-        \item Black foam: $\epsilon_r = 1.495 \implies$ \\ Aromatisch poly: $\epsilon_r = 2.55$ 
-      \end{itemize}
-    \begin{figure}[H]
-    \includegraphics[width=0.7\textwidth]{images/halter.pdf}
-    \end{figure}
-  \end{column}
-
-  \begin{column}{0.5\textwidth}
-    \centering
-    \begin{figure}[H]
-    \includegraphics[width=0.7\textwidth]{images/bowtie.pdf}
-    \end{figure}
-  \end{column}
-  \end{columns}
-  \end{frame}
 
   \begin{frame}
   \frametitle{Ontwerp UWB Antenne}
@@ -368,7 +339,11 @@
   \begin{frame}
   \frametitle{Prototype}
     \begin{itemize}
-      \item Metingen worden verwerkt
+      \item Manuele fabricatie 
+      \begin{itemize}
+      	\item Foute alignatie t.o.v. grondvlak
+      	\item Prototype versie 2.0
+      \end{itemize} 
     \end{itemize}
     \begin{columns}[c]
     \begin{column}{0.5\textwidth}
@@ -379,6 +354,61 @@
     \end{column}
     \end{columns}
   \end{frame}
+
+\subsection{Metingen}
+  \begin{frame}
+  \frametitle{Metingen}
+
+	  \begin{columns}[c]
+	  \begin{column}{0.5\textwidth}
+	  	\begin{itemize}
+	  		\item Vergelijking met referentie
+	  		\begin{itemize}
+	  			\item Versie 1: $S_{11} > \SI{-10}{\decibel}$ 
+	  		\end{itemize}
+	  		\item Resonantie piek @ $\SI{5.2}{\giga\hertz}$  
+	  		\begin{itemize}
+	  			\item $\neq$ Simulatie
+	  			\item Manuele fabricatie
+	  			\item ADS: oneindig substraat
+	  		\end{itemize}
+	  	\end{itemize}
+	  \end{column}%
+	  \begin{column}{0.5\textwidth}
+	  	\includegraphics[width=\textwidth]{images/antenna_comparison}
+	  \end{column}
+	  \end{columns}
+  \end{frame}
+
+  \begin{frame}
+  \frametitle{Metingen}
+  	\begin{columns}[c]
+  	\begin{column}{0.5\textwidth}
+  		\begin{itemize}
+  			\item Radiatiepatroon azimuth
+  			\begin{itemize}
+  				\item $\approx$ Omnidirectioneel tot $\SI{5}{\giga\hertz}$
+  				\item Conform design parameters\\
+  			\end{itemize}
+  			\item Resonantie @ $\SI{5.2}{\giga\hertz}$
+  			\begin{itemize}
+  				\item Niet omni
+  				\item Gain $\uparrow$
+  			\end{itemize}
+  			\item Transmit vermogen RCM instelbaar
+  			\begin{itemize}
+  				\item $[\SI{-31.6}{\decibel}m , \SI{-12.46}{\decibel}m]$
+  			\end{itemize}
+  		\end{itemize}
+  	\end{column}
+  	\begin{column}{0.5\textwidth}
+  		\includegraphics[width=0.8\textwidth]{images/ant_rad_pat.png}
+  	\end{column}
+  	\end{columns}
+  \end{frame}
+
+
+
 \section{Demonstratie}
 \begin{frame}[c]
   \begin{center}

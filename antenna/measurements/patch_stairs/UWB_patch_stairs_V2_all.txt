@@ -1914,7 +1914,7 @@ File Name:	UWB_patch_stairs_V2.rff
 		Phase	
 Frequency	3.000 G	 [GHz]	
 Polarizat.	0.00000	[deg]	
-Roll	1.00000	[deg]
+Roll	179.00000	[deg]
 Ch.	Channel1		
 Beam			
 Switch			
@@ -2008,7 +2008,7 @@ File Name:	UWB_patch_stairs_V2.rff
 		Phase	
 Frequency	3.400 G	 [GHz]	
 Polarizat.	0.00000	[deg]	
-Roll	1.00000	[deg]
+Roll	179.00000	[deg]
 Ch.	Channel1		
 Beam			
 Switch			
@@ -2102,7 +2102,7 @@ File Name:	UWB_patch_stairs_V2.rff
 		Phase	
 Frequency	3.700 G	 [GHz]	
 Polarizat.	0.00000	[deg]	
-Roll	1.00000	[deg]
+Roll	179.00000	[deg]
 Ch.	Channel1		
 Beam			
 Switch			
@@ -2196,7 +2196,7 @@ File Name:	UWB_patch_stairs_V2.rff
 		Phase	
 Frequency	4.000 G	 [GHz]	
 Polarizat.	0.00000	[deg]	
-Roll	1.00000	[deg]
+Roll	179.00000	[deg]
 Ch.	Channel1		
 Beam			
 Switch			
@@ -2291,7 +2291,7 @@ File Name:	UWB_patch_stairs_V2.rff
 		Phase	
 Frequency	4.300 G	 [GHz]	
 Polarizat.	0.00000	[deg]	
-Roll	1.00000	[deg]
+Roll	179.00000	[deg]
 Ch.	Channel1		
 Beam			
 Switch			
@@ -2385,7 +2385,7 @@ File Name:	UWB_patch_stairs_V2.rff
 		Phase	
 Frequency	4.500 G	 [GHz]	
 Polarizat.	0.00000	[deg]	
-Roll	1.00000	[deg]
+Roll	179.00000	[deg]
 Ch.	Channel1		
 Beam			
 Switch			
@@ -2479,7 +2479,7 @@ File Name:	UWB_patch_stairs_V2.rff
 		Phase	
 Frequency	4.800 G	 [GHz]	
 Polarizat.	0.00000	[deg]
-Roll	1.00000	[deg]	
+Roll	179.00000	[deg]	
 Ch.	Channel1		
 Beam			
 Switch			
@@ -2576,7 +2576,7 @@ File Name:	UWB_patch_stairs_V2.rff
 		Phase	
 Frequency	5.000 G	 [GHz]	
 Polarizat.	0.00000	[deg]	
-Roll	1.00000	[deg]
+Roll	179.00000	[deg]
 Ch.	Channel1		
 Beam			
 Switch			
@@ -2673,7 +2673,7 @@ File Name:	UWB_patch_stairs_V2.rff
 		Phase	
 Frequency	5.300 G	 [GHz]	
 Polarizat.	0.00000	[deg]	
-Roll	1.00000	[deg]
+Roll	179.00000	[deg]
 Ch.	Channel1		
 Beam			
 Switch			
@@ -2770,7 +2770,7 @@ File Name:	UWB_patch_stairs_V2.rff
 		Phase	
 Frequency	6.000 G	 [GHz]	
 Polarizat.	0.00000	[deg]	
-Roll	1.00000	[deg]
+Roll	179.00000	[deg]
 Ch.	Channel1		
 Beam			
 Switch			
@@ -2867,7 +2867,7 @@ File Name:	UWB_patch_stairs_V2.rff
 		Phase	
 Frequency	3.000 G	 [GHz]	
 Polarizat.	90.00000	[deg]	
-Roll	1.00000	[deg]
+Roll	179.00000	[deg]
 Ch.	Channel1		
 Beam			
 Switch			
@@ -2963,7 +2963,7 @@ File Name:	UWB_patch_stairs_V2.rff
 		Phase	
 Frequency	3.400 G	 [GHz]	
 Polarizat.	90.00000	[deg]	
-Roll	1.00000	[deg]
+Roll	179.00000	[deg]
 Ch.	Channel1		
 Beam			
 Switch			
@@ -3059,7 +3059,7 @@ File Name:	UWB_patch_stairs_V2.rff
 		Phase	
 Frequency	3.700 G	 [GHz]	
 Polarizat.	90.00000	[deg]	
-Roll	1.00000	[deg]
+Roll	179.00000	[deg]
 Ch.	Channel1		
 Beam			
 Switch			
@@ -3155,7 +3155,7 @@ File Name:	UWB_patch_stairs_V2.rff
 		Phase	
 Frequency	4.000 G	 [GHz]	
 Polarizat.	90.00000	[deg]	
-Roll	1.00000	[deg]
+Roll	179.00000	[deg]
 Ch.	Channel1		
 Beam			
 Switch			
@@ -3252,7 +3252,7 @@ File Name:	UWB_patch_stairs_V2.rff
 		Phase	
 Frequency	4.300 G	 [GHz]	
 Polarizat.	90.00000	[deg]	
-Roll	1.00000	[deg]
+Roll	179.00000	[deg]
 Ch.	Channel1		
 Beam			
 Switch			
@@ -3348,7 +3348,7 @@ File Name:	UWB_patch_stairs_V2.rff
 		Phase	
 Frequency	4.500 G	 [GHz]	
 Polarizat.	90.00000	[deg]	
-Roll	1.00000	[deg]
+Roll	179.00000	[deg]
 Ch.	Channel1		
 Beam			
 Switch			
@@ -3444,7 +3444,7 @@ File Name:	UWB_patch_stairs_V2.rff
 		Phase	
 Frequency	4.800 G	 [GHz]	
 Polarizat.	90.00000	[deg]	
-Roll	1.00000	[deg]
+Roll	179.00000	[deg]
 Ch.	Channel1		
 Beam			
 Switch			
@@ -3539,7 +3539,7 @@ File Name:	UWB_patch_stairs_V2.rff
 		Phase	
 Frequency	5.000 G	 [GHz]	
 Polarizat.	90.00000	[deg]	
-Roll	1.00000	[deg]
+Roll	179.00000	[deg]
 Ch.	Channel1		
 Beam			
 Switch			
@@ -3635,7 +3635,7 @@ File Name:	UWB_patch_stairs_V2.rff
 		Phase	
 Frequency	5.300 G	 [GHz]	
 Polarizat.	90.00000	[deg]	
-Roll	1.00000	[deg]
+Roll	179.00000	[deg]
 Ch.	Channel1		
 Beam			
 Switch			
@@ -3729,7 +3729,7 @@ File Name:	UWB_patch_stairs_V2.rff
 		Phase	
 Frequency	6.000 G	 [GHz]	
 Polarizat.	90.00000	[deg]	
-Roll	1.00000	[deg]
+Roll	179.00000	[deg]
 Ch.	Channel1		
 Beam			
 Switch			
