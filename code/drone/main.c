@@ -33,6 +33,8 @@
 #include "lms.h"
 #include "kalman.h"
 
+#include "accelerometer.h"
+
 #include "stm32f4xx_rng.h"
 
 #include <stdlib.h>
@@ -122,12 +124,6 @@ int main(void)
   // Initialize Z matrix
   arm_mat_init_f32(&z_matrix, NR_ANCHORS, NR_SIGMAPOINTS, z_matrix_data);
 
-
-  // Set Start point
-  position.pData[0] = 4.0;
-  position.pData[1] = 1.5;
-  position.pData[2] = 0.8;
-
   //configure delay in ms via systick:
   if (SysTick_Config(SystemCoreClock / 1000))
   {
@@ -138,8 +134,7 @@ int main(void)
     }
   }
 
-
-  //initialize connection with the USART 3:
+ //initialize connection with the USART 3:
   while(initConn(USART2) != OK){
     //initialization failed:
     LED_init(LED2);
@@ -147,6 +142,8 @@ int main(void)
     Delay(DELAY_TIME);
     LED_off(LED2);
   }
+
+  accelerometer_init();
 
   // register this device with the main host
   char data2[1];
@@ -198,6 +195,12 @@ int main(void)
 
               // perform non-cooperative localization if required
               if(lcmMsg->options & LCMFLAG_ONBOARD_LOCALIZATION){
+                int32_t acc_data[3];
+                accelerometer_read(acc_data);
+                locInfo->acc_x_axis = acc_data[0];
+                locInfo->acc_y_axis = acc_data[1];
+                locInfo->acc_z_axis = acc_data[2];
+
                 if(!(lcmMsg->options & LCMFLAG_COOP)){
                   if(lcmMsg->options & LCMFLAG_KALMAN) {
                     uint8_t i = 0;

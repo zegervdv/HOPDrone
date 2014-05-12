@@ -63,9 +63,9 @@ typedef struct __attribute__((__packed__)){
 	float32_t	estim_x;
 	float32_t	estim_y;
 	float32_t	estim_z;
-  float32_t acc_x_axis;
-  float32_t acc_y_axis;
-  float32_t acc_z_axis;
+  int32_t acc_x_axis;
+  int32_t acc_y_axis;
+  int32_t acc_z_axis;
   float32_t variance[4];
 	lcm_rangeInfo 	data[LCM_MAX_NEIGHBOURS];
 
