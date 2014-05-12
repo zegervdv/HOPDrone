@@ -17,6 +17,7 @@
 #include "arm_math.h"
 #include "rcm.h"
 #include "lcm.h"
+
 #include "leds.h"
 #include "main.h"
 #include "lms.h"
@@ -39,7 +40,7 @@ float32_t int2float(uint32_t in);
 //
 // static data
 //_____________________________________________________________________________
-static uint32_t RCM_id = 104;				// id of the node (given on the RCM device)
+static uint32_t RCM_id = 107;				// id of the node (given on the RCM device)
 static bool bConnected = false;				// boolean if the node is connected to the central hub.
 
 //_____________________________________________________________________________
@@ -186,9 +187,9 @@ int main(void)
               if(lcmMsg->options & LCMFLAG_ONBOARD_LOCALIZATION){
                 int32_t acc_data[3];
                 accelerometer_read(acc_data);
-                locInfo->acc_x_axis = acc_data[0];
-                locInfo->acc_y_axis = acc_data[1];
-                locInfo->acc_z_axis = acc_data[2];
+                locInfo->acc_x_axis = (float32_t) acc_data[0];
+                locInfo->acc_y_axis = (float32_t) acc_data[1];
+                locInfo->acc_z_axis = (float32_t) acc_data[2];
 
                 if(!(lcmMsg->options & LCMFLAG_COOP)){
                   if(lcmMsg->options & LCMFLAG_KALMAN) {
@@ -219,8 +220,8 @@ int main(void)
                     // Report variance matrix
                     locInfo->variance[0] = pk.pData[0];
                     locInfo->variance[1] = pk.pData[1];
-                    locInfo->variance[2] = pk.pData[6];
-                    locInfo->variance[3] = pk.pData[7];
+                    /* locInfo->variance[2] = pk.pData[6]; */
+                    locInfo->variance[2] = pk.pData[7];
                   }else if(lcmMsg->options & LCMFLAG_3D){
                     // perform 3D localization
                     float32_t posEstimate[3] = {0.0f, 0.0f, 0.0f};
