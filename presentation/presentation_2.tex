@@ -5,6 +5,7 @@
 \usepackage[]{hyperref}
 \usepackage{soul}
 \usepackage{tikz}
+\usepackage{epstopdf}
 
 
 \newcommand{\hcancel}[1]{%
@@ -54,14 +55,32 @@
         \item Onnauwkeurig (3 m)
         \item Hoogtemeting beperkt
     \end{itemize}
+    Toepassing:
+     \begin{itemize}
+        \item Autonoom vliegen
+    \end{itemize}   
   \end{frame}
+  \begin{frame}
+  \frametitle{Oplossing}
+   \begin{columns}
+    \begin{column}{0.5\textwidth}
+  	\begin{itemize}
+  		\item Afstandsbepaling
+  		\item Communicatie
+  	\end{itemize} 
+    \end{column}
+    \begin{column}{0.5\textwidth}
+  	\includegraphics[width=\textwidth]{images/Pulson400UWB.jpg}
+    \end{column}
+    \end{columns}
+  \end{frame} 
   \begin{frame}
     \frametitle{Situering}
     3 onderdelen:
     \begin{itemize}
+      \item PCB + Controller
       \item Algoritmes
       \item Antenne
-      \item PCB + Controller
     \end{itemize}
   \end{frame}
 \subsection{Planning}
@@ -77,43 +96,50 @@
       4 - 6 & Antenne design (L \& T) \& PCB-ontwerp (Z) & \checkmark \\
       7 & Afwerking $2^{de}$ algoritme \& Fabricage Antenne (T) & \checkmark \\
        & Vergelijking Algoritmes & \checkmark\\
-      8 & Uitmeten Antenne  & \ldots \\
-      & Implementatie Microcontroller & \ding{55} \\
+      8 & Uitmeten Antenne  & \checkmark \\
       \hline
     \end{tabular}
   \end{frame}
-  \begin{frame}
+  
+    \begin{frame}
     \frametitle{Planning}
-    \begin{verse}
-       "Failure is always an option"
-    \end{verse}
-    \pause
-    \begin{itemize}
-      \item Redesign Antenne
-    \end{itemize}
+    \begin{tabular}{|l | l | l|}
+      \hline
+      Week & Titel & Status\\
+      \hline
+      Paas 1 \& 2 & Implementatie microcontroller & \checkmark\\
+      9 & Bestukking PCB  & \checkmark\\
+      10 & Afwerken Implementaties  & \checkmark\\
+      11 & Afwerken (debuggen) + verslag schrijven & \checkmark \\
+      12 & Afwerken (debuggen + synthese) + presentatie & \checkmark \\
+      \hline
+    \end{tabular}
   \end{frame}
-  \begin{frame}
-    \frametitle{TODO}
-    \begin{itemize}
-      \item Solderen PCB
-      \item Testen PCB
-      \item Implementatie van algoritmes op microcontroller
-      \item Integratie
-    \end{itemize}
-  \end{frame}
+
 \section{PCB Design}
 \subsection{Onderdelen}
   \begin{frame}
-    \frametitle{Onderdelen}
+    \frametitle{Vereisten}
     \begin{itemize}
-      \item Microcontroller: STM32F4
-      \item Accelerometer
+      \item Microcontroller: verwerking van metingen tot positie
+      \item Accelerometer:
+      \begin{itemize}
+      	\item Preciezere positiebepaling
+      	\item Dynamic Power Management
+      \end{itemize}
     \end{itemize}
+  \end{frame}
+  \begin{frame}
+  	\frametitle{EMC}
+  	\begin{itemize}
+  		\item Volledig grondvlak
+  		\item ESD bescherming: Zener diodes
+  	\end{itemize}
   \end{frame}
   \begin{frame}
     \begin{figure}
       \begin{center}
-        \includegraphics[width=\textwidth]{images/layout.pdf}
+        \includegraphics[width=\textwidth]{images/final.eps}
       \end{center}
     \end{figure}
   \end{frame}
@@ -127,6 +153,7 @@
       \end{center}
     \end{figure}
   \end{frame}
+  
   \begin{frame}
     \frametitle{Ankers}
     \begin{itemize}
@@ -136,7 +163,7 @@
     \end{itemize}
     \begin{figure}
       \begin{center}
-        \includegraphics[width=.8\textwidth]{images/DME.jpg}
+        \includegraphics[width=.8\textwidth]{images/DME.png}
       \end{center}
     \end{figure}
   \end{frame}
@@ -144,23 +171,31 @@
   \begin{frame}
     \frametitle{Algoritmes}
     \begin{itemize}
-      \item LMS: Least Mean Square
+      \item Least Squares
       \item Kalman 
     \end{itemize}
   \end{frame}
   \begin{frame}
-    \frametitle{Least Mean Square}
+    \frametitle{Least Squares}
     \begin{itemize}
       \item Geen geheugen
         \begin{itemize}
           \item Geen invloed van het verleden
         \end{itemize}
-      \item Wat indien er meer vergelijkingen dan onbekenden zijn?
-        \begin{itemize}
-          \item \# ankers $>$ \# dimensies + 1
-        \end{itemize}
     \end{itemize}
-    \begin{figure}
+      \begin{figure}
+      \centering
+        \includegraphics[width=.5\textwidth]{images/ranging.png}
+    \end{figure}
+  \end{frame}
+  \begin{frame}
+  \frametitle{Wat bij overdimensionering?}
+
+    \begin{itemize}
+    \item Laat NLOS metingen vallen
+    \item Minimaliseer de gemiddelde kwadratische fout
+    \end{itemize}
+          \begin{figure}
       \centering
         \includegraphics[width=.5\textwidth]{images/LMS.jpg}
     \end{figure}
@@ -210,20 +245,41 @@
       \end{column}
     \end{columns}
   \end{frame}
+  
   \begin{frame}
     \frametitle{Resultaten: Simulaties}
+    \begin{columns}[c]
+  \begin{column}{0.5\textwidth}
+    \begin{itemize}
+      \item Gemiddelde kwadratische fout
+      \end{itemize}
+      \begin{equation*}
+      \begin{split}
+MSE = \dfrac{1}{3}((x_{real}-x_{est})^2+\\(y_{real}-y_{est})^2+\\(z_{real}-z_{est})^2 )
+\end{split}
+\end{equation*}
+\begin{itemize}
+      \item 90-ste percentiel
+    \end{itemize}
+    \end{column}
+
+    \begin{column}{0.5\textwidth}
     \begin{figure}
       \begin{center}
-        \includegraphics[width=.6\linewidth]{images/simulatie_cumulatief.eps}
+        \includegraphics[width=1\linewidth]{images/simulatie_cumulatief.eps}
       \end{center}
     \end{figure}
+    \end{column}
+    \end{columns}
+
   \end{frame}
+  
   \begin{frame}
-    \frametitle{LMS vs. Kalman Filter}
+    \frametitle{Least Squares vs. Kalman Filter}
     \begin{center}
     \begin{tabular}{|l|l|}
       \hline
-      LMS & Kalman Filter \\
+      Least Squares & Kalman Filter \\
       \hline
       (+) Eenvoudiger & (-) Complexer \\
       (-) Ruwere schatting & (+) Nauwkeuriger \\
@@ -234,6 +290,78 @@
 
   \addtocontents{toc}{\newpage}
 
+\section{Microcontroller}
+\subsection{Algemeen}
+\begin{frame}
+\begin{itemize}
+\frametitle{Algemeen}
+\item Matlab naar microcontroller
+\item Refresh rate: $\pm$ 3 Hz
+\begin{itemize}
+\item Te laag voor autonoom vliegen
+\end{itemize}
+\end{itemize}
+\end{frame}
+\begin{frame}
+\frametitle{LOS vs. NLOS}
+ \begin{figure}
+      \begin{center}
+        \includegraphics[width=0.7\linewidth]{images/NLOS.png}
+      \end{center}
+    \end{figure}
+    Rise time
+\end{frame}
+
+
+
+\subsection{Problemen}
+\begin{frame}
+\frametitle{3D nauwkeurigheid}
+\begin{itemize}
+\item Matlab: goede spreiding in de 3D ruimte
+\item Praktijk: kleinere z-spreiding ankers
+\begin{itemize}
+\item Lagere nauwkeurigheid in de z-richting
+\end{itemize}
+\end{itemize}
+\end{frame}
+\begin{frame}
+\frametitle{Kalman}
+\begin{itemize}
+\item Kalman is gebaseerd op Gaussiaanse bewegings- en ruismodellen
+\begin{itemize}
+\item Te scherpe bochten 
+\end{itemize}
+\end{itemize}
+\end{frame}
+\subsection{Uitbreidingen}
+\begin{frame}
+\frametitle{Eventuele uitbreiding}
+Kalman tunen via parameters:
+\begin{itemize}
+\item bewegingsvariantie
+\item ruisvariantie
+\item ...
+\end{itemize}
+
+Voorstel:
+Model afhankelijk van type beweging\\
+\begin{itemize}
+\item parallelle filterbank
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Kalman Filterbank}
+\begin{itemize}
+\item Stilstaan
+\item Traag bewegen
+\item Snel bewegen
+\end{itemize}
+
+Geef verschillende gewichten
+
+\end{frame}
 \section{UWB Antenne}
 \subsection{Referentie}
   \begin{frame}
