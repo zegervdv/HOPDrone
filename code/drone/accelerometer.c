@@ -116,7 +116,7 @@ void accelerometer_init(void) {
   // Write Control Data to register
   I2C_start(ACC_I2C_PORT, ACC_I2C_ADDR, I2C_Direction_Transmitter);
   I2C_write(ACC_I2C_PORT, ACC_CTRLREG1_ADDR);
-  I2C_write(ACC_I2C_PORT, ACC_CTRL_100HZ | ACC_CTRL_MODE_ACT | ACC_CTRL_FS_9 | ACC_CTRL_3D);
+  I2C_write(ACC_I2C_PORT, ACC_CTRL_100HZ | ACC_CTRL_MODE_ACT | ACC_CTRL_FS_2 | ACC_CTRL_3D);
   I2C_stop(ACC_I2C_PORT);
 }
 
@@ -129,16 +129,16 @@ int accelerometer_read(int32_t* data) {
   I2C_start(ACC_I2C_PORT, ACC_I2C_ADDR, I2C_Direction_Receiver);
 
   // Store x - axis value
-  data[0] = (int32_t) (ACC_SENSITIVITY_9 * uint2int(I2C_read_ack(ACC_I2C_PORT)));
+  data[0] = (int32_t) (ACC_SENSITIVITY_2 * uint2int(I2C_read_ack(ACC_I2C_PORT)));
   // Empty register
   I2C_read_ack(ACC_I2C_PORT);
   // Store y - axis value
-  data[1] = (int32_t) (ACC_SENSITIVITY_9 * uint2int(I2C_read_ack(ACC_I2C_PORT)));
+  data[1] = (int32_t) (ACC_SENSITIVITY_2 * uint2int(I2C_read_ack(ACC_I2C_PORT)));
   // Empty register
   I2C_read_ack(ACC_I2C_PORT);
   // Store z - axis value
   // And send NACK to terminate transfer
-  data[2] = (int32_t) (ACC_SENSITIVITY_9 * uint2int(I2C_read_nack(ACC_I2C_PORT)));
+  data[2] = (int32_t) (ACC_SENSITIVITY_2 * uint2int(I2C_read_nack(ACC_I2C_PORT)));
 
   return 0;
 }
