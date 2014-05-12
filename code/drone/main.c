@@ -31,6 +31,7 @@
 #include "leds.h"
 #include "main.h"
 #include "lms.h"
+#include "kalman.h"
 
 #include "stm32f4xx_rng.h"
 
@@ -57,6 +58,76 @@ static bool bConnected = false;				// boolean if the node is connected to the ce
 
 int main(void)
 {
+
+  uint8_t i;
+  float32_t weight_c_data[NR_SIGMAPOINTS];
+  float32_t weight_m_data[NR_SIGMAPOINTS];
+  float32_t position_data[DIMENSIONS], prev_position_data[DIMENSIONS], mkmin_data[DIMENSIONS];
+  float32_t sigmapoints_data[NR_SIGMAPOINTS][DIMENSIONS];
+  float32_t f_matrix_data[DIMENSIONS*DIMENSIONS];
+  float32_t g_matrix_data[DIMENSIONS*(DIMENSIONS/2)];
+  float32_t pk_data[DIMENSIONS*DIMENSIONS], pkmin_data[DIMENSIONS*DIMENSIONS];
+  float32_t var_u_data[(DIMENSIONS/2)*(DIMENSIONS/2)];
+  float32_t r_matrix_data[NR_ANCHORS*NR_ANCHORS];
+  float32_t z_matrix_data[NR_ANCHORS * NR_SIGMAPOINTS];
+
+  arm_matrix_instance_f32 weight_m, weight_c;
+  position_t position, prev_position;
+  position_t mkmin;
+  position_t sigmapoints[NR_SIGMAPOINTS];
+  arm_matrix_instance_f32 f_matrix, g_matrix;
+  arm_matrix_instance_f32 pkmin, pk;
+  arm_matrix_instance_f32 var_u, r_matrix;
+  arm_matrix_instance_f32 z_matrix;
+
+  // Data of the anchors: x, y, z coordinate plus measured distance from node
+  float32_t anchors[NR_ANCHORS][4];
+
+  // Initialize weight factors
+  kalman_init_weight_factors(weight_m_data, weight_c_data);
+  arm_mat_init_f32(&weight_m, NR_SIGMAPOINTS, 1, weight_m_data);
+  arm_mat_init_f32(&weight_c, 1, NR_SIGMAPOINTS, weight_c_data);
+
+  // Initialize position vectors
+  kalman_init_position(position_data);
+  kalman_init_position(prev_position_data);
+  kalman_init_position(mkmin_data);
+  arm_mat_init_f32(&position, DIMENSIONS, 1, position_data);
+  arm_mat_init_f32(&prev_position, DIMENSIONS, 1, prev_position_data);
+  arm_mat_init_f32(&mkmin, DIMENSIONS, 1, mkmin_data);
+
+  // Initialize sigma points
+  for (i = 0; i < NR_SIGMAPOINTS; i++) {
+    kalman_init_sigmapoints(sigmapoints_data[i]);
+    arm_mat_init_f32(&sigmapoints[i], DIMENSIONS, 1, sigmapoints_data[i]);
+  }
+
+  // Initialize F and G vectors
+  kalman_init_f_matrix(f_matrix_data);
+  kalman_init_g_matrix(g_matrix_data);
+  arm_mat_init_f32(&f_matrix, DIMENSIONS, DIMENSIONS, f_matrix_data);
+  arm_mat_init_f32(&g_matrix, DIMENSIONS, DIMENSIONS/2, g_matrix_data);
+
+  // Initialize Pk and Pkmin
+  kalman_init_dimensional_matrix(pk_data);
+  kalman_init_dimensional_matrix(pkmin_data);
+  arm_mat_init_f32(&pk, DIMENSIONS, DIMENSIONS, pk_data);
+  arm_mat_init_f32(&pkmin, DIMENSIONS, DIMENSIONS, pkmin_data);
+
+  // Initialize variance matrices
+  kalman_init_variances(var_u_data, r_matrix_data);
+  arm_mat_init_f32(&var_u, DIMENSIONS/2, DIMENSIONS/2, var_u_data);
+  arm_mat_init_f32(&r_matrix, NR_ANCHORS, NR_ANCHORS, r_matrix_data);
+
+  // Initialize Z matrix
+  arm_mat_init_f32(&z_matrix, NR_ANCHORS, NR_SIGMAPOINTS, z_matrix_data);
+
+
+  // Set Start point
+  position.pData[0] = 4.0;
+  position.pData[1] = 1.5;
+  position.pData[2] = 0.8;
+
   //configure delay in ms via systick:
   if (SysTick_Config(SystemCoreClock / 1000))
   {
@@ -66,6 +137,7 @@ int main(void)
       LED_on(LED1);
     }
   }
+
 
   //initialize connection with the USART 3:
   while(initConn(USART2) != OK){
@@ -82,6 +154,7 @@ int main(void)
   if(rcmDataSend(USED_ANTENNA, 1, &data2)){
     // success
   }
+
 
   // localization loop
   while(true){
@@ -125,10 +198,37 @@ int main(void)
 
               // perform non-cooperative localization if required
               if(lcmMsg->options & LCMFLAG_ONBOARD_LOCALIZATION){
-
                 if(!(lcmMsg->options & LCMFLAG_COOP)){
                   if(lcmMsg->options & LCMFLAG_KALMAN) {
-                    // Kalman Localization
+                    uint8_t i = 0;
+                    // perform Kalman Filtering
+                    // Prediction Step
+                    kalman_predict(&f_matrix, &g_matrix, &position, &pk, &var_u, &mkmin, &pkmin);
+                    // Update new sigmapoints
+                    kalman_update_sigmapoints(sigmapoints, mkmin, &pkmin);
+
+                    // Measurement update
+                    while(i < lcmMsg->nAnchors && i < NR_ANCHORS) {
+                      anchors[i][0] = int2float(lcmMsg->data[i*3 + (lcmMsg->nUsers + lcmMsg->nAnchors)]) / 1000.0;
+                      anchors[i][1] = int2float(lcmMsg->data[i*3 + 1 + (lcmMsg->nUsers + lcmMsg->nAnchors)]) / 1000.0;
+                      anchors[i][2] = int2float(lcmMsg->data[i*3 + 2 + (lcmMsg->nUsers + lcmMsg->nAnchors)]) / 1000.0;
+                      anchors[i][3] = (float32_t) locInfo->data[i].precisionRangeMm / 1000.0;
+                      i++;
+                    }
+
+                    kalman_measurement_update(&z_matrix, anchors, sigmapoints, &weight_m, &weight_c, &r_matrix, &pkmin, &position, &pk);
+
+
+                    // Report estimated location
+                    locInfo->estim_x = position.pData[0];
+                    locInfo->estim_y = position.pData[1];
+                    locInfo->estim_z = position.pData[2];
+
+                    // Report variance matrix
+                    locInfo->variance[0] = pk.pData[0];
+                    locInfo->variance[1] = pk.pData[1];
+                    locInfo->variance[2] = pk.pData[6];
+                    locInfo->variance[3] = pk.pData[7];
                   }else if(lcmMsg->options & LCMFLAG_3D){
                     // perform 3D localization
                   }else{
@@ -277,4 +377,3 @@ float32_t int2float(uint32_t in){
 
   return convert.here_read_float;
 }
-

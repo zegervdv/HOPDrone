@@ -66,6 +66,7 @@ typedef struct __attribute__((__packed__)){
   float32_t acc_x_axis;
   float32_t acc_y_axis;
   float32_t acc_z_axis;
+  float32_t variance[4];
 	lcm_rangeInfo 	data[LCM_MAX_NEIGHBOURS];
 
 } lcmMsg_LocInfo;

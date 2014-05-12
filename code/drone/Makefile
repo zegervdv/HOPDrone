@@ -8,6 +8,7 @@ SRCS += stm32f4xx_it.c
 # SRCS += locAnchors.c
 # SRCS += system.c
 SRCS += leds.c
+SRCS += kalman.c
 SRCS += lms.c
 
 # RCM communication
@@ -41,9 +42,9 @@ CC=arm-none-eabi-gcc
 OBJCOPY=arm-none-eabi-objcopy
 SIZE=arm-none-eabi-size
 
-CFLAGS  = -g -O2 -Wall -Tstm32_flash.ld
+CFLAGS  = -g -O0 -Wall -Tstm32_flash.ld
 CFLAGS += -mlittle-endian -mthumb -mcpu=cortex-m4 -mthumb-interwork
-CFLAGS += -mfloat-abi=hard -mfpu=fpv4-sp-d16
+CFLAGS += -mfloat-abi=hard -mfpu=fpv4-sp-d16 -fsingle-precision-constant
 CFLAGS += -I.
 
 CFLAGS += -fno-strict-aliasing
@@ -52,10 +53,9 @@ CFLAGS += -DSTM32F4XX
 CFLAGS += -DSTM32F405VG
 CFLAGS += -DARM_MATH_CM4
 CFLAGS += -DARM_MATH_ROUNDING
-CFLAGS += -DARM_MATH_MATRIX_CHECK
 CFLAGS += -D__FPU_PRESENT
+CFLAGS += -DARM_MATH_MATRIX_CHECK
 CFLAGS += -DDELAY_TIME=100
-
 
 CFLAGS += -L/usr/arm-none-eabi/lib/thumb/cortex-m4/float-abi-hard/fpuv4-sp-d16
 CFLAGS += --specs=nosys.specs
