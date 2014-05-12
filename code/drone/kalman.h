@@ -6,22 +6,24 @@
 #include "arm_math.h"
 
 #define DIMENSIONS      6
-#define NR_SIGMAPOINTS  2*DIMENSIONS+1
+#define NR_SIGMAPOINTS  (2*DIMENSIONS+1)
 #define NR_ANCHORS      4
 
-#define ALPHA           0.001
+#define ALPHA           0.020
 #define BETA            2.0
-#define KAPPA           ALPHA*ALPHA*DIMENSIONS - 1.0*DIMENSIONS
+#define KAPPA           (ALPHA*ALPHA*DIMENSIONS - 1.0*DIMENSIONS)
 
-#define WEIGHTS         (float32_t) 1.0/(2.0*(1.0*DIMENSIONS + KAPPA))  // Weight factors i > 0
-#define WEIGHT_M0       KAPPA/(1.0*DIMENSIONS + KAPPA)  // Weight factor W_m for i = 0
-#define WEIGHT_C0       KAPPA/(1.0*DIMENSIONS + KAPPA) - (1.0 - ALPHA*ALPHA + BETA) // Weight factor W_c for i = 0
+#define WEIGHTS         ((float32_t) 1.0/(2.0*(1.0*DIMENSIONS + KAPPA)))  // Weight factors i > 0
+#define WEIGHT_M0       (KAPPA/(1.0*DIMENSIONS + KAPPA))  // Weight factor W_m for i = 0
+#define WEIGHT_C0       (KAPPA/(1.0*DIMENSIONS + KAPPA) - (1.0 - ALPHA*ALPHA + BETA)) // Weight factor W_c for i = 0
 
-#define PREDICTION_VAR  0.025
-#define STD_MEASUREMENT 0.010
+#define ROOT_CHOL      (ALPHA * sqrt(DIMENSIONS))
+
+#define PREDICTION_VAR  1.500
+#define STD_MEASUREMENT 0.300
 
 // TODO: fix time or measure
-#define DELTAT          0.1
+#define DELTAT          0.3
 
 
 /**

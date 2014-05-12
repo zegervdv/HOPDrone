@@ -124,7 +124,7 @@ void kalman_update_sigmapoints(position_t* sigmapoints, position_t mkmin, arm_ma
   /* cholesky_decomp(pkmin, &root); */
   cholesky2(pkmin, &root);
 
-  arm_mat_scale_f32(&root, DIMENSIONS + KAPPA, &root);
+  arm_mat_scale_f32(&root, ROOT_CHOL, &root);
 
   // First sigmapoint is mkmin
   for(i = 0; i < DIMENSIONS; i++) {
@@ -150,6 +150,7 @@ void kalman_measurement_update(arm_matrix_instance_f32* z_matrix, float32_t anch
   arm_matrix_instance_f32 temp_cov, temp_var, temp_dim_anch;
   arm_matrix_instance_f32 distance_anchors;
   arm_matrix_instance_f32 pkmin_trans;
+  arm_matrix_instance_f32 interm_pk;
 
   float32_t mu_data[NR_ANCHORS] = {0};
   float32_t cov_data[DIMENSIONS * NR_ANCHORS] = {0};
@@ -162,6 +163,7 @@ void kalman_measurement_update(arm_matrix_instance_f32* z_matrix, float32_t anch
   float32_t temp_var_data[NR_ANCHORS * NR_ANCHORS];
   float32_t distance_anchors_data[NR_ANCHORS];
   float32_t pkmin_trans_data[DIMENSIONS*DIMENSIONS];
+  float32_t interm_pk_data[DIMENSIONS*DIMENSIONS];
 
   float32_t x_sq, y_sq, z_sq;
 
@@ -174,10 +176,11 @@ void kalman_measurement_update(arm_matrix_instance_f32* z_matrix, float32_t anch
   arm_mat_init_f32(&vector_z, NR_ANCHORS, 1, vector_z_data);
   arm_mat_init_f32(&vector_output, 1, NR_ANCHORS, vector_output_data);
   arm_mat_init_f32(&temp_cov, DIMENSIONS, NR_ANCHORS, temp_cov_data);
-  arm_mat_init_f32(&temp_dim_anch, DIMENSIONS, NR_ANCHORS, temp_dim_anch_data);
+  arm_mat_init_f32(&temp_dim_anch, NR_ANCHORS, DIMENSIONS, temp_dim_anch_data);
   arm_mat_init_f32(&temp_var, NR_ANCHORS, NR_ANCHORS, temp_var_data);
   arm_mat_init_f32(&distance_anchors, NR_ANCHORS, 1, distance_anchors_data);
   arm_mat_init_f32(&pkmin_trans, DIMENSIONS, DIMENSIONS, pkmin_trans_data);
+  arm_mat_init_f32(&interm_pk, DIMENSIONS, DIMENSIONS, interm_pk_data);
 
   for(i = 0; i < NR_SIGMAPOINTS; i++) {
     for(j = 0; j < NR_ANCHORS; j++) {
@@ -238,23 +241,23 @@ void kalman_measurement_update(arm_matrix_instance_f32* z_matrix, float32_t anch
   }
 
   // temp_cov is used to store K matrix
-  arm_mat_mult_f32(&cov, &var, &temp_cov);
+  status = arm_mat_mult_f32(&cov, &var, &temp_cov);
 
   // Reuse distance_anchors to store result
-  arm_mat_sub_f32(&distance_anchors, &mu, &distance_anchors);
+  status = arm_mat_sub_f32(&distance_anchors, &mu, &distance_anchors);
   // Reuse vector_y
-  arm_mat_mult_f32(&temp_cov, &distance_anchors, &vector_y);
+  status = arm_mat_mult_f32(&temp_cov, &distance_anchors, &vector_y);
 
   // Result for mk
-  arm_mat_add_f32(&sigmapoints[0], &vector_y, mk);
+  status = arm_mat_add_f32(&sigmapoints[0], &vector_y, mk);
 
   // cov holds result of K * (var + R)
   arm_mat_mult_f32(&temp_cov, &temp_var, &cov);
   arm_mat_trans_f32(&temp_cov, &temp_dim_anch);
-  arm_mat_mult_f32(&cov, &temp_dim_anch, &temp_cov);
+  arm_mat_mult_f32(&cov, &temp_dim_anch, &interm_pk);
 
   // Result for Pk
-  arm_mat_sub_f32(pkmin, &temp_cov, pk);
+  arm_mat_sub_f32(pkmin, &interm_pk, pk);
   arm_mat_trans_f32(pk, &pkmin_trans);
   arm_mat_add_f32(pk, &pkmin_trans, pk);
   arm_mat_scale_f32(pk, 0.5, pk);
@@ -318,6 +321,10 @@ void cholesky2(arm_matrix_instance_f32* matrix, arm_matrix_instance_f32* output)
       }
       output->pData[matrix->numRows*j + i] /= diag[j];
     }
+  }
+
+  for(i=0;i<DIMENSIONS;i++) {
+    output->pData[i*DIMENSIONS + i] = diag[i];
   }
 }
 

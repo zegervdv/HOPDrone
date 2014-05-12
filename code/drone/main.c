@@ -48,7 +48,7 @@ float32_t int2float(uint32_t in);
 //
 // static data
 //_____________________________________________________________________________
-static uint32_t RCM_id = 107;				// id of the node (given on the RCM device)
+static uint32_t RCM_id = 104;				// id of the node (given on the RCM device)
 static bool bConnected = false;				// boolean if the node is connected to the central hub.
 
 //_____________________________________________________________________________
@@ -121,6 +121,13 @@ int main(void)
 
   // Initialize Z matrix
   arm_mat_init_f32(&z_matrix, NR_ANCHORS, NR_SIGMAPOINTS, z_matrix_data);
+
+
+  // Set Start point
+  position.pData[0] = 4.0;
+  position.pData[1] = 1.5;
+  position.pData[2] = 0.8;
+
   //configure delay in ms via systick:
   if (SysTick_Config(SystemCoreClock / 1000))
   {
@@ -191,7 +198,6 @@ int main(void)
 
               // perform non-cooperative localization if required
               if(lcmMsg->options & LCMFLAG_ONBOARD_LOCALIZATION){
-
                 if(!(lcmMsg->options & LCMFLAG_COOP)){
                   if(lcmMsg->options & LCMFLAG_KALMAN) {
                     uint8_t i = 0;
@@ -217,6 +223,12 @@ int main(void)
                     locInfo->estim_x = position.pData[0];
                     locInfo->estim_y = position.pData[1];
                     locInfo->estim_z = position.pData[2];
+
+                    // Report variance matrix
+                    locInfo->variance[0] = pk.pData[0];
+                    locInfo->variance[1] = pk.pData[1];
+                    locInfo->variance[2] = pk.pData[6];
+                    locInfo->variance[3] = pk.pData[7];
                   }else if(lcmMsg->options & LCMFLAG_3D){
                     // perform 3D localization
                   }else{
