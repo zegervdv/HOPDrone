@@ -6,6 +6,8 @@
 \usepackage{soul}
 \usepackage{tikz}
 \usepackage{epstopdf}
+\usepackage{tikz}
+\usepackage{circuitikz}
 
 
 \newcommand{\hcancel}[1]{%
@@ -131,10 +133,22 @@
   \end{frame}
   \begin{frame}
   	\frametitle{EMC}
-  	\begin{itemize}
-  		\item Volledig grondvlak
-  		\item ESD bescherming: Zener diodes
-  	\end{itemize}
+      \begin{columns}[t]
+        \begin{column}[T]{.5\textwidth}
+          \begin{itemize}
+            \item Volledig grondvlak
+            \item ESD bescherming: Zener diodes
+          \end{itemize}
+        \end{column}
+        \begin{column}[T]{.5\textwidth}
+          \centering
+          \begin{tikzpicture}
+            \node [ground] {};
+            \draw (0,0) to[sD*] (0,2);
+            \draw (-2,2) -- (2,2);
+          \end{tikzpicture}
+        \end{column}
+      \end{columns}
   \end{frame}
   \begin{frame}
     \begin{figure}
