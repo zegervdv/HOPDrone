@@ -121,8 +121,7 @@ void kalman_update_sigmapoints(position_t* sigmapoints, position_t mkmin, arm_ma
   arm_mat_init_f32(&root, DIMENSIONS, DIMENSIONS, root_data);
 
   // Calculate the root of the variance matrix using Cholesky Decomposition
-  /* cholesky_decomp(pkmin, &root); */
-  cholesky2(pkmin, &root);
+  cholesky(pkmin, &root);
 
   arm_mat_scale_f32(&root, ROOT_CHOL, &root);
 
@@ -200,13 +199,6 @@ void kalman_measurement_update(arm_matrix_instance_f32* z_matrix, float32_t anch
   // Calculate mu vector
   status = arm_mat_mult_f32(z_matrix, weight_m, &mu);
 
-  for(i=0; i<NR_ANCHORS; i++) {
-    if(isnan(mu.pData[i])){
-      /* LED_init(LED2); */
-      /* LED_on(LED2); */
-    } 
-  }
-  
   // Calculate covariance matrix
   for(i = 0; i < NR_SIGMAPOINTS; i++) {
     // Select vector Y
@@ -235,11 +227,6 @@ void kalman_measurement_update(arm_matrix_instance_f32* z_matrix, float32_t anch
   // Reuse var to store the inverse
   status = arm_mat_inverse_f32(&temp_var, &var);
 
-  if(status != ARM_MATH_SUCCESS) {
-    LED_init(LED1);
-    LED_on(LED1);
-  }
-
   // temp_cov is used to store K matrix
   status = arm_mat_mult_f32(&cov, &var, &temp_cov);
 
@@ -264,34 +251,7 @@ void kalman_measurement_update(arm_matrix_instance_f32* z_matrix, float32_t anch
 
 }
 
-void cholesky_decomp(arm_matrix_instance_f32* matrix, arm_matrix_instance_f32* output) {
-  int8_t i,j,k;
-
-  for (i = 0; i < matrix->numRows; i++) {
-    for (j = 0; j < (i+1); j++) {
-      float32_t s = 0;
-      for (k = 0; k < j; k++) {
-        s+= output->pData[i * matrix->numRows + k] * output->pData[j * matrix->numRows + k];
-        if (i==j) {
-          float32_t root;
-          arm_status stat;
-          stat = arm_sqrt_f32(matrix->pData[i * matrix->numRows + i] - s, &root);
-          if(stat == ARM_MATH_ARGUMENT_ERROR) {
-            LED_init(LED2);
-            LED_on(LED2);
-          }
-          output->pData[i * matrix->numRows + j] = root;
-        }else {
-          output->pData[i * matrix->numRows + j] = (1.0 / output->pData[j * matrix->numRows + j] * (matrix->pData[i * matrix->numRows + j] - s));
-        }
-      }
-    }
-  }
-
-  return;
-}
-
-void cholesky2(arm_matrix_instance_f32* matrix, arm_matrix_instance_f32* output) {
+void cholesky(arm_matrix_instance_f32* matrix, arm_matrix_instance_f32* output) {
   int8_t i,j,k;
   float32_t diag[DIMENSIONS]; 
 
@@ -309,10 +269,6 @@ void cholesky2(arm_matrix_instance_f32* matrix, arm_matrix_instance_f32* output)
     float32_t root;
     arm_status stat;
     stat = arm_sqrt_f32(diag[j], &root);
-    if(stat == ARM_MATH_ARGUMENT_ERROR) {
-      LED_init(LED2);
-      LED_on(LED2);
-    }
     diag[j] = root;
 
     for (i=j+1; i<matrix->numRows; i++) {

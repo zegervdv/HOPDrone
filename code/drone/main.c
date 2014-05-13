@@ -50,7 +50,7 @@ static bool bConnected = false;				// boolean if the node is connected to the ce
 
 int main(void)
 {
-
+  // Initialization of Kalman Filter
   uint8_t i;
   float32_t weight_c_data[NR_SIGMAPOINTS];
   float32_t weight_m_data[NR_SIGMAPOINTS];
@@ -124,7 +124,8 @@ int main(void)
     }
   }
 
- //initialize connection with the USART 3:
+  // Initialize connection with the USART 2:
+  // For the custom PCB
   while(initConn(USART2) != OK){
     //initialization failed:
     LED_init(LED2);
@@ -133,9 +134,11 @@ int main(void)
     LED_off(LED2);
   }
 
+  // Initialize the on board accelerometer
+  // Set the sensitivity to +/- 2.3g
   accelerometer_init();
 
-  // register this device with the main host
+  // Register this device with the main host
   char data2[1];
   data2[0] = LCM_MSG_REGISTER_NODE;			// message id for registration
   if(rcmDataSend(USED_ANTENNA, 1, &data2)){
@@ -143,7 +146,7 @@ int main(void)
   }
 
 
-  // localization loop
+  // Localization loop
   while(true){
 
     rcmMsg_DataInfo recdata;
@@ -195,6 +198,7 @@ int main(void)
                   if(lcmMsg->options & LCMFLAG_KALMAN) {
                     uint8_t i = 0;
                     // perform Kalman Filtering
+
                     // Prediction Step
                     kalman_predict(&f_matrix, &g_matrix, &position, &pk, &var_u, &mkmin, &pkmin);
                     // Update new sigmapoints
@@ -211,7 +215,6 @@ int main(void)
 
                     kalman_measurement_update(&z_matrix, anchors, sigmapoints, &weight_m, &weight_c, &r_matrix, &pkmin, &position, &pk);
 
-
                     // Report estimated location
                     locInfo->estim_x = position.pData[0];
                     locInfo->estim_y = position.pData[1];
@@ -220,8 +223,8 @@ int main(void)
                     // Report variance matrix
                     locInfo->variance[0] = pk.pData[0];
                     locInfo->variance[1] = pk.pData[1];
-                    /* locInfo->variance[2] = pk.pData[6]; */
                     locInfo->variance[2] = pk.pData[7];
+
                   }else if(lcmMsg->options & LCMFLAG_3D){
                     // perform 3D localization
                     float32_t posEstimate[3] = {0.0f, 0.0f, 0.0f};
@@ -241,11 +244,10 @@ int main(void)
                       i++;
                     }
 
-                    // Calculate 3D positions and store in locInfo 
+                    // Calculate 3D positions and store in locInfo
                     arm_status errorStatus;
                     errorStatus = Calculate3DPosition(lcmMsg->nAnchors, posEstimate, anchorsX, anchorsY, anchorsZ, d);
-                    if(errorStatus != ARM_MATH_SUCCESS)
-                      LED_on(LED2);
+
                     locInfo->estim_x = posEstimate[0]/1000.0f;
                     locInfo->estim_y = posEstimate[1]/1000.0f;
                     locInfo->estim_z = posEstimate[2]/1000.0f;

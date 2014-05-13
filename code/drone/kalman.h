@@ -125,12 +125,10 @@ void kalman_measurement_update(arm_matrix_instance_f32* z_matrix, float32_t anch
 
 /**
  * Cholesky decomposition
- * see: http://rosettacode.org/wiki/Cholesky_decomposition#C
  * matrix - arm_matrix_instance_f32 to be decomposed
  * output - arm_matrix_instance_f32 pointer to the decomposed matrix
  */
-void cholesky_decomp(arm_matrix_instance_f32* matrix, arm_matrix_instance_f32* output);
-void cholesky2(arm_matrix_instance_f32* matrix, arm_matrix_instance_f32* output);
+void cholesky(arm_matrix_instance_f32* matrix, arm_matrix_instance_f32* output);
 
 /**
  * Initialize an array in for matrix in eye format
